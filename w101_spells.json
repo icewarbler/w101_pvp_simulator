@@ -1,0 +1,440 @@
+[
+    {
+        "SPELL": "STEAL PIP",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["MANIPULATION"],
+        "DESCRIPTION":
+            "STEALS A PIP FROM TARGET AND GIVES IT TO CASTER",
+        "EFFECTS": [
+            {
+                "TYPE": "MANIPULATION",
+                "CAUSE": {
+                    "SUBTYPE": "STEAL",
+                    "TARGET": "PIP"
+                },
+                "PER_EFFECT": {
+                    "SUBTYPE": "GAIN",
+                    "TARGET": "PIP"
+                }
+            }
+        ]
+    },
+    {
+        "SPELL": "WEAKNESS",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["CHARM"],
+        "DESCRIPTION":
+            "APPLIES A -25% DAMAGE CHARM",
+        "EFFECTS": [
+            {
+                "TYPE": "CHARM",
+                "POLARITY": "NEGATIVE",
+                "TARGET": "ENEMY",
+                "VALUE": 25
+            }
+        ]
+    },
+
+    {
+        "SPELL": "A-BAAHH-CALYPSE",
+        "SCHOOL": "FIRE",
+        "PIPCOST": 3,
+        "SCHOOLPIPS": "FIRE",
+        "TYPE": ["DAMAGE", "MANIPULATION"],
+        "ACCURACY": 75,
+        "DESCRIPTION":
+            "DEALS 410 FIRE DAMAGE AND DETONATES TWO DOT EFFECTS ON TARGET TO DEAL 145% OF REMAINING DAMAGE",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "SCHOOL": "FIRE",
+                "VALUE": 410
+            },
+            {
+                "CAUSE": {
+                    "SUBTYPE": "DETONATE",
+                    "TARGET": "DOT"
+                },
+                "EFFECT": {
+                    "SUBTYPE": "SINGLE_DAMAGE"
+                }
+            }
+        ]
+    },
+
+    {
+        "SPELL": "FIREBLADE",
+        "SCHOOL": "FIRE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["CHARM"],
+        "DESCRIPTION":
+            "APPLIES A +35% FIRE DAMAGE CHARM",
+        "EFFECTS": [
+            {
+                "TYPE": "CHARM",
+                "POLARITY": "POSITIVE",
+                "TARGET": "SELF",
+                "VALUE": 35
+            }
+        ]
+    },
+    
+    {
+        "SPELL": "HELEPHANT",
+        "SCHOOL": "FIRE",
+        "PIPCOST": 6,
+        "ACCURACY": 75,
+        "TYPE": ["DAMAGE"],
+        "DESCRIPTION": 
+            "DEALS 625-705 FIRE DAMAGE",
+        "EFFECT": [
+            {
+                "TYPE": "DAMAGE",
+                "SUBTYPE": "RANGE",
+                "MIN": 625,
+                "MAX": 705
+            }
+        ]
+    },
+
+    {
+        "SPELL": "KING ARTORIUS (FIRE) (TIER 2B)",
+        "SCHOOL": "FIRE",
+        "PIPCOST": 8,
+        "ACCURACY": 75,
+        "TYPE": ["DAMAGE", "HOT", "MANIPULATION"],
+        "DESCRIPTION": 
+            "REMOVES UP TO SEVEN POSITIVE WARDS FROM TARGET TO APPLY A HEALING OVER TIME THAT RESTORES 240 HEALTH OVER 5 ROUNDS ON CASTER PER WARD REMOVED, THEN DEALS 755 FIRE DAMAGE TO TARGET",
+        "EFFECT": [
+            {
+                "TYPE": "MANIPULATION",
+                "CAUSE": {
+                    "TYPE": "CLEAR",
+                    "TARGET": "POSITIVE_WARD",
+                    "MAX": 7
+                },
+                "PER_EFFECT": {
+                    "TYPE": "HOT",
+                    "DURATION": 5,
+                    "STACKS": 1,
+                    "VALUE_PER_STACK": 240
+                }
+            },
+
+            {
+                "TYPE": "DAMAGE",
+                "VALUE": 755,
+                "SCHOOL": "FIRE"
+            }
+        ]
+    },
+
+    {
+        "SPELL": "WICKED BULL (TIER 2B)",
+        "SCHOOL": "FIRE",
+        "PIPCOST": 6,
+        "SHADCOST": 1,
+        "ACCURACY": 75,
+        "TYPE": ["DAMAGE", "DOT", "MANIPULATION", "ALL ENEMIES"],
+        "DESCRIPTION":
+            "DEALS 910 FIRE DAMAGE AND APPLIES TWO DOT EFFECTS THAT EACH DEAL 460 FIRE DAMAGE OVER 5 ROUNDS SPLIT AMONG SELECTED ENEMIES. REMOVES A HARMFUL WARD FROM TARGET OR STORES +5% MAX HEALTH DAMAGE EACH ROUND FOR THREE ROUNDS. DEALS STORED DAMAGE TO CASTER AFTER THREE ROUNDS",
+        "EFFECT": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "VALUE": 910
+            },
+
+            {
+                "TYPE": "DOT",
+                "DURATION": 5,
+                "STACKS": 2,
+                "VALUE_PER_STACK": 460
+            },
+
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 3,
+                "VALUE_TYPE": "PERCENT_MAX_HEALTH",
+                "VALUE_PER_TURN": 5,
+                "CONDITION": {
+                    "EFFECT": "NEGATIVE WARD",
+                    "TARGET": "ENEMY"
+                }
+            }
+        ]
+    },
+
+    {
+        "SPELL": "DARK WEAVER",
+        "TIER": 2,
+        "SCHOOL": "ICE",
+        "PIPCOST": 5,
+        "SHADCOST": 1,
+        "ACCURACY": 80,
+        "TYPE": ["DAMAGE", "WARD", "MANIPULATION", "SHADOW"],
+        "DESCRIPTION":
+            "DEALS 730 ICE DAMAGE TO TARGET, APPLIES 3 80% SHIELDS OF TARGETS SCHOOL TO SELF, AND REMOVES A NEGATIVE WARD FROM TARGET OR STORES +5% MAX HEALTH DAMAGE PER ROUND FOR THREE ROUNDS",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "VALUE": 730
+            },
+            {
+                "TYPE": "WARD",
+                "POLARITY": "POSITIVE",
+                "AMOUNT": 3,
+                "VALUE": 80,
+                "SCHOOL": "TARGET"
+            },
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 3,
+                "VALUE_TYPE": "PERCENT_MAX_HEALTH",
+                "VALUE_PER_TURN": 5,
+                "CONDITION": {
+                    "EFFECT": "NEGATIVE WARD",
+                    "TARGET": "ENEMY"
+                }
+            }
+        ]
+    },
+
+    {
+        "SPELL": "ICE TRAP",
+        "SCHOOL": "ICE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["WARD"],
+        "DESCRIPTION":
+            "APPLIES A +40% NEGATIVE ICE DAMAGE WARD TO TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "NEG",
+                "TARGET": "ENEMY",
+                "VALUE": 25
+            }
+        ]
+    },
+
+    {
+        "SPELL": "SCION OF MYTH",
+        "TIER": "5B",
+        "SCHOOL": "MYTH",
+        "PIPCOST": 9,
+        "ACCURACY": 80,
+        "TYPE": ["DAMAGE", "MANIPULATION"],
+        "DESCRIPTION":
+            "DEALS 835 MYTH DAMAGE TO TARGET, OR REMOVES FOUR HARMFUL WARDS TO DEAL 1490 MYTH DAMAGE TO TARGET",
+        "EFFECTS": [
+            {
+                "CAUSE": {
+                    "TYPE": "NEGATIVE_WARD",
+                    "AMOUNT": 4
+                },
+                "EFFECT": {
+                    "TYPE": "SINGLE_DAMAGE",
+                    "SCHOOL": "MYTH",
+                    "VALUE": 1490
+                },
+                "ELSE": {
+                    "TYPE": "SINGLE_DAMAGE",
+                    "SCHOOL": "MYTH",
+                    "VALUE": 835
+                }
+            }
+        ]
+    },
+
+    {
+        "SPELL": "DARK NOVA",
+        "SCHOOL": "SHADOW",
+        "PIPCOST": 0,
+        "SHADCOST": 1,
+        "ACCURACY": 100,
+        "TYPE": ["DAMAGE", "WARD", "MANIPULATION"],
+        "DESCRIPTION":
+            "DEALS 75 SHADOW DAMAGE AND APPLIES THREE +35% DAMAGE WARDS ON TARGET. REMOVES A HARMFUL CHARM FROM CASTER OR STORES +5% MAX HEALTH DAMAGE EACH ROUND FOR THREE ROUNDS. DEALS STORED DAMAGE TO CASTER AFTER THREE ROUNDS",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "SCHOOL": "SHADOW",
+                "VALUE": 75
+            },
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "NEG",
+                "SCHOOL": "GLOBAL",
+                "VALUE": 30,
+                "QUANTITY": 3
+            },
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 3,
+                "VALUE_TYPE": "PERCENT_MAX_HEALTH",
+                "VALUE_PER_TURN": 5,
+                "CONDITION": {
+                    "EFFECT": "CHARM",
+                    "POLARITY": "POS",
+                    "TARGET": "SELF"
+                }
+            }
+        ]
+    },
+
+    {
+        "SPELL": "DARK FIEND",
+        "SCHOOL": "SHADOW",
+        "PIPCOST": 0,
+        "SHADCOST": 1,
+        "ACCURACY": 100,
+        "TYPE": ["DAMAGE", "WARD", "MANIPULATION"],
+        "DESCRIPTION":
+            "DEALS 75 SHADOW DAMAGE AND APPLIES THREE +70% DOT WARDS ON TARGET. REMOVES A POSITIVE WARD FROM CASTER OR STORES +5% MAX HEALTH DAMAGE EACH ROUND FOR THREE ROUNDS. DEALS STORED DAMAGE TO CASTER AFTER THREE ROUNDS",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "SCHOOL": "SHADOW",
+                "VALUE": 75
+            },
+            {
+                "TYPE": "WARD",
+                "POLARITY": "NEG",
+                "SUBTYPE": "DOT",
+                "SCHOOL": "GLOBAL",
+                "VALUE": 70,
+                "QUANTITY": 3
+            },
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 3,
+                "VALUE_TYPE": "PERCENT_MAX_HEALTH",
+                "VALUE_PER_TURN": 5,
+                "CONDITION": {
+                    "EFFECT": "WARD",
+                    "POLARITY": "POS",
+                    "TARGET": "SELF"
+                }
+            }
+        ]
+    },
+
+    {
+        "SPELL": "ATTENUATE",
+        "SCHOOL": "STAR",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["AURA"],
+        "DESCRIPTION":
+            "APPLIES A +20% INCOMING DAMAGE AURA FOR 4 ROUNDS",
+        "EFFECT": [
+            {
+                "TYPE": "AURA",
+                "DURATION": 4,
+                "TARGET": "ENEMY",
+                "ADJ": {
+                    "TYPE": "WARD",
+                    "SUBTYPE": "DAMAGE",
+                    "POLARITY": "NEG",
+                    "SCHOOL": "GLOBAL",
+                    "VALUE": 20
+                }
+            }
+        ]
+    },
+
+    {
+        "SPELL": "FURNACE",
+        "SCHOOL": "STAR",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["AURA"],
+        "DESCRIPTION":
+            "APPLIES A +25% OUTGOING FIRE DAMAGE, +5% ACCURACY, AND +10% INCOMING ICE DAMAGE AURA FOR 4 ROUNDS",
+        "EFFECT": [
+            {
+                "TYPE": "AURA",
+                "DURATION": 4,
+                "TARGET": "SELF",
+                "ADJ": [
+                    {
+                        "TYPE": "CHARM",
+                        "POLARITY": "POS",
+                        "SUBTYPE": "DAMAGE",
+                        "SCHOOL": "FIRE",
+                        "VALUE": 25
+                    },
+                    {
+                        "TYPE": "CHARM",
+                        "POLARITY": "POS",
+                        "SUBTYPE": "ACCURACY",
+                        "SCHOOL": "GLOBAL",
+                        "VALUE": 5
+                    },
+                    {
+                        "TYPE": "WARD",
+                        "POLARITY": "NEG",
+                        "SUBTYPE": "DAMAGE",
+                        "SCHOOL": "ICE",
+                        "VALUE": 10
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "SPELL": "STABILIZE",
+        "SCHOOL": "STAR",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["AURA"],
+        "DESCRIPTION":
+            "APPLIES A -25% INCOMING DAMAGE AURA ON SELF FOR 4 ROUNDS",
+        "EFFECTS": [
+            {
+                "TYPE": "AURA",
+                "DURATION": 4,
+                "TARGET": "SELF",
+                "ADJ": {
+                    "TYPE": "WARD",
+                    "POLARITY": "POS",
+                    "SUBTYPE": "DAMAGE",
+                    "SCHOOL": "GLOBAL",
+                    "VALUE": 25
+                }
+            }
+        ]
+    },
+
+    {
+        "SPELL": "STARFALL",
+        "SCHOOL": "STAR",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["AURA"],
+        "DESCRIPTION":
+            "APPLIES A -15% OUTGOING DAMAGE AURA ON TARGET FOR 4 ROUNDS",
+        "EFFECT": [
+            {
+                "TYPE": "AURA",
+                "DURATION": 4,
+                "TARGET": "ENEMY",
+                "ADJ": {
+                    "TYPE": "CHARM",
+                    "POLARITY": "NEG",
+                    "SUBTYPE": "DAMAGE",
+                    "SCHOOL": "GLOBAL",
+                    "VALUE": 15
+                }
+            }
+        ]
+    }
+]

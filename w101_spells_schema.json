@@ -1,0 +1,152 @@
+{
+    "title": "W101 SPELLS",
+    "type": "object",
+    "PROPERTIES": {
+        "SPELL": { "type": "string" },
+        "SCHOOL": { "type": "string" },
+        "PIPCOST": { "type": "integer" },
+        "SHADCOST": { "type": "integer" },
+        "ACCURACY": { "type": "integer" },
+        "TYPE": {
+            "type": "string",
+            "enum": ["CHARM", "DAMAGE", "HEAL", "MANIPULATION", "CHARM", "AURA", "WARD"]
+        },
+        "DESCRIPTION": { "type": "string" },
+        "EFFECT":
+            {
+                "TYPE": ["DAMAGE", "HEAL", "MANIPULATION", "CHARM", "AURA", "WARD"],
+                "allOf": [
+                    {
+                        "if": {
+                            "properties": {
+                                "TYPE": { "const": "DAMAGE" }
+                            }
+                        },
+                        "then": {
+                            "properties": {
+                                "DAMAGE_TYPE": {
+                                    "type": "string",
+                                    "enum": ["SINGLE", "RANGE", "DOT"]
+                                },
+                                "SCHOOL": {
+                                    "type": "string",
+                                    "enum": ["FIRE", "ICE", "STORM", "DEATH", "MYTH", "LIFE", "STAR", "SHADOW"]
+                                },
+                                "allOf": [
+                                    {
+                                        "if": {
+                                            "properties": {
+                                                "DAMAGE_TYPE": { "const": "SINGLE" }
+                                            }
+                                        },
+                                        "then": {
+                                            "properties": {
+                                                "VALUE": { "type": "integer" }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "if": {
+                                            "properties": {
+                                                "DAMAGE_TYPE": { "const": "RANGE" }
+                                            }
+                                        },
+                                        "then": {
+                                            "properties": {
+                                                "MIN_VALUE": { "type": "integer" },
+                                                "MAX_VALUE": { "type": "integer" }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "if": {
+                                            "properties": {
+                                                "DAMAGE_TYPE": { "const": "DOT" },
+                                                "DURATION": { "type": "integer" },
+                                                "STACKS": { "type": "integer" },
+                                                "VALUE_PER_STACK": { "type": "integer" }
+                                            }
+                                        },
+                                        "then": {
+                                            "properties": {
+                                                "DURATION": { "type": "integer" },
+                                                "VALUE_PER_TURN": { "type": "integer" }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "if": {
+                            "properties": {
+                                "TYPE": { "const": "HEAL" }
+                            }
+                        },
+                        "then": {
+                            "properties": {
+                                "HEAL_TYPE": ["SINGLE", "HOT"],
+                                "allOf": [
+                                    {
+                                        "if": {
+                                            "properties": {
+                                                "HEAL_TYPE": { "const": "SINGLE" }
+                                            }
+                                        },
+                                        "then": {
+                                            "properties": {
+                                                "VALUE": { "type": "integer" }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "if": {
+                                            "properties": {
+                                                "HEAL_TYPE": { "const": "HOT" }
+                                            }
+                                        },
+                                        "then": {
+                                            "properties": {
+                                                "DURATION": { "type": "integer" },
+                                                "VALUE_PER_TURN": { "type": "integer" }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "if": {
+                            "properties": {
+                                "TYPE": { "const": "CHARM" }
+                            }
+                        },
+                        "then": {
+                            "properties": {
+                                "CHARM_TYPE": ["POSITIVE", "NEGATIVE"],
+                                "TARGET": ["SELF", "ENEMY"],
+                                "VALUE": { "type": "integer" }
+                            }
+                        }
+                    },
+                    {
+                        "if": {
+                            "properties": {
+                                "TYPE": { "const": "AURA" }
+                            }
+                        },
+                        "then": {
+                            "properties": {
+                                "TARGET": ["SELF", "ENEMY"],
+                                "DURATION": { "type": "integer" },
+                                "VALUE": { "type": "integer" }
+                            }
+                        }
+                    }
+                ]
+            }
+    },
+    "required": ["SPELL", "SCHOOL", "PIPCOST", "ACCURACY", "TYPE", "DESCRIPTION", "EFFECT"]
+}

@@ -1,0 +1,740 @@
+[
+    {
+        "ROUND": 0,
+        "CASTER": "PLAYER1",
+        "SPELL": "DARK WEAVER",
+        "TARGET": "PLAYER2",
+        "CRIT": "TRUE",
+        "MODIFIERS": [
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "NEG",
+                "SCHOOL": "ICE",
+                "VALUE": 30
+            }
+        ],
+        "PLAYER1_HEALTH1": 12887,
+        "PLAYER2_HEALTH1": 9479,
+        "PLAYER1_HEALTH2": 12887,
+        "PLAYER2_HEALTH2": 7158,
+        "P1_SHAD": 1,
+        "P2_SHAD": 2,
+        "PLAYER1_PIPS": {
+            "DEATH": 1,
+            "LIFE": 1
+        },
+        "PLAYER2_PIPS": {
+            "FIRE": 1,
+            "MYTH": 1,
+            "STORM": 1,
+            "RP": 2
+        },
+        "PLAYER1_EFFECTS1": [
+            {
+                "TYPE": "AURA",
+                "ROUNDS_LEFT": 2,
+                "ADJ": [
+                    {
+                       "TYPE": "WARD",
+                        "POLARITY": "POS",
+                        "SUBTYPE": "DAMAGE",
+                        "SCHOOL": "GLOBAL",
+                        "VALUE": 25 
+                    }
+                ]
+            },
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "NEG",
+                "SCHOOL": "FIRE",
+                "VALUE": 65
+            }
+        ],
+        "PLAYER2_EFFECTS1": [
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "NEG",
+                "SCHOOL": ["FIRE", "ICE", "STORM"],
+                "VALUE": 30
+            }
+        ],
+        "PLAYER1_EFFECTS2": [
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "POS",
+                "SCHOOL": "FIRE",
+                "QUANTITY": 3,
+                "VALUE": 80
+            },
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 3,
+                "VALUE_PER_TURN": 5,
+                "TURNS_LEFT": 3,
+                "ACCUMULATED": 5,
+                "VALUE_TYPE": "PERCENT_MAX_HEALTH",
+                "CONDITION": {
+                    "EFFECT": "NEGATIVE WARD",
+                    "TARGET": "PLAYER2"
+                }
+            }
+        ],
+        "PLAYER2_EFFECTS2": [
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "NEG",
+                "SCHOOL": ["FIRE", "STORM"],
+                "VALUE": 30
+            }
+        ]
+    },
+
+    {
+        "ROUND": 1,
+        "CASTER": "PLAYER2",
+        "SPELL": "DARK FIEND",
+        "TARGET": "PLAYER1",
+        "CRIT": "TRUE",
+        "MODIFIERS": [
+            {
+                "TYPE": "AURA",
+                "ROUNDS_LEFT": 1,
+                "ADJ": {
+                    "TYPE": "WARD",
+                    "POLARITY": "POS",
+                    "VALUE": 25
+                }
+            }
+        ],
+        "PLAYER1_HEALTH1": 12887,
+        "PLAYER2_HEALTH1": 7158,
+        "PLAYER1_HEALTH2": 12879,
+        "PLAYER2_HEALTH2": 7158,
+        "P1_SHAD": 1,
+        "P2_SHAD": 2,
+        "PLAYER1_PIPS": {
+            "LIFE": 2,
+            "RP": 1
+        },
+        "PLAYER2_PIPS": {
+            "FIRE": 1,
+            "MYTH": 1,
+            "STORM": 1,
+            "RP": 2
+        },
+        "PLAYER1_EFFECTS1": [
+            {
+                "TYPE": "AURA",
+                "ROUNDS_LEFT": 1,
+                "ADJ": [
+                    {
+                       "TYPE": "WARD",
+                        "POLARITY": "POS",
+                        "SUBTYPE": "DAMAGE",
+                        "SCHOOL": "GLOBAL",
+                        "VALUE": 25 
+                    }
+                ]
+            },
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "NEG",
+                "SCHOOL": "FIRE",
+                "VALUE": 65
+            },
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "POS",
+                "SCHOOL": "FIRE",
+                "QUANTITY": 3,
+                "VALUE": 80
+            },
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 3,
+                "VALUE_PER_TURN": 5,
+                "TURNS_LEFT": 3,
+                "ACCUMULATED": 5,
+                "VALUE_TYPE": "PERCENT_MAX_HEALTH",
+                "CONDITION": {
+                    "TYPE": "WARD",
+                    "POLARITY": "NEG",
+                    "TARGET": "PLAYER2"
+                }
+            }
+        ],
+        "PLAYER2_EFFECTS1": [
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "NEG",
+                "SCHOOL": ["FIRE", "ICE", "STORM"],
+                "VALUE": 30
+            }
+        ],
+        "PLAYER1_EFFECTS2": [
+            {
+                "TYPE": "AURA",
+                "ROUNDS_LEFT": 1,
+                "ADJ": [
+                    {
+                       "TYPE": "WARD",
+                        "POLARITY": "POS",
+                        "SUBTYPE": "DAMAGE",
+                        "SCHOOL": "GLOBAL",
+                        "VALUE": 25 
+                    }
+                ]
+            },
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "NEG",
+                "SCHOOL": "FIRE",
+                "VALUE": 65
+            },
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "POS",
+                "SCHOOL": "FIRE",
+                "QUANTITY": 3,
+                "VALUE": 80
+            },
+            {
+                "TYPE": "WARD",
+                "POLARITY": "NEG",
+                "SUBTYPE": "DOT",
+                "SCHOOL": "GLOBAL",
+                "VALUE": 70,
+                "QUANTITY": 3
+            },
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 3,
+                "VALUE_PER_TURN": 5,
+                "TURNS_LEFT": 3,
+                "ACCUMULATED": 5,
+                "VALUE_TYPE": "PERCENT_MAX_HEALTH",
+                "CONDITION": {
+                    "TYPE": "WARD",
+                    "POLARITY": "NEG",
+                    "TARGET": "PLAYER2"
+                }
+            }
+        ],
+        "PLAYER2_EFFECTS2": [
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "NEG",
+                "SCHOOL": ["FIRE", "STORM"],
+                "VALUE": 30
+            },
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 3,
+                "VALUE_PER_TURN": 5,
+                "TURNS_LEFT": 3,
+                "ACCUMULATED": 5,
+                "VALUE_TYPE": "PERCENT_MAX_HEALTH",
+                "CONDITION": {
+                    "EFFECT": "WARD",
+                    "POLARITY": "POS",
+                    "TARGET": "PLAYER1"
+                }
+            }
+        ]
+    },
+    {
+        "ROUND": 2,
+        "CASTER": "PLAYER1",
+        "SPELL": "STABILIZE",
+        "TARGET": "PLAYER2",
+        "PLAYER1_HEALTH1": 12879,
+        "PLAYER2_HEALTH1": 7158,
+        "PLAYER1_HEALTH2": 12879,
+        "PLAYER2_HEALTH2": 7158,
+        "P1_SHAD": 0,
+        "P2_SHAD": 1,
+        "PLAYER1_PIPS": {
+            "LIFE": 2,
+            "RP": 1
+        },
+        "PLAYER2_PIPS": {
+            "FIRE": 2,
+            "MYTH": 1,
+            "STORM": 1,
+            "RP": 2
+        },
+        "PLAYER1_EFFECTS1": [
+            {
+                "TYPE": "AURA",
+                "ROUNDS_LEFT": 1,
+                "ADJ": [
+                    {
+                       "TYPE": "WARD",
+                        "POLARITY": "POS",
+                        "SUBTYPE": "DAMAGE",
+                        "SCHOOL": "GLOBAL",
+                        "VALUE": 25 
+                    }
+                ]
+            },
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "NEG",
+                "SCHOOL": "FIRE",
+                "VALUE": 65
+            },
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DOT",
+                "POLARITY": "NEG",
+                "SCHOOL": "GLOBAL",
+                "VALUE": 70
+            },
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "POS",
+                "SCHOOL": "FIRE",
+                "QUANTITY": 3,
+                "VALUE": 80
+            },
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 3,
+                "VALUE_PER_TURN": 5,
+                "TURNS_LEFT": 3,
+                "ACCUMULATED": 0,
+                "VALUE_TYPE": "PERCENT_MAX_HEALTH",
+                "CONDITION": {
+                    "TYPE": "WARD",
+                    "POLARITY": "NEG",
+                    "TARGET": "PLAYER2"
+                }
+            }
+        ],
+        "PLAYER2_EFFECTS1": [
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "NEG",
+                "SCHOOL": "FIRE",
+                "VALUE": 30
+            },
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 3,
+                "VALUE_PER_TURN": 5,
+                "TURNS_LEFT": 3,
+                "ACCUMULATED": 5,
+                "VALUE_TYPE": "PERCENT_MAX_HEALTH",
+                "CONDITION": {
+                    "EFFECT": "WARD",
+                    "POLARITY": "POS",
+                    "TARGET": "PLAYER1"
+                }
+            }
+        ],
+        "PLAYER1_EFFECTS2": [
+            {
+                "TYPE": "AURA",
+                "ROUNDS_LEFT": 4,
+                "ADJ": [
+                    {
+                       "TYPE": "WARD",
+                        "POLARITY": "POS",
+                        "SCHOOL": "GLOBAL",
+                        "VALUE": 25 
+                    }
+                ]
+            },
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "NEG",
+                "SCHOOL": "FIRE",
+                "VALUE": 65
+            },
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "POS",
+                "SCHOOL": "FIRE",
+                "QUANTITY": 3,
+                "VALUE": 80
+            },
+            {
+                "TYPE": "WARD",
+                "POLARITY": "NEG",
+                "SUBTYPE": "DOT",
+                "SCHOOL": "GLOBAL",
+                "VALUE": 70,
+                "QUANTITY": 3
+            },
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 3,
+                "VALUE_PER_TURN": 5,
+                "TURNS_LEFT": 2,
+                "ACCUMULATED": 0,
+                "VALUE_TYPE": "PERCENT_MAX_HEALTH",
+                "CONDITION": {
+                    "TYPE": "WARD",
+                    "POLARITY": "NEG",
+                    "TARGET": "PLAYER2"
+                }
+            }
+        ],
+        "PLAYER2_EFFECTS2": [
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "NEG",
+                "SCHOOL": "FIRE",
+                "VALUE": 30
+            },
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 3,
+                "VALUE_PER_TURN": 5,
+                "TURNS_LEFT": 3,
+                "ACCUMULATED": 5,
+                "VALUE_TYPE": "PERCENT_MAX_HEALTH",
+                "CONDITION": {
+                    "EFFECT": "WARD",
+                    "POLARITY": "POS",
+                    "TARGET": "PLAYER1"
+                }
+            }
+        ]
+    },
+    {
+        "ROUND": 3,
+        "CASTER": "PLAYER2",
+        "SPELL": "NONE",
+        "PLAYER1_HEALTH1": 12879,
+        "PLAYER2_HEALTH1": 7158,
+        "PLAYER1_HEALTH2": 12879,
+        "PLAYER2_HEALTH2": 7158,
+        "P1_SHAD": 0,
+        "P2_SHAD": 1,
+        "PLAYER1_PIPS": {
+            "LIFE": 3,
+            "RP": 1
+        },
+        "PLAYER2_PIPS": {
+            "FIRE": 2,
+            "MYTH": 1,
+            "STORM": 1,
+            "RP": 2
+        },
+        "PLAYER1_EFFECTS1": [
+            {
+                "TYPE": "AURA",
+                "ROUNDS_LEFT": 4,
+                "ADJ": [
+                    {
+                       "TYPE": "WARD",
+                        "POLARITY": "POS",
+                        "SUBTYPE": "DAMAGE",
+                        "SCHOOL": "GLOBAL",
+                        "VALUE": 25 
+                    }
+                ]
+            },
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "NEG",
+                "SCHOOL": "FIRE",
+                "VALUE": 65
+            },
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DOT",
+                "POLARITY": "NEG",
+                "SCHOOL": "GLOBAL",
+                "VALUE": 70
+            },
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "POS",
+                "SCHOOL": "FIRE",
+                "QUANTITY": 3,
+                "VALUE": 80
+            },
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 2,
+                "VALUE_PER_TURN": 5,
+                "TURNS_LEFT": 3,
+                "ACCUMULATED": 0,
+                "VALUE_TYPE": "PERCENT_MAX_HEALTH",
+                "CONDITION": {
+                    "TYPE": "WARD",
+                    "POLARITY": "NEG",
+                    "TARGET": "PLAYER2"
+                }
+            }
+        ],
+        "PLAYER2_EFFECTS1": [
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 3,
+                "VALUE_PER_TURN": 5,
+                "TURNS_LEFT": 3,
+                "ACCUMULATED": 0,
+                "VALUE_TYPE": "PERCENT_MAX_HEALTH",
+                "CONDITION": {
+                    "EFFECT": "WARD",
+                    "POLARITY": "POS",
+                    "TARGET": "PLAYER1"
+                }
+            }
+        ],
+        "PLAYER1_EFFECTS2": [
+            {
+                "TYPE": "AURA",
+                "ROUNDS_LEFT": 4,
+                "ADJ": [
+                    {
+                       "TYPE": "WARD",
+                        "POLARITY": "POS",
+                        "SCHOOL": "GLOBAL",
+                        "VALUE": 25 
+                    }
+                ]
+            },
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "NEG",
+                "SCHOOL": "FIRE",
+                "VALUE": 65
+            },
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "POS",
+                "SCHOOL": "FIRE",
+                "QUANTITY": 2,
+                "VALUE": 80
+            },
+            {
+                "TYPE": "WARD",
+                "POLARITY": "NEG",
+                "SUBTYPE": "DOT",
+                "SCHOOL": "GLOBAL",
+                "VALUE": 70,
+                "QUANTITY": 3
+            },
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 3,
+                "VALUE_PER_TURN": 5,
+                "TURNS_LEFT": 2,
+                "ACCUMULATED": 0,
+                "VALUE_TYPE": "PERCENT_MAX_HEALTH",
+                "CONDITION": {
+                    "TYPE": "WARD",
+                    "POLARITY": "NEG",
+                    "TARGET": "PLAYER2"
+                }
+            }
+        ],
+        "PLAYER2_EFFECTS2": [
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "NEG",
+                "SCHOOL": "FIRE",
+                "VALUE": 30
+            },
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 3,
+                "VALUE_PER_TURN": 5,
+                "TURNS_LEFT": 3,
+                "ACCUMULATED": 0,
+                "VALUE_TYPE": "PERCENT_MAX_HEALTH",
+                "CONDITION": {
+                    "EFFECT": "WARD",
+                    "POLARITY": "POS",
+                    "TARGET": "PLAYER1"
+                }
+            }
+        ]
+    },
+    {
+        "ROUND": 4,
+        "CASTER": "PLAYER1",
+        "SPELL": "ICE TRAP",
+        "TARGET": "PLAYER2",
+        "PLAYER1_HEALTH1": 12879,
+        "PLAYER2_HEALTH1": 7158,
+        "PLAYER1_HEALTH2": 12879,
+        "PLAYER2_HEALTH2": 7158,
+        "P1_SHAD": 0,
+        "P2_SHAD": 1,
+        "PLAYER1_PIPS": {
+            "LIFE": 3,
+            "RP": 1
+        },
+        "PLAYER2_PIPS": {
+            "FIRE": 2,
+            "MYTH": 1,
+            "STORM": 1,
+            "ICE": 1,
+            "RP": 2
+        },
+        "PLAYER1_EFFECTS1": [
+            {
+                "TYPE": "AURA",
+                "ROUNDS_LEFT": 4,
+                "ADJ": [
+                    {
+                       "TYPE": "WARD",
+                        "POLARITY": "POS",
+                        "SUBTYPE": "DAMAGE",
+                        "SCHOOL": "GLOBAL",
+                        "VALUE": 25 
+                    }
+                ]
+            },
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "NEG",
+                "SCHOOL": "FIRE",
+                "VALUE": 65
+            },
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DOT",
+                "POLARITY": "NEG",
+                "SCHOOL": "GLOBAL",
+                "VALUE": 70
+            },
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "POS",
+                "SCHOOL": "FIRE",
+                "QUANTITY": 3,
+                "VALUE": 80
+            },
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 2,
+                "VALUE_PER_TURN": 5,
+                "TURNS_LEFT": 3,
+                "ACCUMULATED": 0,
+                "VALUE_TYPE": "PERCENT_MAX_HEALTH",
+                "CONDITION": {
+                    "TYPE": "WARD",
+                    "POLARITY": "NEG",
+                    "TARGET": "PLAYER2"
+                }
+            }
+        ],
+        "PLAYER2_EFFECTS1": [
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 2,
+                "VALUE_PER_TURN": 5,
+                "TURNS_LEFT": 3,
+                "ACCUMULATED": 0,
+                "VALUE_TYPE": "PERCENT_MAX_HEALTH",
+                "CONDITION": {
+                    "EFFECT": "WARD",
+                    "POLARITY": "POS",
+                    "TARGET": "PLAYER1"
+                }
+            }
+        ],
+        "PLAYER1_EFFECTS2": [
+            {
+                "TYPE": "AURA",
+                "ROUNDS_LEFT": 4,
+                "ADJ": [
+                    {
+                       "TYPE": "WARD",
+                        "POLARITY": "POS",
+                        "SCHOOL": "GLOBAL",
+                        "VALUE": 25 
+                    }
+                ]
+            },
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "NEG",
+                "SCHOOL": "FIRE",
+                "VALUE": 65
+            },
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "POS",
+                "SCHOOL": "FIRE",
+                "QUANTITY": 2,
+                "VALUE": 80
+            },
+            {
+                "TYPE": "WARD",
+                "POLARITY": "NEG",
+                "SUBTYPE": "DOT",
+                "SCHOOL": "GLOBAL",
+                "VALUE": 70,
+                "QUANTITY": 3
+            },
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 2,
+                "VALUE_PER_TURN": 5,
+                "TURNS_LEFT": 2,
+                "ACCUMULATED": 0,
+                "VALUE_TYPE": "PERCENT_MAX_HEALTH",
+                "CONDITION": {
+                    "TYPE": "WARD",
+                    "POLARITY": "NEG",
+                    "TARGET": "PLAYER2"
+                }
+            }
+        ],
+        "PLAYER2_EFFECTS2": [
+            {
+                "TYPE": "WARD",
+                "SUBTYPE": "DAMAGE",
+                "POLARITY": "NEG",
+                "SCHOOL": "ICE",
+                "VALUE": 40
+            },
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 2,
+                "VALUE_PER_TURN": 5,
+                "TURNS_LEFT": 3,
+                "ACCUMULATED": 0,
+                "VALUE_TYPE": "PERCENT_MAX_HEALTH",
+                "CONDITION": {
+                    "EFFECT": "WARD",
+                    "POLARITY": "POS",
+                    "TARGET": "PLAYER1"
+                }
+            }
+        ]
+    }
+]

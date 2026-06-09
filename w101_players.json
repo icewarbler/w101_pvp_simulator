@@ -1,0 +1,372 @@
+[
+    {
+        "NAME": "JASON NIGHT",
+        "LEVEL": 180,
+        "SCHOOL": "FIRE",
+        "SECONDARYSCHOOL": "STORM",
+        "MAX_HEALTH": 12072,
+        "OUTGOING_DAMAGE": {
+            "FIRE": 211,
+            "ICE": 59,
+            "STORM": 134,
+            "MYTH": 59,
+            "LIFE": 59,
+            "DEATH": 59,
+            "BALANCE": 59,
+            "SHADOW": 59
+        },
+        "INCOMING_RESIST": {
+            "FIRE": 63,
+            "ICE": 63,
+            "STORM": 63,
+            "MYTH": 63,
+            "LIFE": 63,
+            "DEATH": 63,
+            "BALANCE": 63,
+            "SHADOW": 63
+        },
+        "ACCURACY": {
+            "FIRE": 29,
+            "ICE": 12,
+            "STORM": 28,
+            "MYTH": 7,
+            "LIFE": 7,
+            "DEATH": 7,
+            "BALANCE": 7,
+            "SHADOW": 7
+        },
+        "PIERCE": {
+            "FIRE": 71,
+            "ICE": 10,
+            "STORM": 70,
+            "MYTH": 10,
+            "LIFE": 10,
+            "DEATH": 10,
+            "BALANCE": 10,
+            "SHADOW": 10
+        },
+        "PIP_CONVERT": {
+            "FIRE": 790,
+            "ICE": 131,
+            "STORM": 131,
+            "MYTH": 131,
+            "LIFE": 131,
+            "DEATH": 131,
+            "BALANCE": 131,
+            "SHADOW": 131
+        },
+        "SHAD_RATING": 150
+    },
+    {
+        "NAME": "JOHN WEAVE",
+        "LEVEL": 180,
+        "SCHOOL": "BALANCE",
+        "SECONDARYSCHOOL": "FIRE",
+        "MAX_HEALTH": 14701,
+        "OUTGOING_DAMAGE": {
+            "FIRE": 156,
+            "ICE": 54,
+            "STORM": 54,
+            "MYTH": 54,
+            "LIFE": 54,
+            "DEATH": 54,
+            "BALANCE": 202,
+            "SHADOW": 54
+        },
+        "INCOMING_RESIST": {
+            "FIRE": 74,
+            "ICE": 74,
+            "STORM": 74,
+            "MYTH": 85,
+            "LIFE": 74,
+            "DEATH": 74,
+            "BALANCE": 74,
+            "SHADOW": 74
+        },
+        "ACCURACY": {
+            "FIRE": 28,
+            "ICE": 0,
+            "STORM": 0,
+            "MYTH": 0,
+            "LIFE": 0,
+            "DEATH": 0,
+            "BALANCE": 21,
+            "SHADOW": 0
+        },
+        "CRIT": {
+            "FIRE": 78,
+            "ICE": 78,
+            "STORM": 78,
+            "MYTH": 78,
+            "LIFE": 78,
+            "DEATH": 78,
+            "BALANCE": 646,
+            "SHADOW": 78
+        },
+        "BLOCK": {
+            "FIRE": 781,
+            "ICE": 781,
+            "STORM": 781,
+            "MYTH": 781,
+            "LIFE": 781,
+            "DEATH": 781,
+            "BALANCE": 781,
+            "SHADOW": 781
+        },
+        "PIERCE": {
+            "FIRE": 54,
+            "ICE": 0,
+            "STORM": 0,
+            "MYTH": 0,
+            "LIFE": 0,
+            "DEATH": 0,
+            "BALANCE": 56,
+            "SHADOW": 0
+        },
+        "PIP_CONVERT": {
+            "FIRE": 98,
+            "ICE": 98,
+            "STORM": 98,
+            "MYTH": 98,
+            "LIFE": 98,
+            "DEATH": 98,
+            "BALANCE": 101
+        },
+        "SHAD_RATING": 108
+    },
+    {
+        "NAME": "EZRA POLARKNIGHT",
+        "LEVEL": 180,
+        "SCHOOL": "ICE",
+        "SECONDARYSCHOOL": "DEATH",
+        "MAX_HEALTH": 16670,
+        "OUTGOING_DAMAGE": {
+            "FIRE": 47,
+            "ICE": 179,
+            "STORM": 47,
+            "MYTH": 47,
+            "LIFE": 47,
+            "DEATH": 152,
+            "BALANCE": 47,
+            "SHADOW": 47
+        },
+        "INCOMING_RESIST": {
+            "FIRE": 91,
+            "ICE": 91,
+            "STORM": 91,
+            "MYTH": 91,
+            "LIFE": 91,
+            "DEATH": 102,
+            "BALANCE": 91,
+            "SHADOW": 91
+        },
+        "ACCURACY": {
+            "FIRE": 7,
+            "ICE": 28,
+            "STORM": 7,
+            "MYTH": 7,
+            "LIFE": 7,
+            "DEATH": 17,
+            "BALANCE": 7,
+            "SHADOW": 7
+        },
+        "CRIT": {
+            "FIRE": 65,
+            "ICE": 300,
+            "STORM": 65,
+            "MYTH": 65,
+            "LIFE": 65,
+            "DEATH": 245,
+            "BALANCE": 65,
+            "SHADOW": 65
+        },
+        "BLOCK": {
+            "FIRE": 104,
+            "ICE": 104,
+            "STORM": 104,
+            "MYTH": 104,
+            "LIFE": 104,
+            "DEATH": 104,
+            "BALANCE": 104,
+            "SHADOW": 104
+        },
+        "PIERCE": {
+            "FIRE": 5,
+            "ICE": 44,
+            "STORM": 5,
+            "MYTH": 5,
+            "LIFE": 5,
+            "DEATH": 32,
+            "BALANCE": 5,
+            "SHADOW": 5
+        },
+        "PIP_CONVERT": {
+            "FIRE": 105,
+            "ICE": 103,
+            "STORM": 105,
+            "MYTH": 105,
+            "LIFE": 105,
+            "DEATH": 105,
+            "BALANCE": 105
+        },
+        "POWERPIPS": 99,
+        "SHAD_RATING": 123
+    },
+    {
+        "NAME": "SUMI",
+        "LEVEL": 180,
+        "SCHOOL": "BALANCE",
+        "SECONDARYSCHOOL": "FIRE",
+        "MAX_HEALTH": 14610,
+        "OUTGOING_DAMAGE": {
+            "FIRE": 152,
+            "ICE": 52,
+            "STORM": 52,
+            "MYTH": 52,
+            "LIFE": 52,
+            "DEATH": 52,
+            "BALANCE": 196,
+            "SHADOW": 52
+        },
+        "INCOMING_RESIST": {
+            "FIRE": 76,
+            "ICE": 76,
+            "STORM": 76,
+            "MYTH": 76,
+            "LIFE": 76,
+            "DEATH": 76,
+            "BALANCE": 76,
+            "SHADOW": 76
+        },
+        "ACCURACY": {
+            "FIRE": 28,
+            "ICE": 0,
+            "STORM": 0,
+            "MYTH": 0,
+            "LIFE": 0,
+            "DEATH": 0,
+            "BALANCE": 19,
+            "SHADOW": 0
+        },
+        "CRIT": {
+            "FIRE": 78,
+            "ICE": 78,
+            "STORM": 78,
+            "MYTH": 78,
+            "LIFE": 78,
+            "DEATH": 78,
+            "BALANCE": 629,
+            "SHADOW": 78
+        },
+        "BLOCK": {
+            "FIRE": 800,
+            "ICE": 800,
+            "STORM": 800,
+            "MYTH": 800,
+            "LIFE": 800,
+            "DEATH": 800,
+            "BALANCE": 800,
+            "SHADOW": 800
+        },
+        "HEAL_IN": 0,
+        "HEAL_OUT": 41, 
+        "PIERCE": {
+            "FIRE": 58,
+            "ICE": 5,
+            "STORM": 5,
+            "MYTH": 5,
+            "LIFE": 5,
+            "DEATH": 5,
+            "BALANCE": 59,
+            "SHADOW": 5
+        },
+        "PIP_CONVERT": {
+            "FIRE": 98,
+            "ICE": 98,
+            "STORM": 98,
+            "MYTH": 98,
+            "LIFE": 98,
+            "DEATH": 98,
+            "BALANCE": 101
+        },
+        "SHAD_RATING": 108
+    },
+    {
+        "NAME": "OMARI SHADOW",
+        "LEVEL": 180,
+        "SCHOOL": "STORM",
+        "SECONDARYSCHOOL": "MYTH",
+        "MAX_HEALTH": 11832,
+        "OUTGOING_DAMAGE": {
+            "FIRE": 53,
+            "ICE": 53,
+            "STORM": 210,
+            "MYTH": 264,
+            "LIFE": 53,
+            "DEATH": 53,
+            "BALANCE": 53,
+            "SHADOW": 53
+        },
+        "INCOMING_RESIST": {
+            "FIRE": 62,
+            "ICE": 51,
+            "STORM": 51,
+            "MYTH": 51,
+            "LIFE": 51,
+            "DEATH": 51,
+            "BALANCE": 51,
+            "SHADOW": 51
+        },
+        "ACCURACY": {
+            "FIRE": 0,
+            "ICE": 0,
+            "STORM": 33,
+            "MYTH": 18,
+            "LIFE": 0,
+            "DEATH": 0,
+            "BALANCE": 0,
+            "SHADOW": 0
+        },
+        "CRIT": {
+            "FIRE": 0,
+            "ICE": 0,
+            "STORM": 822,
+            "MYTH": 0,
+            "LIFE": 0,
+            "DEATH": 0,
+            "BALANCE": 0,
+            "SHADOW": 0
+        },
+        "BLOCK": {
+            "FIRE": 598,
+            "ICE": 598,
+            "STORM": 598,
+            "MYTH": 598,
+            "LIFE": 598,
+            "DEATH": 598,
+            "BALANCE": 598,
+            "SHADOW": 598
+        },
+        "PIERCE": {
+            "FIRE": 10,
+            "ICE": 10,
+            "STORM": 58,
+            "MYTH": 54,
+            "LIFE": 10,
+            "DEATH": 10,
+            "BALANCE": 10,
+            "SHADOW": 10
+        },
+        "PIP_CONVERT": {
+            "FIRE": 105,
+            "ICE": 105,
+            "STORM": 644,
+            "MYTH": 105,
+            "LIFE": 105,
+            "DEATH": 105,
+            "BALANCE": 105
+        },
+        "POWERPIPS": 101,
+        "SHAD_RATING": 153
+    }
+]
