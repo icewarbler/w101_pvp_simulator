@@ -4,12 +4,12 @@
         "SCHOOL": "BALANCE",
         "PIPCOST": 0,
         "ACCURACY": 100,
-        "TYPE": ["MANIPULATION"],
+        "TYPE": ["STEAL_PIP", "MANIPULATION"],
         "DESCRIPTION":
             "STEALS A PIP FROM TARGET AND GIVES IT TO CASTER",
         "EFFECTS": [
             {
-                "TYPE": "MANIPULATION",
+                "TYPE": "STEAL_PIP",
                 "CAUSE": {
                     "SUBTYPE": "STEAL",
                     "TARGET": "PIP"
@@ -40,11 +40,31 @@
     },
 
     {
+        "SPELL": "PUTREFACTION",
+        "SCHOOL": "DEATH",
+        "PIPCOST:": 2,
+        "TYPE": ["GAMBIT", "MANIPULATION"],
+        "EFFECTS": [
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": {
+                        "SUBTYPE": "CLEAR",
+                        "TYPE": "POS_CHARM"
+                },
+                "EFFECT": {
+                    "SUBTYPE": "NEG_CHARM",
+                    "VALUE": 20
+                }
+            }
+        ]
+    },
+
+    {
         "SPELL": "A-BAAHH-CALYPSE",
         "SCHOOL": "FIRE",
         "PIPCOST": 3,
         "SCHOOLPIPS": "FIRE",
-        "TYPE": ["DAMAGE", "MANIPULATION"],
+        "TYPE": ["DAMAGE", "GAMBIT"],
         "ACCURACY": 75,
         "DESCRIPTION":
             "DEALS 410 FIRE DAMAGE AND DETONATES TWO DOT EFFECTS ON TARGET TO DEAL 145% OF REMAINING DAMAGE",
@@ -55,6 +75,7 @@
                 "VALUE": 410
             },
             {
+                "TYPE": "GAMBIT",
                 "CAUSE": {
                     "SUBTYPE": "DETONATE",
                     "TARGET": "DOT"
@@ -62,6 +83,31 @@
                 "EFFECT": {
                     "SUBTYPE": "SINGLE_DAMAGE"
                 }
+            }
+        ]
+    },
+    
+    {
+         "SPELL": "BRIMSTONE REVENANT",
+        "SCHOOL": "FIRE",
+        "PIPCOST": 2,
+        "SCHOOLPIPS": "FIRE",
+        "TYPE": ["DAMAGE", "MANIPULATION"],
+        "ACCURACY": 75,
+        "DESCRIPTION":
+            "DEALS 395 FIRE DAMAGE AND PUTS 1 65% FIRE TRAP ON TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "SCHOOL": "FIRE",
+                "VALUE": 395
+            },
+            {
+                "TYPE": "WARD",
+                "POLARITY": "POSITIVE",
+                "TARGET": "TARGET",
+                "VALUE": 65,
+                "SCHOOL": "FIRE"
             }
         ]
     },
@@ -107,15 +153,15 @@
         "SCHOOL": "FIRE",
         "PIPCOST": 8,
         "ACCURACY": 75,
-        "TYPE": ["DAMAGE", "HOT", "MANIPULATION"],
+        "TYPE": ["DAMAGE", "HOT", "GAMBIT", "MANIPULATION"],
         "DESCRIPTION": 
             "REMOVES UP TO SEVEN POSITIVE WARDS FROM TARGET TO APPLY A HEALING OVER TIME THAT RESTORES 240 HEALTH OVER 5 ROUNDS ON CASTER PER WARD REMOVED, THEN DEALS 755 FIRE DAMAGE TO TARGET",
         "EFFECT": [
             {
-                "TYPE": "MANIPULATION",
+                "TYPE": "GAMBIT",
                 "CAUSE": {
                     "TYPE": "CLEAR",
-                    "TARGET": "POSITIVE_WARD",
+                    "TARGET": "POS_WARD",
                     "MAX": 7
                 },
                 "PER_EFFECT": {
@@ -159,10 +205,9 @@
             {
                 "TYPE": "BACKLASH",
                 "DURATION": 3,
-                "VALUE_TYPE": "PERCENT_MAX_HEALTH",
                 "VALUE_PER_TURN": 5,
                 "CONDITION": {
-                    "EFFECT": "NEGATIVE WARD",
+                    "EFFECT": "NEG_WARD",
                     "TARGET": "ENEMY"
                 }
             }
@@ -182,22 +227,23 @@
         "EFFECTS": [
             {
                 "TYPE": "SINGLE_DAMAGE",
+                "SCHOOL": "SHADOW",
                 "VALUE": 730
             },
             {
                 "TYPE": "WARD",
                 "POLARITY": "POSITIVE",
+                "TARGET": "ENEMY",
                 "AMOUNT": 3,
                 "VALUE": 80,
-                "SCHOOL": "TARGET"
+                "SCHOOL": "TARGET_SCHOOL"
             },
             {
                 "TYPE": "BACKLASH",
                 "DURATION": 3,
-                "VALUE_TYPE": "PERCENT_MAX_HEALTH",
                 "VALUE_PER_TURN": 5,
                 "CONDITION": {
-                    "EFFECT": "NEGATIVE WARD",
+                    "EFFECT": "NEG_WARD",
                     "TARGET": "ENEMY"
                 }
             }
@@ -215,8 +261,8 @@
         "EFFECTS": [
             {
                 "TYPE": "WARD",
-                "SUBTYPE": "DAMAGE",
                 "POLARITY": "NEG",
+                "SUBTYPE": "DAMAGE",
                 "TARGET": "ENEMY",
                 "VALUE": 25
             }
@@ -229,13 +275,14 @@
         "SCHOOL": "MYTH",
         "PIPCOST": 9,
         "ACCURACY": 80,
-        "TYPE": ["DAMAGE", "MANIPULATION"],
+        "TYPE": ["DAMAGE", "GAMBIT", "MANIPULATION"],
         "DESCRIPTION":
             "DEALS 835 MYTH DAMAGE TO TARGET, OR REMOVES FOUR HARMFUL WARDS TO DEAL 1490 MYTH DAMAGE TO TARGET",
         "EFFECTS": [
-            {
+            {   
+                "TYPE": "GAMBIT",
                 "CAUSE": {
-                    "TYPE": "NEGATIVE_WARD",
+                    "TYPE": "NEG_WARD",
                     "AMOUNT": 4
                 },
                 "EFFECT": {
@@ -269,8 +316,9 @@
             },
             {
                 "TYPE": "WARD",
-                "SUBTYPE": "DAMAGE",
                 "POLARITY": "NEG",
+                "TARGET": "ENEMY",
+                "SUBTYPE": "DAMAGE",
                 "SCHOOL": "GLOBAL",
                 "VALUE": 30,
                 "QUANTITY": 3
@@ -278,11 +326,9 @@
             {
                 "TYPE": "BACKLASH",
                 "DURATION": 3,
-                "VALUE_TYPE": "PERCENT_MAX_HEALTH",
                 "VALUE_PER_TURN": 5,
                 "CONDITION": {
-                    "EFFECT": "CHARM",
-                    "POLARITY": "POS",
+                    "EFFECT": "POS_CHARM",
                     "TARGET": "SELF"
                 }
             }
@@ -308,6 +354,7 @@
                 "TYPE": "WARD",
                 "POLARITY": "NEG",
                 "SUBTYPE": "DOT",
+                "TARGET": "ENEMY",
                 "SCHOOL": "GLOBAL",
                 "VALUE": 70,
                 "QUANTITY": 3
@@ -315,11 +362,9 @@
             {
                 "TYPE": "BACKLASH",
                 "DURATION": 3,
-                "VALUE_TYPE": "PERCENT_MAX_HEALTH",
                 "VALUE_PER_TURN": 5,
                 "CONDITION": {
-                    "EFFECT": "WARD",
-                    "POLARITY": "POS",
+                    "EFFECT": "POS_WARD",
                     "TARGET": "SELF"
                 }
             }
@@ -341,8 +386,8 @@
                 "TARGET": "ENEMY",
                 "ADJ": {
                     "TYPE": "WARD",
-                    "SUBTYPE": "DAMAGE",
                     "POLARITY": "NEG",
+                    "SUBTYPE": "DAMAGE",
                     "SCHOOL": "GLOBAL",
                     "VALUE": 20
                 }

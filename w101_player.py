@@ -17,20 +17,23 @@ class Player:
             name, 
             school,
             secondary_school, 
-            max_health, 
-            curr_health, 
-            pips
+            level,
+            max_health
         ):
         self.name = name
         self.school = school
         self.secondary_school = secondary_school
 
-        self.max_health = max_health
-        self.curr_health = curr_health
+        self.level = level
 
-        self.pips = pips
+        self.max_health = max_health
+
+        self.pips = []
 
         self.effects = []
+    
+    def add_effect(self, effect):
+        self.effects.append(effect)
         
 
     # def add_blade(self):
