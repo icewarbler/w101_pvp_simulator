@@ -50,41 +50,12 @@ class Match:
         else:
             return target
 
-# class Player:
-#     def __init__(
-#             self, 
-#             name, 
-#             school,
-#             secondary_school, 
-#             max_health, 
-#             curr_health, 
-#             pips
-#         ):
-#         self.name = name
-#         self.school = school
-#         self.secondary_school = secondary_school
+    def get_p1_effects(self):
+        return self.p1e
+    
+    def get_p2_effects(self):
+        return self.p2e
 
-#         self.max_health = max_health
-#         self.curr_health = curr_health
+    # def delete_effect(self, target):
+    #     if target == "p1":
 
-#         self.pips = pips
-
-#         self.effects = []
-
-        # if any(x in ["WARD", "MANIPULATION", "AURA"] for x in spell_type):
-        #     spell_effects = spell_data.get("EFFECTS")
-        #     print(spell_effects)
-        #     tommy = Effect(spell_type, spell_data)
-        #    # print(tommy)
-        #     effect_obj = tommy.get_effect_obj()
-        #     print(tommy.get_effect_obj())
-
-            #     blade = Effect(
-    #         effect_type = "CHARM",
-    #         value = getCurrentSpell().effects.charm.value
-
-    #     )
-
- 
-    # spelle = spell_lookup.get(spell_name)
-    # school = spelle.get("SCHOOL") if spelle else None

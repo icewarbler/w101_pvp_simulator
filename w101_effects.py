@@ -87,6 +87,9 @@ class Aura:
         self.duration = duration
         self.adj = adj
 
+    def dec_dur(self):
+        self.duration -= 1
+
 # decreases health
 class DOT:
     def __init__(
@@ -103,6 +106,9 @@ class DOT:
         self.stacks = stacks
         self.value = value
 
+    def dec_dur(self):
+        self.duration -= 1
+
 # increases health
 class HOT:
     def __init__(
@@ -116,6 +122,9 @@ class HOT:
         self.duration = duration
         self.stacks = stacks
         self.value = value
+
+    def dec_dur(self):
+        self.duration -= 1
 
 # #"TYPE": "BACKLASH",
 #                 "DURATION": 3,
@@ -142,3 +151,6 @@ class Backlash:
     def add_turn(self):
         self.curr_turn += 1
         self.accumulated += self.value_per_turn
+
+    def dec_dur(self):
+        self.duration -= 1

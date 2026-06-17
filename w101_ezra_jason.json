@@ -33,7 +33,7 @@
         "PLAYER1_EFFECTS1": [
             {
                 "TYPE": "AURA",
-                "ROUNDS_LEFT": 2,
+                "TURNS_LEFT": 2,
                 "ADJ": [
                     {
                        "TYPE": "WARD",
@@ -103,7 +103,7 @@
         "MODIFIERS": [
             {
                 "TYPE": "AURA",
-                "ROUNDS_LEFT": 1,
+                "TURNS_LEFT": 1,
                 "ADJ": {
                     "TYPE": "WARD",
                     "POLARITY": "POS",
@@ -130,7 +130,7 @@
         "PLAYER1_EFFECTS1": [
             {
                 "TYPE": "AURA",
-                "ROUNDS_LEFT": 1,
+                "TURNS_LEFT": 1,
                 "ADJ": [
                     {
                        "TYPE": "WARD",
@@ -182,7 +182,7 @@
         "PLAYER1_EFFECTS2": [
             {
                 "TYPE": "AURA",
-                "ROUNDS_LEFT": 1,
+                "TURNS_LEFT": 1,
                 "ADJ": [
                     {
                        "TYPE": "WARD",
@@ -277,7 +277,7 @@
         "PLAYER1_EFFECTS1": [
             {
                 "TYPE": "AURA",
-                "ROUNDS_LEFT": 1,
+                "TURNS_LEFT": 1,
                 "ADJ": [
                     {
                        "TYPE": "WARD",
@@ -349,7 +349,7 @@
         "PLAYER1_EFFECTS2": [
             {
                 "TYPE": "AURA",
-                "ROUNDS_LEFT": 4,
+                "TURNS_LEFT": 4,
                 "ADJ": [
                     {
                        "TYPE": "WARD",
@@ -442,7 +442,7 @@
         "PLAYER1_EFFECTS1": [
             {
                 "TYPE": "AURA",
-                "ROUNDS_LEFT": 4,
+                "TURNS_LEFT": 4,
                 "ADJ": [
                     {
                        "TYPE": "WARD",
@@ -507,7 +507,7 @@
         "PLAYER1_EFFECTS2": [
             {
                 "TYPE": "AURA",
-                "ROUNDS_LEFT": 4,
+                "TURNS_LEFT": 4,
                 "ADJ": [
                     {
                        "TYPE": "WARD",
@@ -602,7 +602,7 @@
         "PLAYER1_EFFECTS1": [
             {
                 "TYPE": "AURA",
-                "ROUNDS_LEFT": 4,
+                "TURNS_LEFT": 4,
                 "ADJ": [
                     {
                        "TYPE": "WARD",
@@ -667,7 +667,7 @@
         "PLAYER1_EFFECTS2": [
             {
                 "TYPE": "AURA",
-                "ROUNDS_LEFT": 4,
+                "TURNS_LEFT": 4,
                 "ADJ": [
                     {
                        "TYPE": "WARD",
