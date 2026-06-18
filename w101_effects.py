@@ -1,61 +1,62 @@
+# class Effect:
+#     def __init__(
+#             self,
+#             effect_type,
+#             effect_obj
+#     ):
+#         self.effect_type = effect_type
+#         self.effect_obj = effect_obj
+
+#     def get_effect_obj(self):
+#         return self.effect_obj
+
 class Effect:
-    def __init__(
-            self,
-            effect_type,
-            effect_obj
-    ):
-        self.effect_type = effect_type
-        self.effect_obj = effect_obj
-
-
-    def get_effect_obj(self):
-        return self.effect_obj
+    def end_round(self):
+        pass
 
 class Damage:
     def __init__(
             self,
-            target,
             school,
             value
     ):
-        self.target = target
         self.school = school
         self.value = value
 
 class Heal:
     def __init__(
             self,
-            target,
             value
     ):
-        self.target = target
         self.value = value
 
-class Charm:
+class Charm(Effect):
     def __init__(
             self,
             polarity,
             school,
-            target,
             value
     ):
         self.polarity = polarity
         self.school = school
-        self.target = target
         self.value = value
+    
+    def end_round(self):
+        pass
 
-class Ward:
+class Ward(Effect):
     def __init__(
             self,
             polarity,
             school,
-            target,
             value
     ):
         self.polarity = polarity
         self.school = school
-        self.target = target
         self.value = value
+
+    def end_round(self):
+        pass
 
 #Your gear (% then flat)-> 
 # your aura -> 
@@ -75,55 +76,49 @@ class Ward:
 # de-aura:
 # increase incoming damage (decrease enemy res) - neg ward
 # decrease outgoing damage (decrease enemy damage) - neg charm
-class Aura:
+class Aura(Effect):
     def __init__(
             self,
-            target,
             duration,
             adj
             # the effects are just charms/wards
     ):
-        self.target = target
         self.duration = duration
         self.adj = adj
 
-    def dec_dur(self):
+    def end_round(self):
         self.duration -= 1
 
 # decreases health
-class DOT:
+class DOT(Effect):
     def __init__(
             self,
-            target,
             school,
             duration,
             stacks,
             value
     ):
-        self.target = target
         self.school = school
         self.duration = duration
         self.stacks = stacks
         self.value = value
 
-    def dec_dur(self):
+    def end_round(self):
         self.duration -= 1
 
 # increases health
-class HOT:
+class HOT(Effect):
     def __init__(
             self,
-            target,
             duration,
             stacks,
             value
     ):
-        self.target = target
         self.duration = duration
         self.stacks = stacks
         self.value = value
 
-    def dec_dur(self):
+    def end_round(self):
         self.duration -= 1
 
 # #"TYPE": "BACKLASH",
@@ -134,7 +129,7 @@ class HOT:
 #                     "EFFECT": "POSITIVE_CHARM",
 #                     "TARGET": "SELF"
 #                 }
-class Backlash:
+class Backlash(Effect):
     def __init__(
             self,
             duration,
@@ -152,5 +147,5 @@ class Backlash:
         self.curr_turn += 1
         self.accumulated += self.value_per_turn
 
-    def dec_dur(self):
+    def end_round(self):
         self.duration -= 1

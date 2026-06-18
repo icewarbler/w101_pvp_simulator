@@ -736,5 +736,11 @@
                 }
             }
         ]
+    },
+    {
+        "ROUND": 5,
+        "CASTER": "PLAYER2",
+        "SPELL": "AMMUT",
+        "TARGET": "PLAYER1"
     }
 ]

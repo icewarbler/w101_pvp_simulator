@@ -28,12 +28,26 @@ class Player:
 
         self.max_health = max_health
 
+        self.curr_health = max_health
+
         self.pips = []
 
         self.effects = []
     
     def add_effect(self, effect):
         self.effects.append(effect)
+
+    def get_effects(self):
+        return self.effects
+    
+    def get_health(self):
+        return self.curr_health
+    
+    def dec_health(self, value):
+        self.curr_health -= value
+
+    def del_effect(self, effect):
+        self.effects.remove(effect)
         
 
     # def add_blade(self):

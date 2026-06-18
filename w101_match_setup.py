@@ -12,8 +12,8 @@ class Match:
         self.p2 = p2
         self.turn = turn
 
-        self.p1e = []
-        self.p2e = []
+        # self.p1e = []
+        # self.p2e = []
 
     def getPlayer1(self):
         return self.p1
@@ -50,11 +50,11 @@ class Match:
         else:
             return target
 
-    def get_p1_effects(self):
-        return self.p1e
+    # def get_p1_effects(self):
+    #     return self.p1e
     
-    def get_p2_effects(self):
-        return self.p2e
+    # def get_p2_effects(self):
+    #     return self.p2e
 
     # def delete_effect(self, target):
     #     if target == "p1":
