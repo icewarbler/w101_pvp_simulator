@@ -257,7 +257,7 @@
         "ROUND": 2,
         "CASTER": "PLAYER1",
         "SPELL": "STABILIZE",
-        "TARGET": "PLAYER2",
+        "TARGET": "PLAYER1",
         "PLAYER1_HEALTH1": 12879,
         "PLAYER2_HEALTH1": 7158,
         "PLAYER1_HEALTH2": 12879,

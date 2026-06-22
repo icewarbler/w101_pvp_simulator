@@ -11,6 +11,8 @@
 #         return self.effect_obj
 
 class Effect:
+    type = None
+
     def end_round(self):
         pass
 
@@ -37,6 +39,7 @@ class Charm(Effect):
             school,
             value
     ):
+        self.type = "CHARM"
         self.polarity = polarity
         self.school = school
         self.value = value
@@ -44,19 +47,46 @@ class Charm(Effect):
     def end_round(self):
         pass
 
-class Ward(Effect):
+class Trap(Effect):
+    def __init__(
+            self,
+            school,
+            value
+    ):
+        self.type = "TRAP"
+        self.school = school
+        self.value = value
+
+    def end_round(self):
+        pass
+
+class Shield(Effect):
     def __init__(
             self,
             polarity,
             school,
             value
     ):
-        self.polarity = polarity
+        self.type = "SHIELD"
         self.school = school
         self.value = value
 
     def end_round(self):
         pass
+# class Ward(Effect):
+    # def __init__(
+    #         self,
+    #         polarity,
+    #         school,
+    #         value
+    # ):
+    #     self.type = "WARD"
+    #     self.polarity = polarity
+    #     self.school = school
+    #     self.value = value
+
+    # def end_round(self):
+    #     pass
 
 #Your gear (% then flat)-> 
 # your aura -> 
@@ -83,6 +113,7 @@ class Aura(Effect):
             adj
             # the effects are just charms/wards
     ):
+        self.type = "AURA"
         self.duration = duration
         self.adj = adj
 
@@ -136,6 +167,7 @@ class Backlash(Effect):
             value_per_turn,
             condition
     ):
+        self.type = "BACKLASH"
         self.duration = duration
         self.value_per_turn = value_per_turn
         self.condition = condition

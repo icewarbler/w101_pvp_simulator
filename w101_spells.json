@@ -31,8 +31,7 @@
             "APPLIES A -25% DAMAGE CHARM",
         "EFFECTS": [
             {
-                "TYPE": "CHARM",
-                "POLARITY": "NEGATIVE",
+                "TYPE": "WEAKNESS",
                 "TARGET": "ENEMY",
                 "VALUE": 25
             }
@@ -49,10 +48,10 @@
                 "TYPE": "GAMBIT",
                 "CAUSE": {
                         "SUBTYPE": "CLEAR",
-                        "TYPE": "POS_CHARM"
+                        "TYPE": "BLADE"
                 },
                 "EFFECT": {
-                    "SUBTYPE": "NEG_CHARM",
+                    "SUBTYPE": "WEAKNESS",
                     "VALUE": 20
                 }
             }
@@ -106,13 +105,12 @@
                 "TYPE": "GAMBIT",
                 "CAUSE": {
                     "ACTION": "CLEAR",
-                    "TYPE": "NEG_WARD",
+                    "TYPE": "TRAP",
                     "TARGET": "SELF",
                     "MAX": 5
                 },
                 "PER_EFFECT": {
-                    "TYPE": "WARD",
-                    "POLARITY": "NEG",
+                    "TYPE": "TRAP",
                     "TARGET": "ENEMY",
                     "SCHOOL": "FIRE",
                     "VALUE": 40
@@ -137,8 +135,7 @@
                 "VALUE": 395
             },
             {
-                "TYPE": "WARD",
-                "POLARITY": "POSITIVE",
+                "TYPE": "SHIELD",
                 "TARGET": "TARGET",
                 "VALUE": 65,
                 "SCHOOL": "FIRE"
@@ -156,8 +153,7 @@
             "APPLIES A +35% FIRE DAMAGE CHARM",
         "EFFECTS": [
             {
-                "TYPE": "CHARM",
-                "POLARITY": "POSITIVE",
+                "TYPE": "BLADE",
                 "TARGET": "SELF",
                 "VALUE": 35
             }
@@ -195,7 +191,7 @@
                 "TYPE": "GAMBIT",
                 "CAUSE": {
                     "TYPE": "CLEAR",
-                    "TARGET": "POS_WARD",
+                    "TARGET": "SHIELD",
                     "MAX": 7
                 },
                 "PER_EFFECT": {
@@ -241,7 +237,7 @@
                 "DURATION": 3,
                 "VALUE_PER_TURN": 5,
                 "CONDITION": {
-                    "EFFECT": "NEG_WARD",
+                    "EFFECT": "TRAP",
                     "TARGET": "ENEMY"
                 }
             }
@@ -266,8 +262,7 @@
                 "VALUE": 730
             },
             {
-                "TYPE": "WARD",
-                "POLARITY": "POSITIVE",
+                "TYPE": "SHIELD",
                 "TARGET": "ENEMY",
                 "AMOUNT": 3,
                 "VALUE": 80,
@@ -278,7 +273,7 @@
                 "DURATION": 3,
                 "VALUE_PER_TURN": 5,
                 "CONDITION": {
-                    "EFFECT": "NEG_WARD",
+                    "EFFECT": "TRAP",
                     "TARGET": "ENEMY"
                 }
             }
@@ -295,8 +290,7 @@
             "APPLIES A +40% NEGATIVE ICE DAMAGE WARD TO TARGET",
         "EFFECTS": [
             {
-                "TYPE": "WARD",
-                "POLARITY": "NEG",
+                "TYPE": "TRAP",
                 "SUBTYPE": "DAMAGE",
                 "TARGET": "ENEMY",
                 "VALUE": 25
@@ -317,7 +311,7 @@
             {   
                 "TYPE": "GAMBIT",
                 "CAUSE": {
-                    "TYPE": "NEG_WARD",
+                    "TYPE": "TRAP",
                     "AMOUNT": 4
                 },
                 "EFFECT": {
@@ -350,8 +344,7 @@
                 "VALUE": 75
             },
             {
-                "TYPE": "WARD",
-                "POLARITY": "NEG",
+                "TYPE": "TRAP",
                 "TARGET": "ENEMY",
                 "SUBTYPE": "DAMAGE",
                 "SCHOOL": "GLOBAL",
@@ -363,7 +356,7 @@
                 "DURATION": 3,
                 "VALUE_PER_TURN": 5,
                 "CONDITION": {
-                    "EFFECT": "POS_CHARM",
+                    "EFFECT": "BLADE",
                     "TARGET": "SELF"
                 }
             }
@@ -387,8 +380,7 @@
                 "VALUE": 75
             },
             {
-                "TYPE": "WARD",
-                "POLARITY": "NEG",
+                "TYPE": "TRAP",
                 "SUBTYPE": "DOT",
                 "TARGET": "ENEMY",
                 "SCHOOL": "GLOBAL",
@@ -400,7 +392,7 @@
                 "DURATION": 3,
                 "VALUE_PER_TURN": 5,
                 "CONDITION": {
-                    "EFFECT": "POS_WARD",
+                    "EFFECT": "SHIELD",
                     "TARGET": "SELF"
                 }
             }
@@ -421,8 +413,7 @@
                 "DURATION": 4,
                 "TARGET": "ENEMY",
                 "ADJ": {
-                    "TYPE": "WARD",
-                    "POLARITY": "NEG",
+                    "TYPE": "TRAP",
                     "SUBTYPE": "DAMAGE",
                     "SCHOOL": "GLOBAL",
                     "VALUE": 20
@@ -446,22 +437,19 @@
                 "TARGET": "SELF",
                 "ADJ": [
                     {
-                        "TYPE": "CHARM",
-                        "POLARITY": "POS",
+                        "TYPE": "BLADE",
                         "SUBTYPE": "DAMAGE",
                         "SCHOOL": "FIRE",
                         "VALUE": 25
                     },
                     {
-                        "TYPE": "CHARM",
-                        "POLARITY": "POS",
+                        "TYPE": "BLADE",
                         "SUBTYPE": "ACCURACY",
                         "SCHOOL": "GLOBAL",
                         "VALUE": 5
                     },
                     {
-                        "TYPE": "WARD",
-                        "POLARITY": "NEG",
+                        "TYPE": "TRAP",
                         "SUBTYPE": "DAMAGE",
                         "SCHOOL": "ICE",
                         "VALUE": 10
@@ -485,8 +473,7 @@
                 "DURATION": 4,
                 "TARGET": "SELF",
                 "ADJ": {
-                    "TYPE": "WARD",
-                    "POLARITY": "POS",
+                    "TYPE": "SHIELD",
                     "SUBTYPE": "DAMAGE",
                     "SCHOOL": "GLOBAL",
                     "VALUE": 25
@@ -509,8 +496,7 @@
                 "DURATION": 4,
                 "TARGET": "ENEMY",
                 "ADJ": {
-                    "TYPE": "CHARM",
-                    "POLARITY": "NEG",
+                    "TYPE": "WEAKNESS",
                     "SUBTYPE": "DAMAGE",
                     "SCHOOL": "GLOBAL",
                     "VALUE": 15

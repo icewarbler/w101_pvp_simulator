@@ -2,7 +2,7 @@ import json
 import pandas as pd
 from w101_effects import Effect
 from w101_effects import Damage
-from w101_effects import Ward
+from w101_effects import Trap
 from w101_effects import Charm
 from w101_player import Player
 
@@ -29,12 +29,12 @@ class Match:
 
         )
     
-    def add_ward(self, target, spell):
-        ward = Effect(
-            effect_type = "WARD",
-            value = getCurrentSpell().effects.ward.value
-        )
-        target.add_effect(ward)
+    # def add_ward(self, target, spell):
+    #     ward = Effect(
+    #         effect_type = "WARD",
+    #         value = getCurrentSpell().effects.ward.value
+    #     )
+    #     target.add_effect(ward)
 
     def add_effect(self, target_obj, effect):
 

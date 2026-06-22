@@ -2,12 +2,72 @@ import json
 import pandas as pd
 from w101_effects import Effect
 from w101_effects import Damage
-from w101_effects import Ward
 from w101_effects import Charm
+from w101_effects import Trap
 from w101_effects import Backlash
 from w101_effects import Aura
 from w101_player import Player
 from w101_match_setup import Match
+
+
+def print_turn_info(round, caster_player, spell_name):
+    print(f"Round {round}: {caster_player.name} casts {spell_name}")
+
+def get_target(caster_player, enemy_player, effect):
+    effect_target = effect.get("TARGET")
+
+    if effect_target == "SELF":
+        target = caster_player
+    elif effect_target == "ENEMY":
+        target = enemy_player
+    return target
+
+def play_gambit(caster_player, enemy_player, effect):
+    print("gambit!")
+    gambit_cause = effect.get("CAUSE")
+    print(effect.get("CAUSE"))
+    gambit_effect = effect.get("PER_EFFECT")
+    print(effect.get("PER_EFFECT"))
+
+    abs_target = get_target(caster_player, enemy_player, gambit_cause)
+
+    match gambit_cause.get("ACTION"):
+        case "CLEAR":
+            to_remove = []
+            gambit_type = gambit_cause.get("TYPE")
+            for effect in caster_player.get_effects():
+                if effect.type == gambit_type:
+                    to_remove.append(effect)
+                    
+                    if len(to_remove) == gambit_cause.get("MAX"):
+                        break
+        #  print(to_remove)
+
+        #   print(abs_target.get_effects())
+
+            amount = len(to_remove)
+
+            print(f"amount: {amount}")
+
+
+            for effect in to_remove:
+                abs_target.del_effect(effect)
+            #    print(abs_target.get_effects())
+
+            per_effect_type = gambit_effect.get("TYPE")
+            
+            for _ in range(amount):
+                if per_effect_type == "TRAP":
+                    abs_target = get_target(caster_player, enemy_player, gambit_effect)
+
+                    per_effect_school = gambit_effect.get("SCHOOL")
+                    per_effect_value = gambit_effect.get("VALUE")
+
+
+                    jel = Trap(per_effect_school, per_effect_value)
+
+                    match_obj.add_effect(abs_target, jel)
+
 
 def cast_spell(caster_player, enemy_player, spell_data):
     # if a player passes that turn, skip
@@ -21,108 +81,51 @@ def cast_spell(caster_player, enemy_player, spell_data):
     for effect in spell_effects:
         effect_type = effect.get("TYPE")
 
-        if effect_type == "GAMBIT":
-            print("gambit!")
-            gambit_cause = effect.get("CAUSE")
-            print(effect.get("CAUSE"))
-            gambit_effect = effect.get("PER_EFFECT")
-            print(effect.get("PER_EFFECT"))
 
-            match gambit_cause.get("ACTION"):
-                case "CLEAR":
-                    pass
+        match effect_type:
+            case "SINGLE_DAMAGE":
+                abs_target = get_target(caster_player, enemy_player, effect)
 
-        if effect_type == "SINGLE_DAMAGE":
-            effect_target = effect.get("TARGET")
+                effect_school = effect.get("SCHOOL")
+                effect_value = effect.get("VALUE")
 
-            if effect_target == "SELF":
-                abs_target = caster_player
-            elif effect_target == "ENEMY":
-                abs_target = enemy_player
+                abs_target.dec_health(effect_value)
 
-            effect_school = effect.get("SCHOOL")
-            effect_value = effect.get("VALUE")
+                print(f"{abs_target.name} HEALTH: {abs_target.get_health()}")
+            case "TRAP":
+                abs_target = get_target(caster_player, enemy_player, effect)
 
-            abs_target.dec_health(effect_value)
+                effect_school = effect.get("SCHOOL")
+                effect_value = effect.get("VALUE")
 
-            print(f"{effect_target} HEALTH: {abs_target.get_health()}")
+                # abs_target = match_obj.getTTarget(caster, effect_target)
 
-            # lavendar = Damage(abs_target, effect_school, effect_value)
-            # lorri = Effect(effect_type, lavendar)
+                jel = Trap(effect_school, effect_value)
 
-            # match_obj.add_effect(abs_target, lorri)
+                match_obj.add_effect(abs_target, jel)
+            case "AURA":
+                abs_target = get_target(caster_player, enemy_player, effect)
 
-        if effect_type == "WARD":
-            effect_target = effect.get("TARGET")
+                bor = Aura(
+                    effect.get("DURATION"),
+                    effect.get("ADJ")
+                )
 
-            if effect_target == "SELF":
-                abs_target = caster_player
-            elif effect_target == "ENEMY":
-                abs_target = enemy_player
+                match_obj.add_effect(abs_target, bor)
+            case "BACKLASH":
+                ba = Backlash(
+                    effect.get("DURATION"),
+                    effect.get("VALUE_PER_TURN"),
+                    effect.get("CONDITION")
+                )
 
-            # if caster == "PLAYER1":
-            #     if effect_target == "SELF":
-            #         abs_target = match_obj.getPlayer1()
-            #     elif effect_target == "ENEMY":
-            #         abs_target = match_obj.getPlayer2()
-            # elif caster == "PLAYER2":
-            #     if effect_target == "SELF":
-            #         abs_target = match_obj.getPlayer2()
-            #     elif effect_target == "ENEMY":
-            #         abs_target = match_obj.getPlayer1()
+                match_obj.add_effect(caster_player, ba)
+            case "GAMBIT":
+                play_gambit(caster_player, enemy_player, effect)
 
-            effect_polarity = effect.get("POLARITY")
-            effect_school = effect.get("SCHOOL")
-            effect_value = effect.get("VALUE")
 
-            # abs_target = match_obj.getTTarget(caster, effect_target)
 
-            jel = Ward(effect_polarity, effect_school, effect_value)
 
-            match_obj.add_effect(abs_target, jel)
-        
-        if effect_type == "AURA":
-            effect_target = effect.get("TARGET")
-
-            if effect_target == "SELF":
-                abs_target = caster_player
-            elif effect_target == "ENEMY":
-                abs_target = enemy_player
-            # if caster == "PLAYER1":
-            #     if effect_target == "SELF":
-            #         abs_target = match_obj.getPlayer1()
-            #     elif effect_target == "ENEMY":
-            #         abs_target = match_obj.getPlayer2()
-            # elif caster == "PLAYER2":
-            #     if effect_target == "SELF":
-            #         abs_target = match_obj.getPlayer2()
-            #     elif effect_target == "ENEMY":
-            #         abs_target = match_obj.getPlayer1()
-
-            bor = Aura(
-                effect.get("DURATION"),
-                effect.get("ADJ")
-            )
-
-            match_obj.add_effect(abs_target, bor)
-
-        if effect_type == "BACKLASH":
-            # if effect_target == "SELF":
-            #     abs_target = caster_player
-            # elif effect_target == "ENEMY":
-            #     abs_target = enemy_player
-            # if caster == "PLAYER1":
-            #     abs_target = match_obj.getPlayer1()
-            # else:
-            #     abs_target = match_obj.getPlayer2()
-
-            ba = Backlash(
-                effect.get("DURATION"),
-                effect.get("VALUE_PER_TURN"),
-                effect.get("CONDITION")
-            )
-
-            match_obj.add_effect(caster_player, ba)
 
 # match_obj is what is changing over time --
 # "match" var just refers to the raw match json code
@@ -155,6 +158,8 @@ def start_match(match_obj):
         round = turn.get("ROUND")
         caster = turn.get("CASTER")
 
+        # caster stored in the match obj has definite names for players
+        # these directly map on to the actual player names via matchups.json
         if caster == "PLAYER1":
             caster_player = match_obj.getPlayer1()
             enemy_player = match_obj.getPlayer2()
@@ -185,12 +190,14 @@ def start_match(match_obj):
         # get data from that spell to add to match
         spell_data = spell_lookup.get(spell_name)
 
+        print_turn_info(round, caster_player, spell_name)
+
         cast_spell(caster_player, enemy_player, spell_data)
 
         p1e2 = match_obj.getPlayer1().get_effects()
 
         for effect in p1e2:
-        #    print(effect)
+            print(effect)
             effect.end_round()
 
             if hasattr(effect, "duration"):
