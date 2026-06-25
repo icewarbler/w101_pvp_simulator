@@ -263,7 +263,7 @@
             },
             {
                 "TYPE": "SHIELD",
-                "TARGET": "ENEMY",
+                "TARGET": "SELF",
                 "AMOUNT": 3,
                 "VALUE": 80,
                 "SCHOOL": "TARGET_SCHOOL"

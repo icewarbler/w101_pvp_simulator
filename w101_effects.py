@@ -11,6 +11,9 @@
 #         return self.effect_obj
 
 class Effect:
+    def __str__(self):
+        return self.type
+
     type = None
 
     def end_round(self):
@@ -71,6 +74,9 @@ class Ward(Effect):
 
     def end_round(self):
         pass
+
+    def mod_damage(self, damage):
+        pass
     
 class Trap(Ward):
     def __init__(
@@ -81,8 +87,14 @@ class Trap(Ward):
         super().__init__(school, value)
         self.type = "TRAP"
 
+    def __str__(self):
+        return f"{self.type}: {self.school} {self.value}"
+
     def end_round(self):
         pass
+
+    def mod_damage(self, damage):
+        return damage * (1 + self.value * 0.01)
 
 class Shield(Ward):
     def __init__(
@@ -93,9 +105,14 @@ class Shield(Ward):
         super().__init__(school, value)
         self.type = "SHIELD"
 
+    def __str__(self):
+        return f"{self.type}: {self.school} {self.value}"
+
     def end_round(self):
         pass
 
+    def mod_damage(self, damage):
+        return damage * (1 - self.value * 0.01)
 
 #Your gear (% then flat)-> 
 # your aura -> 
@@ -125,6 +142,9 @@ class Aura(Effect):
         self.type = "AURA"
         self.duration = duration
         self.adj = adj
+
+    def __str__(self):
+        return f"{self.type}: {self.duration}"
 
     def end_round(self):
         self.duration -= 1
@@ -184,6 +204,9 @@ class Backlash(Effect):
 
         self.curr_turn = 0
         self.accumulated = value_per_turn
+
+    def __str__(self):
+        return f"{self.type}"
 
     def add_turn(self):
         self.curr_turn += 1
