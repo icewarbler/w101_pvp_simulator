@@ -11,6 +11,7 @@ class Match:
         self.p1 = p1
         self.p2 = p2
         self.turn = turn
+        self.global_effect = []
 
         # self.p1e = []
         # self.p2e = []
@@ -20,6 +21,9 @@ class Match:
     
     def getPlayer2(self):
         return self.p2
+    
+    def getBubble(self):
+        return self.global_effect
         
     def add_charm(self, spell):
 
@@ -43,6 +47,10 @@ class Match:
         #     value = spell.effects.ward.value
         # )
         target_obj.add_effect(effect)
+
+    def change_bubble(self, bubble):
+        self.global_effect = bubble
+                      
 
     def getTTarget(self, caster, target):
         if caster ==  target:

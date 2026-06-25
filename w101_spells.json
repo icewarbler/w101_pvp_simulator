@@ -135,8 +135,8 @@
                 "VALUE": 395
             },
             {
-                "TYPE": "SHIELD",
-                "TARGET": "TARGET",
+                "TYPE": "TRAP",
+                "TARGET": "ENEMY",
                 "VALUE": 65,
                 "SCHOOL": "FIRE"
             }
@@ -258,7 +258,7 @@
             {
                 "TYPE": "SINGLE_DAMAGE",
                 "TARGET": "ENEMY",
-                "SCHOOL": "SHADOW",
+                "SCHOOL": "ICE",
                 "VALUE": 730
             },
             {
@@ -380,8 +380,7 @@
                 "VALUE": 75
             },
             {
-                "TYPE": "TRAP",
-                "SUBTYPE": "DOT",
+                "TYPE": "DOT_TRAP",
                 "TARGET": "ENEMY",
                 "SCHOOL": "GLOBAL",
                 "VALUE": 70,
