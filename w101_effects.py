@@ -16,8 +16,14 @@ class Effect:
 
     type = None
 
+    def begin_round(self):
+        pass
+
     def end_round(self):
         pass
+
+    def expired(self):
+        return False
 
 class Bubble(Effect):
     def __init__(
@@ -28,6 +34,12 @@ class Bubble(Effect):
         self.type = "BUBBLE"
         self.school = school
         self.value = value
+
+    def __str__(self):
+        return f"{self.type}: {self.school} {self.value}"
+    
+    def begin_round(self):
+        pass
 
     def end_round(self):
         pass
@@ -59,6 +71,9 @@ class Charm(Effect):
         self.polarity = polarity
         self.school = school
         self.value = value
+
+    def begin_round(self):
+        pass
     
     def end_round(self):
         pass
@@ -67,10 +82,16 @@ class Ward(Effect):
     def __init__(
             self,
             school,
-            value
+            value,
+            family
     ):
         self.school = school
         self.value = value
+
+        self.family = family
+
+    def begin_round(self):
+        pass
 
     def end_round(self):
         pass
@@ -82,13 +103,17 @@ class Trap(Ward):
     def __init__(
             self,
             school,
-            value
+            value,
+            family
     ):
-        super().__init__(school, value)
+        super().__init__(school, value, family)
         self.type = "TRAP"
 
     def __str__(self):
         return f"{self.type}: {self.school} {self.value}"
+    
+    def begin_round(self):
+        pass
 
     def end_round(self):
         pass
@@ -100,13 +125,17 @@ class Shield(Ward):
     def __init__(
             self,
             school,
-            value
+            value,
+            family
     ):
-        super().__init__(school, value)
+        super().__init__(school, value, family)
         self.type = "SHIELD"
 
     def __str__(self):
         return f"{self.type}: {self.school} {self.value}"
+    
+    def begin_round(self):
+        pass
 
     def end_round(self):
         pass
@@ -146,6 +175,9 @@ class Aura(Effect):
     def __str__(self):
         return f"{self.type}: {self.duration}"
 
+    def begin_round(self):
+        pass
+
     def end_round(self):
         self.duration -= 1
 
@@ -163,6 +195,9 @@ class DOT(Effect):
         self.stacks = stacks
         self.value = value
 
+    def begin_round(self):
+        pass
+
     def end_round(self):
         self.duration -= 1
 
@@ -177,6 +212,9 @@ class HOT(Effect):
         self.duration = duration
         self.stacks = stacks
         self.value = value
+
+    def begin_round(self):
+        pass
 
     def end_round(self):
         self.duration -= 1
@@ -206,11 +244,17 @@ class Backlash(Effect):
         self.accumulated = value_per_turn
 
     def __str__(self):
-        return f"{self.type}"
+        return f"{self.type}: {self.accumulated} {self.duration}"
 
-    def add_turn(self):
-        self.curr_turn += 1
-        self.accumulated += self.value_per_turn
+    def begin_round(self):
+        pass
 
     def end_round(self):
+        self.curr_turn += 1
         self.duration -= 1
+    
+    def inc_backlash(self):
+        self.accumulated += self.value_per_turn
+
+    def expired(self):
+        return self.duration <= 1

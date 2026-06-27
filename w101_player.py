@@ -2,15 +2,6 @@ from w101_effects import Effect
 import pandas as pd
 import json
 
-# try:
-#     with open("w101_spells_schema.json", "r") as f:
-#         spells = json.load(f)
-#     print("File data =", spells)
-# except json.JSONDecodeError:
-#     print("Error: failed to decode JSON")
-
-# spells_df = pd.DataFrame(spells)
-
 class Player:
     def __init__(
             self, 

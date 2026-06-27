@@ -742,5 +742,11 @@
         "CASTER": "PLAYER2",
         "SPELL": "AMMUT",
         "TARGET": "PLAYER1"
+    },
+    {
+        "ROUND": 6,
+        "CASTER": "PLAYER1",
+        "SPELL": "FROSTFEATHER",
+        "TARGET": "PLAYER2"
     }
 ]

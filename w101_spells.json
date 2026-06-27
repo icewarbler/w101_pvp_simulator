@@ -323,12 +323,35 @@
             },
             {
                 "TYPE": "BACKLASH",
-                "DURATION": 3,
+                "DURATION": 4,
                 "VALUE_PER_TURN": 5,
                 "CONDITION": {
                     "EFFECT": "TRAP",
                     "TARGET": "ENEMY"
                 }
+            }
+        ]
+    },
+
+    {
+        "SPELL": "FROSTFEATHER",
+        "SCHOOL": "ICE",
+        "PIPCOST": 5,
+        "ACCURACY": 80,
+        "TYPE": ["DAMAGE", "BUBBLE"],
+        "DESCRIPTION":
+            "240 ICE DAMAGE TO TARGET AND +25% ICE BUBBLE",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "ICE",
+                "VALUE": 240
+            },
+            {
+                "TYPE": "BUBBLE",
+                "SCHOOL": "ICE",
+                "VALUE": 25
             }
         ]
     },
@@ -346,7 +369,8 @@
                 "TYPE": "TRAP",
                 "SUBTYPE": "DAMAGE",
                 "TARGET": "ENEMY",
-                "VALUE": 25,
+                "SCHOOL": "ICE",
+                "VALUE": 40,
                 "FAMILY": "ICETRAP_40"
             }
         ]
@@ -407,7 +431,7 @@
             },
             {
                 "TYPE": "BACKLASH",
-                "DURATION": 3,
+                "DURATION": 4,
                 "VALUE_PER_TURN": 5,
                 "CONDITION": {
                     "EFFECT": "BLADE",
@@ -442,7 +466,7 @@
             },
             {
                 "TYPE": "BACKLASH",
-                "DURATION": 3,
+                "DURATION": 4,
                 "VALUE_PER_TURN": 5,
                 "CONDITION": {
                     "EFFECT": "SHIELD",

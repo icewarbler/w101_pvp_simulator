@@ -7,14 +7,14 @@ JASON - WYLDFIRE
 E - WEAKNESS
 J - BRIMSTONE REVENTANT (365)
 
-E - DARK WEAVER (730 + 80 X3) 2321
-J - DARK FIEND
+E - DARK WEAVER (730 + 80 X3) 2321 -> +5 backlash (3 rnd)
+J - DARK FIEND -> +5 backlash (3 rnd)
 
-E - STABILIZE
-J - PASS
+E - STABILIZE: eats storm trap from J before turn -> eats Jason's storm 30 trap; still +5 backlash (2 rnd)
+J - PASS -> eats Ezra's fire 80 shield; still +5 backlash (2 rnd)
 
-E - ICE TRAP 40
-J - AMMUT 510 5X CLEAR TRAP FOR 40 FIRE TRAP
+E - ICE TRAP 40 -> eats Jason's fire 30 trap; still +5 backlash (1 rnd)
+J - AMMUT 510 5X CLEAR TRAP FOR 40 FIRE TRAP -> eats Ezra's fire 80 shield; still +5 backlash (1 rnd)
 
 E - FROSTFEATHER (240 + 25% GLOBAL) 541
 J - ELEMENTAL SHIELD 55

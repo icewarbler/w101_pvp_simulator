@@ -15,6 +15,11 @@ from w101_match_setup import Match
 def print_turn_info(round, caster_player, spell_name):
     print(f"Round {round}: {caster_player.name} casts {spell_name}")
 
+def print_effects(player):
+    print(f"{player.name}:")
+    for effect in player.effects:
+        print(f"{effect}")
+
 def get_target(caster_player, enemy_player, effect):
     effect_target = effect.get("TARGET")
 
@@ -29,6 +34,8 @@ def insert_starting_conditions(match_obj):
     p2 = match_obj.getPlayer2() # jason
 
     match_obj.change_bubble(Bubble("FIRE", 25))
+
+  #  print(f"{match_obj.global_effect}")
 
     p1.add_effect(Trap("FIRE", 65, None))
     adj = {
@@ -47,7 +54,7 @@ def insert_starting_conditions(match_obj):
 # ice storm fire (blades) -> put on order
 # cleanse charm removes fire weakness - ice/storm left
 # pierce removes storm shield - fire/ice left
-def do_damage(caster_player, enemy_player, effect):
+def do_damage(match_obj, caster_player, enemy_player, effect):
     abs_target = get_target(caster_player, enemy_player, effect)
 
     effect_school = effect.get("SCHOOL")
@@ -87,6 +94,7 @@ def do_damage(caster_player, enemy_player, effect):
     # gets the global
     b = match_obj.getBubble()
 
+    print(match_obj.global_effect)
     if b.school == effect_school:
       #  print(f"Found bubble with value {b.value}")
         effect_value += effect_value * b.value * 0.01
@@ -141,11 +149,11 @@ def do_damage(caster_player, enemy_player, effect):
  #   print(f"{abs_target.name} HEALTH: {abs_target.get_health()}")
 
 def play_gambit(caster_player, enemy_player, effect):
-    print("gambit!")
+  #  print("gambit!")
     gambit_cause = effect.get("CAUSE")
-    print(effect.get("CAUSE"))
+  #  print(effect.get("CAUSE"))
     gambit_effect = effect.get("PER_EFFECT")
-    print(effect.get("PER_EFFECT"))
+   # print(effect.get("PER_EFFECT"))
 
     abs_target = get_target(caster_player, enemy_player, gambit_cause)
 
@@ -165,7 +173,7 @@ def play_gambit(caster_player, enemy_player, effect):
 
             amount = len(to_remove)
 
-            print(f"amount: {amount}")
+        #    print(f"amount: {amount}")
 
 
             for effect in to_remove:
@@ -190,7 +198,7 @@ def play_gambit(caster_player, enemy_player, effect):
                     match_obj.add_effect(abs_target, jel)
 
 
-def cast_spell(caster_player, enemy_player, spell_data):
+def cast_spell(match_obj, caster_player, enemy_player, spell_data):
     # if a player passes that turn, skip
     if spell_data in (None, "NONE"):
         return
@@ -207,7 +215,7 @@ def cast_spell(caster_player, enemy_player, spell_data):
 
         match effect_type:
             case "SINGLE_DAMAGE":
-                do_damage(caster_player, enemy_player, effect)
+                do_damage(match_obj, caster_player, enemy_player, effect)
 
             case "TRAP":
                 abs_target = get_target(caster_player, enemy_player, effect)
@@ -230,7 +238,15 @@ def cast_spell(caster_player, enemy_player, spell_data):
                     effect.get("ADJ")
                 )
 
+                # checks if target already has an aura effect
+                has_aura = next( (effect for effect in abs_target.effects if isinstance(effect, Aura)), None )
+
+                # if aura, delete
+                if has_aura:
+                    abs_target.del_effect(has_aura)
+
                 match_obj.add_effect(abs_target, bor)
+                
             case "BACKLASH":
                 ba = Backlash(
                     effect.get("DURATION"),
@@ -259,6 +275,12 @@ def cast_spell(caster_player, enemy_player, spell_data):
                 for _ in range(amount):
                     hehe = Shield(effect_school, effect_value, effect_family)
                     match_obj.add_effect(abs_target, hehe)
+
+            case "BUBBLE":
+                effect_school = effect.get("SCHOOL")
+                effect_value = effect.get("VALUE")
+                kori = Bubble(effect_school, effect_value)
+                match_obj.change_bubble(kori)
 
 
 # match_obj is what is changing over time --
@@ -309,15 +331,17 @@ def start_match(match_obj):
 
         print("----")
 
-        print("P1E1: ")
-        for effect in p1e1:
-            print(effect)
-            effect.end_round()
+        if caster == "PLAYER1":
+            for effect in p1e1:
+                effect.begin_round()
+                if effect.expired():
+                    caster_player.del_effect(effect)
+        else:
+            for effect in p2e1:
+                effect.begin_round()
 
-        print("P2E1: ")
-        for effect in p2e1:
-            print(effect)
-            effect.end_round()
+        print_effects(match_obj.getPlayer1())
+        print_effects(match_obj.getPlayer2())
 
         p2e1 = turn.get("PLAYER2_EFFECTS1", [])
 
@@ -327,7 +351,8 @@ def start_match(match_obj):
             eat_effect = caster_backlash.condition["EFFECT"]
         #  eat_target = caster_backlash.condition["TARGET"]
             eat_target = get_target(caster_player, enemy_player, caster_backlash.condition)
-                
+            
+            ate = False
             print(eat_target.name)
             print(f"eat_effect: {eat_effect}")
             for effect in reversed(eat_target.effects):
@@ -335,7 +360,11 @@ def start_match(match_obj):
                     eat_target.del_effect(effect)
                     print(f"{eat_effect} = {effect.type}")
                     print(f"eating effect: {effect} from {eat_target.name}")
+                    ate = True
                     break
+
+            if not ate:
+                caster_backlash.inc_backlash()
 
         # gets the spell name cast on that turn from w101_ezra_jason.json
         spell_name = turn.get("SPELL")
@@ -352,20 +381,20 @@ def start_match(match_obj):
 
             print_turn_info(round, caster_player, spell_name)
 
-            cast_spell(caster_player, enemy_player, spell_data)
+            cast_spell(match_obj, caster_player, enemy_player, spell_data)
 
         p1e2 = match_obj.getPlayer1().get_effects()
         p2e2 = match_obj.getPlayer2().get_effects()
 
-        print("P1E2: ")
-        for effect in p1e2:
-            print(effect)
-            effect.end_round()
+        if caster == "PLAYER1":
+            for effect in p1e2:
+                effect.end_round()
+        else:
+            for effect in p2e2:
+                effect.end_round()
 
-        print("P2E2: ")
-        for effect in p2e2:
-            print(effect)
-            effect.end_round()
+        print_effects(match_obj.getPlayer1())
+        print_effects(match_obj.getPlayer2())
 
             # if hasattr(effect, "duration"):
             #     print(f"Duration: {effect.duration}")
@@ -399,6 +428,8 @@ except json.JSONDecodeError:
     print("ERROR! FAILED TO DECODE JSON!")
 
 player_lookup = { player["NAME"]: player for player in players }
+
+match_dat = []
 
 for match in matchups:
     p1_name = match.get("PLAYER1")
@@ -444,8 +475,13 @@ for match in matchups:
     )
 
     match_obj = Match(p1_obj, p2_obj, 0)
+    match_dat.append(match_obj)
 
-start_match(match_obj)
+#print(match_dat[0].p1.name)
+start_match(match_dat[0])
+#start_match(match_obj)
+# for match in match_dat:
+#     print(match.p1.name)
 
 # SLOAN
 # ARLEN FURY
