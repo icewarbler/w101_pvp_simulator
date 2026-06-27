@@ -1,5 +1,56 @@
 [
     {
+        "SPELL": "SAMOORAI",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 3,
+        "SCHOOLPIPS": "BALANCE",
+        "ACCURACY": 85,
+        "TYPE": ["DAMAGE", "WARD", "SHIELD"],
+        "DESCRIPTION":
+            "DOES 385 BALANCE DAMAGE TO TARGET AND APPLIES A -70% UNIVERSAL SHIELD TO SELF",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "SCHOOL": "BALANCE",
+                "VALUE": 385
+            },
+            {
+                "TYPE": "SHIELD",
+                "SCHOOL": "UNIVERSAL",
+                "VALUE": 70
+            }
+        ]
+    },
+    {
+        "SPELL": "SPIRIT WEAKNESS",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["CHARM", "WEAKNESS"],
+        "DESCRIPTION":
+            "APPLIES A -30% DEATH, -30% MYTH, AND -30% LIFE WEAKNESS TO TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "WEAKNESS",
+                "TARGET": "ENEMY",
+                "SCHOOL": "DEATH",
+                "VALUE": 30
+            },
+            {
+                "TYPE": "WEAKNESS",
+                "TARGET": "ENEMY",
+                "SCHOOL": "MYTH",
+                "VALUE": 30
+            },
+            {
+                "TYPE": "WEAKNESS",
+                "TARGET": "ENEMY",
+                "SCHOOL": "LIFE",
+                "VALUE": 30
+            }
+        ]
+    },
+    {
         "SPELL": "STEAL PIP",
         "SCHOOL": "BALANCE",
         "PIPCOST": 0,
@@ -113,7 +164,8 @@
                     "TYPE": "TRAP",
                     "TARGET": "ENEMY",
                     "SCHOOL": "FIRE",
-                    "VALUE": 40
+                    "VALUE": 40,
+                    "FAMILY": "AMMUT_FIRETRAP"
                 }
             }
         ]
@@ -264,9 +316,10 @@
             {
                 "TYPE": "SHIELD",
                 "TARGET": "SELF",
-                "AMOUNT": 3,
+                "SCHOOL": "TARGET_SCHOOL",
                 "VALUE": 80,
-                "SCHOOL": "TARGET_SCHOOL"
+                "AMOUNT": 3,
+                "FAMILY": "DARKWEAVER_FIRESHIELD"
             },
             {
                 "TYPE": "BACKLASH",
@@ -293,7 +346,8 @@
                 "TYPE": "TRAP",
                 "SUBTYPE": "DAMAGE",
                 "TARGET": "ENEMY",
-                "VALUE": 25
+                "VALUE": 25,
+                "FAMILY": "ICETRAP_40"
             }
         ]
     },
@@ -347,7 +401,7 @@
                 "TYPE": "TRAP",
                 "TARGET": "ENEMY",
                 "SUBTYPE": "DAMAGE",
-                "SCHOOL": "GLOBAL",
+                "SCHOOL": "UNIVERSAL",
                 "VALUE": 30,
                 "QUANTITY": 3
             },
@@ -382,7 +436,7 @@
             {
                 "TYPE": "DOT_TRAP",
                 "TARGET": "ENEMY",
-                "SCHOOL": "GLOBAL",
+                "SCHOOL": "UNIVERSAL",
                 "VALUE": 70,
                 "QUANTITY": 3
             },
@@ -392,7 +446,7 @@
                 "VALUE_PER_TURN": 5,
                 "CONDITION": {
                     "EFFECT": "SHIELD",
-                    "TARGET": "SELF"
+                    "TARGET": "ENEMY"
                 }
             }
         ]
@@ -414,7 +468,30 @@
                 "ADJ": {
                     "TYPE": "TRAP",
                     "SUBTYPE": "DAMAGE",
-                    "SCHOOL": "GLOBAL",
+                    "SCHOOL": "UNIVERSAL",
+                    "VALUE": 20
+                }
+            }
+        ]
+    },
+
+    {
+        "SPELL": "BRACE",
+        "SCHOOL": "STAR",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["AURA"],
+        "DESCRIPTION":
+            "APPLIES A -20% INCOMING DAMAGE AURA ON SELF FOR 4 ROUNDS",
+        "EFFECTS": [
+            {
+                "TYPE": "AURA",
+                "DURATION": 4,
+                "TARGET": "SELF",
+                "ADJ": {
+                    "TYPE": "SHIELD",
+                    "SUBTYPE": "DAMAGE",
+                    "SCHOOL": "UNIVERSAL",
                     "VALUE": 20
                 }
             }
@@ -444,7 +521,7 @@
                     {
                         "TYPE": "BLADE",
                         "SUBTYPE": "ACCURACY",
-                        "SCHOOL": "GLOBAL",
+                        "SCHOOL": "UNIVERSAL",
                         "VALUE": 5
                     },
                     {
@@ -474,7 +551,7 @@
                 "ADJ": {
                     "TYPE": "SHIELD",
                     "SUBTYPE": "DAMAGE",
-                    "SCHOOL": "GLOBAL",
+                    "SCHOOL": "UNIVERSAL",
                     "VALUE": 25
                 }
             }
@@ -497,7 +574,7 @@
                 "ADJ": {
                     "TYPE": "WEAKNESS",
                     "SUBTYPE": "DAMAGE",
-                    "SCHOOL": "GLOBAL",
+                    "SCHOOL": "UNIVERSAL",
                     "VALUE": 15
                 }
             }

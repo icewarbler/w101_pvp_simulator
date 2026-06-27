@@ -30,19 +30,23 @@ def insert_starting_conditions(match_obj):
 
     match_obj.change_bubble(Bubble("FIRE", 25))
 
-    p1.add_effect(Trap("FIRE", 65))
+    p1.add_effect(Trap("FIRE", 65, None))
     adj = {
         "TYPE": "SHIELD",
         "SUBTYPE": "DAMAGE",
-        "SCHOOL": "GLOBAL",
+        "SCHOOL": "UNIVERSAL",
         "VALUE": 25
     }
     p1.add_effect(Aura(2, adj))
 
-    p2.add_effect(Trap("FIRE", 30))
-    p2.add_effect(Trap("ICE", 30))
-    p2.add_effect(Trap("STORM", 30))
+    p2.add_effect(Trap("FIRE", 30, None))
+    p2.add_effect(Trap("ICE", 30, None))
+    p2.add_effect(Trap("STORM", 30, None))
 
+# fire ice storm (traps/shields) -> put on order
+# ice storm fire (blades) -> put on order
+# cleanse charm removes fire weakness - ice/storm left
+# pierce removes storm shield - fire/ice left
 def do_damage(caster_player, enemy_player, effect):
     abs_target = get_target(caster_player, enemy_player, effect)
 
@@ -60,15 +64,15 @@ def do_damage(caster_player, enemy_player, effect):
     # critical 
 
     print(caster_player.name)
-    print(f"default dmg: {effect_value}")
+   # print(f"default dmg: {effect_value}")
 
-    print(f"caster pierce: {caster_player.pierce[effect_school]} {effect_school}") 
+   # print(f"caster pierce: {caster_player.pierce[effect_school]} {effect_school}") 
 
     # gets caster's outgoing damage
     print(caster_player.get_outgoing_damage(effect_school))
-    print(f"value: {effect_value}")
+   # print(f"value: {effect_value}")
     effect_value += (effect_value * caster_player.get_outgoing_damage(effect_school) * 0.01)
-    print(f"a1: {effect_value}")
+  #  print(f"a1: {effect_value}")
 
     # gets caster's aura
     if Aura in caster_player.get_effects():
@@ -84,10 +88,10 @@ def do_damage(caster_player, enemy_player, effect):
     b = match_obj.getBubble()
 
     if b.school == effect_school:
-        print(f"Found bubble with value {b.value}")
+      #  print(f"Found bubble with value {b.value}")
         effect_value += effect_value * b.value * 0.01
     
-    print(f"post-bubble effect_value: {effect_value}")
+  #  print(f"post-bubble effect_value: {effect_value}")
 
     # gets any auras the enemy may have
     enemy_aura = next( (effect for effect in enemy_player.effects if isinstance(effect, Aura)), None )
@@ -95,40 +99,37 @@ def do_damage(caster_player, enemy_player, effect):
         adj = enemy_aura.adj
 
         # ignore if not correct school
-        if adj["SCHOOL"] in (effect_school, "GLOBAL"):
+        if adj["SCHOOL"] in (effect_school, "UNIVERSAL"):
             # ignore if not shield/trap type aura
             if adj["TYPE"] == "SHIELD":
                 effect_value -= effect_value * adj["VALUE"] * 0.01
             elif adj["TYPE"] == "TRAP":
                 effect_value += effect_value * adj["VALUE"] * 0.01
 
-    print(f"post-aura effect_value: {effect_value}")
+  #  print(f"post-aura effect_value: {effect_value}")
 
 
     # gets enemy shields/traps
     enemy_wards = [ effect for effect in enemy_player.effects if isinstance(effect, Ward) ]
-    
-    ward_boost = 0
+
+    used_families = set()
 
     for ward in enemy_wards:
-        if ward.school in (effect_school, "GLOBAL"):
+        if ward.school in (effect_school, "UNIVERSAL"):
+            if ward.family in used_families:
+                continue
+            used_families.add(ward.family)
             print(f"Ward used: {ward.school} of val {ward.value}")
-            if ward.type == "TRAP":
-                ward_boost += ward.value
-            elif ward.type == "SHIELD":
-                ward_boost -= ward.value
+            effect_value = ward.mod_damage(effect_value)
+            enemy_player.del_effect(ward)
     
-    if ward_boost != 0:
-        effect_value += effect_value * ward_boost * 0.01
-    
-    print(f"Post-ward effect_value: {effect_value}")
+  #  print(f"Post-ward effect_value: {effect_value}")
 
     # gets enemy resist
     enemy_res = enemy_player.get_incoming_resist(effect_school)
-    print(f"enemy res: {enemy_res}")
+  #  print(f"enemy res: {enemy_res}")
     effect_value -= effect_value * enemy_res * 0.01
-    print(f"Post-resist effect_value: {effect_value}")
-    # print(f"wards: {enemy_wards}")
+  #  print(f"Post-resist effect_value: {effect_value}")
 
     # a3 = a2 * enemy_player.get_charms
     # a4 = a3 * get_global
@@ -137,7 +138,7 @@ def do_damage(caster_player, enemy_player, effect):
     # a7 = a6 * enemy_player.get_incoming_res
     # abs_target.dec_health(effect_value)
 
-    print(f"{abs_target.name} HEALTH: {abs_target.get_health()}")
+ #   print(f"{abs_target.name} HEALTH: {abs_target.get_health()}")
 
 def play_gambit(caster_player, enemy_player, effect):
     print("gambit!")
@@ -179,9 +180,12 @@ def play_gambit(caster_player, enemy_player, effect):
 
                     per_effect_school = gambit_effect.get("SCHOOL")
                     per_effect_value = gambit_effect.get("VALUE")
+                    per_effect_family = gambit_effect.get("FAMILY")
 
+                    if per_effect_school == "TARGET_SCHOOL":
+                        per_effect_school = abs_target.school
 
-                    jel = Trap(per_effect_school, per_effect_value)
+                    jel = Trap(per_effect_school, per_effect_value, per_effect_family)
 
                     match_obj.add_effect(abs_target, jel)
 
@@ -211,9 +215,11 @@ def cast_spell(caster_player, enemy_player, spell_data):
                 effect_school = effect.get("SCHOOL")
                 effect_value = effect.get("VALUE")
 
+                effect_family = effect.get("FAMILY")
+
                 # abs_target = match_obj.getTTarget(caster, effect_target)
 
-                jel = Trap(effect_school, effect_value)
+                jel = Trap(effect_school, effect_value, effect_family)
 
                 match_obj.add_effect(abs_target, jel)
             case "AURA":
@@ -233,11 +239,26 @@ def cast_spell(caster_player, enemy_player, spell_data):
                 )
 
                 match_obj.add_effect(caster_player, ba)
+
             case "GAMBIT":
                 play_gambit(caster_player, enemy_player, effect)
 
+            case "SHIELD":
+                abs_target = get_target(caster_player, enemy_player, effect)
 
+                effect_school = effect.get("SCHOOL")
+                effect_value = effect.get("VALUE")
 
+                effect_family = effect.get("FAMILY")
+
+                if effect_school == "TARGET_SCHOOL":
+                        effect_school = enemy_player.school
+
+                amount = effect.get("AMOUNT", 1)
+                
+                for _ in range(amount):
+                    hehe = Shield(effect_school, effect_value, effect_family)
+                    match_obj.add_effect(abs_target, hehe)
 
 
 # match_obj is what is changing over time --
@@ -284,45 +305,66 @@ def start_match(match_obj):
 
       #  p1e1 = turn.get("PLAYER1_EFFECTS1", [])
         p1e1 = match_obj.getPlayer1().get_effects()
+        p2e1 = match_obj.getPlayer2().get_effects()
 
-        # for effect in p1e1:
-        #     print(effect)
-         #   effect.end_round()
-            # effect_obj = effect.get_effect_obj()
-            # print(effect_obj)
-            # if not effect_obj.duration:
-            #     print("none")
+        print("----")
+
+        print("P1E1: ")
+        for effect in p1e1:
+            print(effect)
+            effect.end_round()
+
+        print("P2E1: ")
+        for effect in p2e1:
+            print(effect)
+            effect.end_round()
 
         p2e1 = turn.get("PLAYER2_EFFECTS1", [])
+
+        caster_backlash = next( (effect for effect in caster_player.effects if isinstance(effect, Backlash)), None )
+        print(f"caster_backlash: {caster_backlash}")
+        if caster_backlash:
+            eat_effect = caster_backlash.condition["EFFECT"]
+        #  eat_target = caster_backlash.condition["TARGET"]
+            eat_target = get_target(caster_player, enemy_player, caster_backlash.condition)
+                
+            print(eat_target.name)
+            print(f"eat_effect: {eat_effect}")
+            for effect in reversed(eat_target.effects):
+                if effect.type == eat_effect:
+                    eat_target.del_effect(effect)
+                    print(f"{eat_effect} = {effect.type}")
+                    print(f"eating effect: {effect} from {eat_target.name}")
+                    break
 
         # gets the spell name cast on that turn from w101_ezra_jason.json
         spell_name = turn.get("SPELL")
 
         # if a player passes that turn, skip
         if spell_name in (None, "NONE"):
-            continue
+            print(f"**PASS")
+            print(f"Round {round}: {caster_player.name} PASSES")
 
-        print("----")
-        print(f"SPELL: {spell_name}")
+        if spell_name not in (None, "NONE"):
+            print(f"**SPELL: {spell_name}")
+            # get data from that spell to add to match
+            spell_data = spell_lookup.get(spell_name)
 
-        # get data from that spell to add to match
-        spell_data = spell_lookup.get(spell_name)
+            print_turn_info(round, caster_player, spell_name)
 
-        print_turn_info(round, caster_player, spell_name)
-
-        cast_spell(caster_player, enemy_player, spell_data)
+            cast_spell(caster_player, enemy_player, spell_data)
 
         p1e2 = match_obj.getPlayer1().get_effects()
         p2e2 = match_obj.getPlayer2().get_effects()
 
         print("P1E2: ")
         for effect in p1e2:
-            print(effect.type)
+            print(effect)
             effect.end_round()
 
         print("P2E2: ")
         for effect in p2e2:
-            print(effect.type)
+            print(effect)
             effect.end_round()
 
             # if hasattr(effect, "duration"):
@@ -420,6 +462,7 @@ start_match(match_obj)
 # AEDAN LEGEND
 # PAUL TIME
 # ALEX PYRE
+# SUMI
 
 # # CLEAR GAMBIT CONVERT EXTEND PUSH CONFUSE SWAP STEAL
 # # NEG CHARMS, NEG WARD GO ON ENEMY
