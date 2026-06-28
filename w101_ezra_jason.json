@@ -748,5 +748,11 @@
         "CASTER": "PLAYER1",
         "SPELL": "FROSTFEATHER",
         "TARGET": "PLAYER2"
+    },
+    {
+        "ROUND": 7,
+        "CASTER": "PLAYER2",
+        "SPELL": "ELEMENTAL SHIELD",
+        "TARGET": "PLAYER2"
     }
 ]

@@ -1,5 +1,34 @@
 [
     {
+        "SPELL": "ELEMENTAL SHIELD",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["WARD", "SHIELD"],
+        "DESCRIPTION":
+            "APPLIES A -55% FIRE, -55% ICE, AND -55% STORM SHIELD TO TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "SHIELD",
+                "TARGET": "SELF",
+                "SCHOOL": "FIRE",
+                "VALUE": 55
+            },
+            {
+                "TYPE": "SHIELD",
+                "TARGET": "SELF",
+                "SCHOOL": "ICE",
+                "VALUE": 55
+            },
+            {
+                "TYPE": "SHIELD",
+                "TARGET": "SELF",
+                "SCHOOL": "STORM",
+                "VALUE": 55
+            }
+        ]
+    },
+    {
         "SPELL": "SAMOORAI",
         "SCHOOL": "BALANCE",
         "PIPCOST": 3,
@@ -570,7 +599,7 @@
         "EFFECTS": [
             {
                 "TYPE": "AURA",
-                "DURATION": 4,
+                "DURATION": 5,
                 "TARGET": "SELF",
                 "ADJ": {
                     "TYPE": "SHIELD",

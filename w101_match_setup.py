@@ -24,14 +24,6 @@ class Match:
     
     def getBubble(self):
         return self.global_effect
-        
-    def add_charm(self, spell):
-
-        blade = Effect(
-            effect_type = "CHARM",
-            value = getCurrentSpell().effects.charm.value
-
-        )
     
     # def add_ward(self, target, spell):
     #     ward = Effect(

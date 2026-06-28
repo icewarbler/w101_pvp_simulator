@@ -1,5 +1,6 @@
 import json
 import pandas as pd
+import math
 from w101_effects import Effect
 from w101_effects import Damage
 from w101_effects import Charm
@@ -70,13 +71,13 @@ def do_damage(match_obj, caster_player, enemy_player, effect):
     # target's gear (flat then %) -> 
     # critical 
 
-    print(caster_player.name)
+   # print(caster_player.name)
    # print(f"default dmg: {effect_value}")
 
    # print(f"caster pierce: {caster_player.pierce[effect_school]} {effect_school}") 
 
     # gets caster's outgoing damage
-    print(caster_player.get_outgoing_damage(effect_school))
+  #  print(caster_player.get_outgoing_damage(effect_school))
    # print(f"value: {effect_value}")
     effect_value += (effect_value * caster_player.get_outgoing_damage(effect_school) * 0.01)
   #  print(f"a1: {effect_value}")
@@ -94,7 +95,6 @@ def do_damage(match_obj, caster_player, enemy_player, effect):
     # gets the global
     b = match_obj.getBubble()
 
-    print(match_obj.global_effect)
     if b.school == effect_school:
       #  print(f"Found bubble with value {b.value}")
         effect_value += effect_value * b.value * 0.01
@@ -105,6 +105,8 @@ def do_damage(match_obj, caster_player, enemy_player, effect):
     enemy_aura = next( (effect for effect in enemy_player.effects if isinstance(effect, Aura)), None )
     if enemy_aura is not None:
         adj = enemy_aura.adj
+
+        print(json.dumps(adj, indent=4))
 
         # ignore if not correct school
         if adj["SCHOOL"] in (effect_school, "UNIVERSAL"):
@@ -139,6 +141,10 @@ def do_damage(match_obj, caster_player, enemy_player, effect):
     effect_value -= effect_value * enemy_res * 0.01
   #  print(f"Post-resist effect_value: {effect_value}")
 
+    abs_target.dec_health(effect_value)
+    print(f"Does {effect_value} damage!")
+    print(f"{abs_target.name} HEALTH: {abs_target.curr_health}")
+
     # a3 = a2 * enemy_player.get_charms
     # a4 = a3 * get_global
     # a5 = a4 * caster_player.get_aura
@@ -149,11 +155,11 @@ def do_damage(match_obj, caster_player, enemy_player, effect):
  #   print(f"{abs_target.name} HEALTH: {abs_target.get_health()}")
 
 def play_gambit(caster_player, enemy_player, effect):
-  #  print("gambit!")
     gambit_cause = effect.get("CAUSE")
-  #  print(effect.get("CAUSE"))
     gambit_effect = effect.get("PER_EFFECT")
-   # print(effect.get("PER_EFFECT"))
+
+  #  print(json.dumps(gambit_cause, indent=4))
+  #  print(json.dumps(gambit_effect, indent=4))
 
     abs_target = get_target(caster_player, enemy_player, gambit_cause)
 
@@ -167,18 +173,12 @@ def play_gambit(caster_player, enemy_player, effect):
                     
                     if len(to_remove) == gambit_cause.get("MAX"):
                         break
-        #  print(to_remove)
-
-        #   print(abs_target.get_effects())
 
             amount = len(to_remove)
-
-        #    print(f"amount: {amount}")
 
 
             for effect in to_remove:
                 abs_target.del_effect(effect)
-            #    print(abs_target.get_effects())
 
             per_effect_type = gambit_effect.get("TYPE")
             
@@ -210,7 +210,7 @@ def cast_spell(match_obj, caster_player, enemy_player, spell_data):
     for effect in spell_effects:
         effect_type = effect.get("TYPE")
 
-        print(f"doing effect: {effect_type}")
+        print(f"Adding effect: {effect_type}")
 
 
         match effect_type:
@@ -246,7 +246,7 @@ def cast_spell(match_obj, caster_player, enemy_player, spell_data):
                     abs_target.del_effect(has_aura)
 
                 match_obj.add_effect(abs_target, bor)
-                
+
             case "BACKLASH":
                 ba = Backlash(
                     effect.get("DURATION"),
@@ -331,19 +331,30 @@ def start_match(match_obj):
 
         print("----")
 
+        # only activate effect of the player who is casting
+        # this is where backlash is taken and where backlash eats
         if caster == "PLAYER1":
             for effect in p1e1:
                 effect.begin_round()
                 if effect.expired():
+                    if effect.type == "BACKLASH":
+                        perc_dmg = effect.accumulated
+                        dmg_taken = caster_player.max_health * (perc_dmg * 0.01)
+                        print(f"{caster_player.name} takes {dmg_taken} damage!")
+                        caster_player.dec_health(dmg_taken)
+                        print(f"{caster_player.name} HEALTH: {math.floor(caster_player.curr_health)}")
                     caster_player.del_effect(effect)
         else:
             for effect in p2e1:
                 effect.begin_round()
-
-        print_effects(match_obj.getPlayer1())
-        print_effects(match_obj.getPlayer2())
-
-        p2e1 = turn.get("PLAYER2_EFFECTS1", [])
+                if effect.expired():
+                    if effect.type == "BACKLASH":
+                        perc_dmg = effect.accumulated
+                        dmg_taken = caster_player.max_health * (perc_dmg * 0.01)
+                        print(f"{caster_player.name} takes {dmg_taken} damage!")
+                        caster_player.dec_health(dmg_taken)
+                        print(f"{caster_player.name} HEALTH: {math.floor(caster_player.curr_health)}")
+                    caster_player.del_effect(effect)
 
         caster_backlash = next( (effect for effect in caster_player.effects if isinstance(effect, Backlash)), None )
         print(f"caster_backlash: {caster_backlash}")
@@ -353,19 +364,21 @@ def start_match(match_obj):
             eat_target = get_target(caster_player, enemy_player, caster_backlash.condition)
             
             ate = False
-            print(eat_target.name)
+          #  print(eat_target.name)
             print(f"eat_effect: {eat_effect}")
             for effect in reversed(eat_target.effects):
                 if effect.type == eat_effect:
                     eat_target.del_effect(effect)
-                    print(f"{eat_effect} = {effect.type}")
                     print(f"eating effect: {effect} from {eat_target.name}")
                     ate = True
                     break
 
             if not ate:
                 caster_backlash.inc_backlash()
+                print("Did not eat an effect")
 
+        print_effects(match_obj.getPlayer1())
+        print_effects(match_obj.getPlayer2())
         # gets the spell name cast on that turn from w101_ezra_jason.json
         spell_name = turn.get("SPELL")
 

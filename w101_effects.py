@@ -10,7 +10,7 @@
 #     def get_effect_obj(self):
 #         return self.effect_obj
 
-class Effect:
+class Effect():
     def __str__(self):
         return self.type
 
