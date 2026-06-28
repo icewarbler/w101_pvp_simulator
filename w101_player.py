@@ -31,6 +31,8 @@ class Player:
         self.pips = []
 
         self.effects = []
+
+        self.aura = None
     
     def add_effect(self, effect):
         self.effects.append(effect)

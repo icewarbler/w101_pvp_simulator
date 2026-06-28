@@ -12,19 +12,22 @@
                 "TYPE": "SHIELD",
                 "TARGET": "SELF",
                 "SCHOOL": "FIRE",
-                "VALUE": 55
+                "VALUE": 55,
+                "FAMILY": "ELEMENTALSHIELD_FIRESHIELD55"
             },
             {
                 "TYPE": "SHIELD",
                 "TARGET": "SELF",
                 "SCHOOL": "ICE",
-                "VALUE": 55
+                "VALUE": 55,
+                "FAMILY": "ELEMENTALSHIELD_ICESHIELD55"
             },
             {
                 "TYPE": "SHIELD",
                 "TARGET": "SELF",
                 "SCHOOL": "STORM",
-                "VALUE": 55
+                "VALUE": 55,
+                "FAMILY": "ELEMENTALSHIELD_STORMSHIELD55"
             }
         ]
     },
@@ -345,13 +348,14 @@
             {
                 "TYPE": "SHIELD",
                 "TARGET": "SELF",
-                "SCHOOL": "TARGET_SCHOOL",
+                "SCHOOL": "ENEMY_SCHOOL",
                 "VALUE": 80,
                 "AMOUNT": 3,
                 "FAMILY": "DARKWEAVER_FIRESHIELD"
             },
             {
                 "TYPE": "BACKLASH",
+                "TARGET": "SELF",
                 "DURATION": 4,
                 "VALUE_PER_TURN": 5,
                 "CONDITION": {
@@ -491,10 +495,12 @@
                 "TARGET": "ENEMY",
                 "SCHOOL": "UNIVERSAL",
                 "VALUE": 70,
-                "QUANTITY": 3
+                "AMOUNT": 3,
+                "FAMILY": "DARKFIEND_DOTTRAP70"
             },
             {
                 "TYPE": "BACKLASH",
+                "TARGET": "SELF",
                 "DURATION": 4,
                 "VALUE_PER_TURN": 5,
                 "CONDITION": {

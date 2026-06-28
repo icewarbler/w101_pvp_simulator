@@ -1,16 +1,17 @@
-# class Effect:
-#     def __init__(
-#             self,
-#             effect_type,
-#             effect_obj
-#     ):
-#         self.effect_type = effect_type
-#         self.effect_obj = effect_obj
-
-#     def get_effect_obj(self):
-#         return self.effect_obj
-
 class Effect():
+    registry = {}
+
+    @classmethod
+    def register(cls, effect_type):
+        def decorator(subclass):
+            cls.registry[effect_type] = subclass
+            return subclass
+        return decorator
+
+    @classmethod
+    def from_json(cls, effect):
+        return cls.registry[effect["TYPE"]].from_json(effect)
+
     def __str__(self):
         return self.type
 
@@ -25,18 +26,28 @@ class Effect():
     def expired(self):
         return False
 
+
+@Effect.register("BUBBLE")
 class Bubble(Effect):
+    type = "BUBBLE"
+
+    @classmethod
+    def from_json(cls, effect):
+        return cls(effect["SCHOOL"], effect["VALUE"])
+    
     def __init__(
-            self,
-            school,
-            value
+        self,
+        school,
+        value
     ):
-        self.type = "BUBBLE"
         self.school = school
         self.value = value
 
     def __str__(self):
         return f"{self.type}: {self.school} {self.value}"
+    
+    def store_at(self):
+        return "MATCH"
     
     def begin_round(self):
         pass
@@ -44,7 +55,14 @@ class Bubble(Effect):
     def end_round(self):
         pass
 
-class Damage:
+@Effect.register("SINGLE_DAMAGE")
+class Single_Damage:
+    type = "SINGLE_DAMAGE"
+
+    @classmethod
+    def from_json(cls, effect):
+        return cls(effect["SCHOOL"], effect["VALUE"])
+    
     def __init__(
             self,
             school,
@@ -52,6 +70,15 @@ class Damage:
     ):
         self.school = school
         self.value = value
+
+    def __str__(self):
+        return f"{self.type}: {self.school} {self.value}"
+    
+    def store_at(self):
+        return None
+    
+    def apply(self, match, caster, enemy, effect):
+        match.do_damage(caster, enemy, effect)
 
 class Heal:
     def __init__(
@@ -98,19 +125,28 @@ class Ward(Effect):
 
     def mod_damage(self, damage):
         pass
+
+@Effect.register("DOT_TRAP")
+class DOT_Trap(Ward):
+    type = "DOT_TRAP"
+
+    @classmethod
+    def from_json(cls, effect):
+        return cls(effect["SCHOOL"], effect["VALUE"], effect["FAMILY"])
     
-class Trap(Ward):
     def __init__(
-            self,
-            school,
-            value,
-            family
+        self,
+        school,
+        value,
+        family
     ):
         super().__init__(school, value, family)
-        self.type = "TRAP"
 
     def __str__(self):
         return f"{self.type}: {self.school} {self.value}"
+    
+    def store_at(self):
+        return "PLAYER"
     
     def begin_round(self):
         pass
@@ -121,18 +157,58 @@ class Trap(Ward):
     def mod_damage(self, damage):
         return damage * (1 + self.value * 0.01)
 
-class Shield(Ward):
+@Effect.register("TRAP")
+class Trap(Ward):
+    type = "TRAP"
+
+    @classmethod
+    def from_json(cls, effect):
+        return cls(effect["SCHOOL"], effect["VALUE"], effect["FAMILY"])
+    
     def __init__(
-            self,
-            school,
-            value,
-            family
+        self,
+        school,
+        value,
+        family
     ):
         super().__init__(school, value, family)
-        self.type = "SHIELD"
 
     def __str__(self):
         return f"{self.type}: {self.school} {self.value}"
+    
+    def store_at(self):
+        return "PLAYER"
+    
+    def begin_round(self):
+        pass
+
+    def end_round(self):
+        pass
+
+    def mod_damage(self, damage):
+        return damage * (1 + self.value * 0.01)
+
+@Effect.register("SHIELD")
+class Shield(Ward):
+    type = "SHIELD"
+
+    @classmethod
+    def from_json(cls, effect):
+        return cls(effect["SCHOOL"], effect["VALUE"], effect["FAMILY"])
+    
+    def __init__(
+        self,
+        school,
+        value,
+        family
+    ):
+        super().__init__(school, value, family)
+
+    def __str__(self):
+        return f"{self.type}: {self.school} {self.value}"
+    
+    def store_at(self):
+        return "PLAYER"
     
     def begin_round(self):
         pass
@@ -161,19 +237,28 @@ class Shield(Ward):
 # de-aura:
 # increase incoming damage (decrease enemy res) - neg ward
 # decrease outgoing damage (decrease enemy damage) - neg charm
+@Effect.register("AURA")
 class Aura(Effect):
+    type = "AURA"
+
+    @classmethod
+    def from_json(cls, effect):
+        return cls(effect["DURATION"], effect["ADJ"])
+    
     def __init__(
-            self,
-            duration,
-            adj
-            # the effects are just charms/wards
+        self,
+        duration,
+        adj
+        # the effects are just charms/wards
     ):
-        self.type = "AURA"
         self.duration = duration
         self.adj = adj
 
     def __str__(self):
-        return f"{self.type}: {self.duration}"
+        return f"{self.type}: {self.duration} {self.adj}"
+    
+    def store_at(self):
+        return "PLAYER"
 
     def begin_round(self):
         pass
@@ -195,6 +280,9 @@ class DOT(Effect):
         self.stacks = stacks
         self.value = value
 
+    def store_at(self):
+        return "PLAYER"
+
     def begin_round(self):
         pass
 
@@ -213,28 +301,30 @@ class HOT(Effect):
         self.stacks = stacks
         self.value = value
 
+    def store_at(self):
+        return "PLAYER"
+
     def begin_round(self):
         pass
 
     def end_round(self):
         self.duration -= 1
 
-# #"TYPE": "BACKLASH",
-#                 "DURATION": 3,
-#                 "VALUE_TYPE": "PERCENT_MAX_HEALTH",
-#                 "VALUE_PER_TURN": 5,
-#                 "CONDITION": {
-#                     "EFFECT": "POSITIVE_CHARM",
-#                     "TARGET": "SELF"
-#                 }
+@Effect.register("BACKLASH")
 class Backlash(Effect):
+    type = "BACKLASH"
+
+    @classmethod
+    def from_json(cls, effect):
+        return cls(effect["DURATION"], effect["VALUE_PER_TURN"], effect["CONDITION"])
+    
     def __init__(
             self,
             duration,
             value_per_turn,
             condition
     ):
-        self.type = "BACKLASH"
+        super().__init__()
         self.school = "SHADOW"
         self.duration = duration
         self.value_per_turn = value_per_turn
@@ -245,6 +335,9 @@ class Backlash(Effect):
 
     def __str__(self):
         return f"{self.type}: {self.accumulated} {self.duration}"
+    
+    def store_at(self):
+        return "PLAYER"
 
     def begin_round(self):
         pass
@@ -258,3 +351,24 @@ class Backlash(Effect):
 
     def expired(self):
         return self.duration <= 1
+
+@Effect.register("GAMBIT")
+class Gambit(Effect):
+    type = "GAMBIT"
+
+    @classmethod
+    def from_json(cls, effect):
+        return cls(effect["CAUSE"], effect["PER_EFFECT"])
+    
+    def __init__(self, cause, per_effect):
+        self.cause = cause
+        self.per_effect = per_effect
+
+    def __str__(self):
+        return f"{self.type}"
+    
+    def store_at(self):
+        return None
+
+    def apply(self, match, caster, enemy, effect):
+        match.play_gambit(caster, enemy, self)
