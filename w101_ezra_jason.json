@@ -754,5 +754,17 @@
         "CASTER": "PLAYER2",
         "SPELL": "ELEMENTAL SHIELD",
         "TARGET": "PLAYER2"
+    },
+    {
+        "ROUND": 8,
+        "CASTER": "PLAYER1",
+        "SPELL": "WEAKNESS",
+        "TARGET": "PLAYER2"
+    },
+    {
+        "ROUND": 9,
+        "CASTER": "PLAYER2",
+        "SPELL": "HEPHAESTUS",
+        "TARGET": "PLAYER1"
     }
 ]

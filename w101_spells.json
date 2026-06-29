@@ -1,5 +1,6 @@
 [
     {
+        "ID": "ELEMENTALSHIELD_55",
         "SPELL": "ELEMENTAL SHIELD",
         "SCHOOL": "BALANCE",
         "PIPCOST": 0,
@@ -105,6 +106,7 @@
         ]
     },
     {
+        "ID": "WEAKNESS_25",
         "SPELL": "WEAKNESS",
         "SCHOOL": "BALANCE",
         "PIPCOST": 0,
@@ -116,7 +118,28 @@
             {
                 "TYPE": "WEAKNESS",
                 "TARGET": "ENEMY",
-                "VALUE": 25
+                "SCHOOL": "UNIVERSAL",
+                "VALUE": 25,
+                "FAMILY": "WEAKNESS_UNI25"
+            }
+        ]
+    },
+    {
+        "ID": "WEAKNESS_30",
+        "SPELL": "WEAKNESS",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["CHARM"],
+        "DESCRIPTION":
+            "APPLIES A -30% DAMAGE CHARM",
+        "EFFECTS": [
+            {
+                "TYPE": "WEAKNESS",
+                "TARGET": "ENEMY",
+                "SCHOOL": "UNIVERSAL",
+                "VALUE": 30,
+                "FAMILY": "WEAKNESS_UNI30"
             }
         ]
     },
@@ -170,8 +193,8 @@
     },
 
     {
+        "ID": "AMMUT_T4B",
         "SPELL": "AMMUT",
-        "TIER": "4B",
         "PIPCOST": 6,
         "TYPE": ["DAMAGE", "GAMBIT"],
         "ACCURACY": 75,
@@ -263,6 +286,32 @@
     },
 
     {
+        "ID": "HEPHAESTUS_T2",
+        "SPELL": "HEPHAESTUS",
+        "SCHOOL": "FIRE",
+        "PIPCOST": 3,
+        "SCHOOLPIPS": "FIRE",
+        "ACCURACY": 75,
+        "TYPE": ["DAMAGE", "RANGE_DAMAGE", "BUBBLE"],
+        "DESCRIPTION":
+            "Does 345-425 fire damage to target and applies a +25% fire bubble",
+        "EFFECTS": [
+            {
+                "TYPE": "RANGE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "FIRE",
+                "MIN": 345,
+                "MAX": 425
+            },
+            {
+                "TYPE": "BUBBLE",
+                "SCHOOL": "FIRE",
+                "VALUE": 25
+            }
+        ]
+    },
+
+    {
         "SPELL": "KING ARTORIUS (FIRE) (TIER 2B)",
         "SCHOOL": "FIRE",
         "PIPCOST": 8,
@@ -329,6 +378,7 @@
     },
 
     {
+        "ID": "DARKWEAVER_T2",
         "SPELL": "DARK WEAVER",
         "TIER": 2,
         "SCHOOL": "ICE",
@@ -367,6 +417,7 @@
     },
 
     {
+        "ID": "FROSTFEATHER_T2",
         "SPELL": "FROSTFEATHER",
         "SCHOOL": "ICE",
         "PIPCOST": 5,
@@ -390,6 +441,7 @@
     },
 
     {
+        "ID": "ICETRAP_40",
         "SPELL": "ICE TRAP",
         "SCHOOL": "ICE",
         "PIPCOST": 0,
@@ -475,6 +527,7 @@
     },
 
     {
+        "ID": "DARKFIEND",
         "SPELL": "DARK FIEND",
         "SCHOOL": "SHADOW",
         "PIPCOST": 0,
@@ -595,6 +648,7 @@
     },
 
     {
+        "ID": "STABILIZE",
         "SPELL": "STABILIZE",
         "SCHOOL": "STAR",
         "PIPCOST": 0,

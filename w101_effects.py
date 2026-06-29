@@ -80,6 +80,29 @@ class Single_Damage:
     def apply(self, match, caster, enemy, effect):
         match.do_damage(caster, enemy, effect)
 
+@Effect.register("RANGE_DAMAGE")
+class Range_Damage:
+    type = "RANGE_DAMAGE"
+
+    @classmethod
+    def from_json(cls, effect):
+        return cls(effect["SCHOOL"], effect["MIN"], effect["MAX"])
+    
+    def __init__(self, school, min, max):
+        self.school = school
+        self.min = min
+        self.max = max
+
+    def __str__(self):
+        return f"{self.type}: {self.school} {self.min} {self.max}"
+
+    def store_at(self):
+        return None
+    
+    def apply(self, match, caster, enemy, effect):
+        match.do_damage(caster, enemy, effect)
+
+
 class Heal:
     def __init__(
             self,
@@ -90,20 +113,47 @@ class Heal:
 class Charm(Effect):
     def __init__(
             self,
-            polarity,
             school,
-            value
+            value,
+            family
     ):
         self.type = "CHARM"
-        self.polarity = polarity
         self.school = school
         self.value = value
+        self.family = family
 
     def begin_round(self):
         pass
     
     def end_round(self):
         pass
+
+@Effect.register("WEAKNESS")
+class Weakness(Charm):
+    type = "WEAKNESS"
+
+    @classmethod
+    def from_json(cls, effect):
+        return cls(effect["SCHOOL"], effect["VALUE"], effect["FAMILY"])
+    
+    def __init__(self, school, value, family):
+        super().__init__(school, value, family)
+
+    def __str__(self):
+        return f"{self.type}: {self.school} {self.value}"
+    
+    def store_at(self):
+        return "PLAYER"
+    
+    def begin_round(self):
+        pass
+
+    def end_round(self):
+        pass
+
+    def mod_damage(self, damage):
+        return damage * (1 - self.value * 0.01)
+
 
 class Ward(Effect):
     def __init__(

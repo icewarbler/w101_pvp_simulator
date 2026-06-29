@@ -1,5 +1,6 @@
 import json
 import pandas as pd
+import random
 from w101_effects import Effect
 from w101_effects import Single_Damage
 from w101_effects import Trap
@@ -44,13 +45,7 @@ class Match:
 
     def change_bubble(self, bubble):
         self.global_effect = bubble
-                      
-
-    def getTTarget(self, caster, target):
-        if caster ==  target:
-            return self.caster
-        else:
-            return target
+                    
 
     def do_damage(self, caster_player, enemy_player, effect):
         effect_target = effect["TARGET"]
@@ -60,7 +55,13 @@ class Match:
             abs_target = enemy_player
 
         effect_school = effect["SCHOOL"]
-        effect_value = effect["VALUE"]
+
+        if effect["TYPE"] == "SINGLE_DAMAGE":
+            effect_value = effect["VALUE"]
+        elif effect["TYPE"] == "RANGE_DAMAGE":
+            effect_value = random.randrange(effect["MIN"], effect["MAX"], 5)
+        
+        print(f"Effect val: {effect_value}")
 
         # the order for activating damage is:
         # caster gear (% then flat) -> 
@@ -75,23 +76,36 @@ class Match:
     # print(caster_player.name)
     # print(f"default dmg: {effect_value}")
 
-    # print(f"caster pierce: {caster_player.pierce[effect_school]} {effect_school}") 
+        print(f"caster pierce: {caster_player.pierce[effect_school]} {effect_school}") 
 
         # gets caster's outgoing damage
-    #  print(caster_player.get_outgoing_damage(effect_school))
+        print(caster_player.get_outgoing_damage(effect_school))
     # print(f"value: {effect_value}")
         effect_value += (effect_value * caster_player.get_outgoing_damage(effect_school) * 0.01)
     #  print(f"a1: {effect_value}")
 
         # gets caster's aura
-        if Aura in caster_player.get_effects():
+        if caster_player.aura is not None:
             print("inside")
             # do stuff
 
         # gets any blades/weaknesses caster may have
-        if Charm in caster_player.get_effects():
-            print("blade")
-            # do stuff
+        caster_charms = [ effect for effect in caster_player.effects if isinstance(effect, Charm) ]
+
+        used_charm_families = set()
+
+        for charm in caster_charms:
+            if charm.school in (effect_school, "UNIVERSAL"):
+                if charm.family in used_charm_families:
+                    continue
+                used_charm_families.add(charm.family)
+                print(f"Charm used: {charm.school} of val {charm.value}")
+                effect_value = charm.mod_damage(effect_value)
+                caster_player.del_effect(charm)
+
+        # if Charm in caster_player.get_effects():
+        #     print("blade")
+        #     # do stuff
 
         # gets the global
         b = self.getBubble()
@@ -140,7 +154,7 @@ class Match:
 
         # gets enemy resist
         enemy_res = abs_target.get_incoming_resist(effect_school)
-    #  print(f"enemy res: {enemy_res}")
+        print(f"enemy res: {enemy_res}")
         effect_value -= effect_value * enemy_res * 0.01
     #  print(f"Post-resist effect_value: {effect_value}")
 
