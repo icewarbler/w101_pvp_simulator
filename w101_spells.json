@@ -148,6 +148,36 @@
     },
 
     {
+        "ID": "BLIGHTATTENUATE",
+        "SPELL": "BLIGHT ATTENUATE",
+        "SCHOOL": "DEATH",
+        "PIPCOST": 1,
+        "ACCURACY": 100,
+        "TYPE": ["AURA"],
+        "DESCRIPTION":
+            "Apply a negative aura that does +35% death damage and +35% ice damage to target for 4 rounds",
+        "EFFECTS": [
+            {
+                "TYPE": "AURA",
+                "DURATION": 5,
+                "TARGET": "ENEMY",
+                "ADJ": [ 
+                    {
+                        "TYPE": "TRAP",
+                        "SCHOOL": "DEATH",
+                        "VALUE": 35
+                    },
+                    {
+                        "TYPE": "TRAP",
+                        "SCHOOL": "ICE",
+                        "VALUE": 35
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
         "ID": "PUTREFECATION",
         "SPELL": "PUTREFACTION",
         "SCHOOL": "DEATH",
@@ -373,13 +403,53 @@
             {
                 "TYPE": "DOT",
                 "DURATION": 5,
-                "STACKS": 2,
+                "AMOUNT": 2,
                 "VALUE_PER_STACK": 460
             },
 
             {
                 "TYPE": "BACKLASH",
                 "DURATION": 3,
+                "VALUE_PER_TURN": 5,
+                "CONDITION": {
+                    "EFFECT": "TRAP",
+                    "TARGET": "ENEMY"
+                }
+            }
+        ]
+    },
+
+    {
+        "ID": "WICKEDBULL_T3B",
+        "SPELL": "WICKED BULL",
+        "SCHOOL": "FIRE",
+        "PIPCOST": 6,
+        "SHADCOST": 1,
+        "ACCURACY": 75,
+        "TYPE": ["DAMAGE", "DOT", "MANIPULATION", "ALL ENEMIES"],
+        "DESCRIPTION":
+            "DEALS 930 FIRE DAMAGE AND APPLIES TWO DOT EFFECTS THAT EACH DEAL 920 FIRE DAMAGE OVER 5 ROUNDS SPLIT AMONG SELECTED ENEMIES. REMOVES A HARMFUL WARD FROM TARGET OR STORES +5% MAX HEALTH DAMAGE EACH ROUND FOR THREE ROUNDS. DEALS STORED DAMAGE TO CASTER AFTER THREE ROUNDS",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "FIRE",
+                "VALUE": 930
+            },
+
+            {
+                "TYPE": "DOT",
+                "TARGET": "ENEMY",
+                "SCHOOL": "FIRE",
+                "DURATION": 5,
+                "AMOUNT": 2,
+                "VALUE_PER_STACK": 920
+            },
+
+            {
+                "TYPE": "BACKLASH",
+                "TARGET": "SELF",
+                "DURATION": 4,
                 "VALUE_PER_TURN": 5,
                 "CONDITION": {
                     "EFFECT": "TRAP",
@@ -650,12 +720,13 @@
                 "TYPE": "AURA",
                 "DURATION": 5,
                 "TARGET": "SELF",
-                "ADJ": {
-                    "TYPE": "SHIELD",
-                    "SUBTYPE": "DAMAGE",
-                    "SCHOOL": "UNIVERSAL",
-                    "VALUE": 20
-                }
+                "ADJ": [
+                    {
+                        "TYPE": "SHIELD",
+                        "SCHOOL": "UNIVERSAL",
+                        "VALUE": 20
+                    }
+                ]
             }
         ]
     },
@@ -712,12 +783,14 @@
                 "TYPE": "AURA",
                 "DURATION": 5,
                 "TARGET": "SELF",
-                "ADJ": {
-                    "TYPE": "SHIELD",
-                    "SUBTYPE": "DAMAGE",
-                    "SCHOOL": "UNIVERSAL",
-                    "VALUE": 25
-                }
+                "ADJ": [
+                    {
+                        "TYPE": "SHIELD",
+                        "SUBTYPE": "DAMAGE",
+                        "SCHOOL": "UNIVERSAL",
+                        "VALUE": 25
+                    }
+                ]
             }
         ]
     },

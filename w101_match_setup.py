@@ -17,8 +17,7 @@ class Match:
         self.turn = turn
         self.global_effect = []
 
-        # self.p1e = []
-        # self.p2e = []
+        self.current_instance = None
 
     def getPlayer1(self):
         return self.p1
@@ -46,7 +45,54 @@ class Match:
 
     def change_bubble(self, bubble):
         self.global_effect = bubble
-                    
+
+    # def consume_instance(spell_instance):
+    #     for charm in spell_instance.charms_used:
+    #         pass
+    #     for ward in spell_instance.wards_used:
+    #         pass
+                
+    # have to store caster pierce as well as this damage
+    # bubble and enemy stats are added when the dot is activated
+    # this function is called when dot is cast
+    # other stat function is called at begin of turn
+    def dot_outgoing_damage(self, caster_player, enemy_player, effect):
+        effect_target = effect["TARGET"]
+        if effect_target == "SELF":
+            abs_target = caster_player
+        elif effect_target == "ENEMY":
+            abs_target = enemy_player
+
+        effect_school = effect["SCHOOL"]
+
+        effect_value = effect["VALUE"]
+
+        print(f"Effect val: {effect_value}")
+
+        # gets caster's outgoing damage
+        print(caster_player.get_outgoing_damage(effect_school))
+    # print(f"value: {effect_value}")
+        effect_value += (effect_value * caster_player.get_outgoing_damage(effect_school) * 0.01)
+    #  print(f"a1: {effect_value}")
+
+        # gets caster's aura
+        if caster_player.aura is not None:
+            print("inside")
+            # do stuff
+
+        # gets any blades/weaknesses caster may have
+        caster_charms = [ effect for effect in caster_player.effects if isinstance(effect, Charm) ]
+
+        used_charm_families = set()
+
+        for charm in caster_charms:
+            if charm.school in (effect_school, "UNIVERSAL"):
+                if charm.family in used_charm_families:
+                    continue
+                used_charm_families.add(charm.family)
+                print(f"Charm used: {charm.school} of val {charm.value}")
+                effect_value = charm.mod_damage(effect_value)
+                caster_player.del_effect(charm)
 
     def do_damage(self, caster_player, enemy_player, effect):
         effect_target = effect["TARGET"]
@@ -63,6 +109,7 @@ class Match:
             effect_value = random.randrange(effect["MIN"], effect["MAX"], 5)
         
         print(f"Effect val: {effect_value}")
+
 
         # the order for activating damage is:
         # caster gear (% then flat) -> 
@@ -125,12 +172,13 @@ class Match:
             print(json.dumps(adj, indent=4))
 
             # ignore if not correct school
-            if adj["SCHOOL"] in (effect_school, "UNIVERSAL"):
-                # ignore if not shield/trap type aura
-                if adj["TYPE"] == "SHIELD":
-                    effect_value -= effect_value * adj["VALUE"] * 0.01
-                elif adj["TYPE"] == "TRAP":
-                    effect_value += effect_value * adj["VALUE"] * 0.01
+            for modifier in adj:
+                if modifier["SCHOOL"] in (effect_school, "UNIVERSAL"):
+                    # ignore if not shield/trap type aura
+                    if modifier["TYPE"] == "SHIELD":
+                        effect_value -= effect_value * modifier["VALUE"] * 0.01
+                    elif modifier["TYPE"] == "TRAP":
+                        effect_value += effect_value * modifier["VALUE"] * 0.01
 
     #  print(f"post-aura effect_value: {effect_value}")
 

@@ -30,12 +30,12 @@ def insert_starting_conditions(match_obj):
   #  print(f"{match_obj.global_effect}")
 
     p1.add_effect(Trap("FIRE", 65, None))
-    adj = {
+    adj = [{
         "TYPE": "SHIELD",
         "SUBTYPE": "DAMAGE",
         "SCHOOL": "UNIVERSAL",
         "VALUE": 20
-    }
+    }]
     p1.aura = Aura(2, adj)
 
     p2.add_effect(Trap("FIRE", 30, None))
@@ -53,6 +53,7 @@ def cast_spell(match_obj, caster_player, enemy_player, spell_data):
         return
 
     spell_effects = spell_data.get("EFFECTS")
+
 
     # loop through the effects of the spell
     # then apply them to the right player in match_obj
@@ -105,75 +106,6 @@ def cast_spell(match_obj, caster_player, enemy_player, spell_data):
         #     effect_obj.apply(match_obj, caster_player, enemy_player)
 
         continue
-
-        match effect_type:
-            case "SINGLE_DAMAGE":
-                do_damage(match_obj, caster_player, enemy_player, effect)
-
-            case "TRAP":
-                abs_target = get_target(caster_player, enemy_player, effect)
-
-                effect_school = effect.get("SCHOOL")
-                effect_value = effect.get("VALUE")
-
-                effect_family = effect.get("FAMILY")
-
-                # abs_target = match_obj.getTTarget(caster, effect_target)
-
-                jel = Trap(effect_school, effect_value, effect_family)
-
-                match_obj.add_effect(abs_target, jel)
-            case "AURA":
-                abs_target = get_target(caster_player, enemy_player, effect)
-
-                bor = Aura(
-                    effect.get("DURATION"),
-                    effect.get("ADJ")
-                )
-
-                # checks if target already has an aura effect
-                has_aura = next( (effect for effect in abs_target.effects if isinstance(effect, Aura)), None )
-
-                # if aura, delete
-                if has_aura:
-                    abs_target.del_effect(has_aura)
-
-                match_obj.add_effect(abs_target, bor)
-
-            case "BACKLASH":
-                ba = Backlash(
-                    effect.get("DURATION"),
-                    effect.get("VALUE_PER_TURN"),
-                    effect.get("CONDITION")
-                )
-
-                match_obj.add_effect(caster_player, ba)
-
-            case "GAMBIT":
-                play_gambit(caster_player, enemy_player, effect)
-
-            case "SHIELD":
-                abs_target = get_target(caster_player, enemy_player, effect)
-
-                effect_school = effect.get("SCHOOL")
-                effect_value = effect.get("VALUE")
-
-                effect_family = effect.get("FAMILY")
-
-                if effect_school == "TARGET_SCHOOL":
-                        effect_school = enemy_player.school
-
-                amount = effect.get("AMOUNT", 1)
-                
-                for _ in range(amount):
-                    hehe = Shield(effect_school, effect_value, effect_family)
-                    match_obj.add_effect(abs_target, hehe)
-
-            case "BUBBLE":
-                effect_school = effect.get("SCHOOL")
-                effect_value = effect.get("VALUE")
-                kori = Bubble(effect_school, effect_value)
-                match_obj.change_bubble(kori)
 
 
 # match_obj is what is changing over time --
@@ -305,10 +237,12 @@ def start_match(match_obj):
                 effect.end_round()
         
         if caster_player.aura is not None:
+            print("Caster aura:")
             caster_player.aura.end_round()
             print(caster_player.aura)
         
         if enemy_player.aura is not None:
+            print("Enemy aura:")
             print(enemy_player.aura)
 
         print_effects(match_obj.getPlayer1())

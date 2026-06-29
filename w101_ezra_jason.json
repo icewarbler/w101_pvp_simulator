@@ -789,5 +789,17 @@
         "CASTER": "PLAYER2",
         "SPELL": "FIREBLADE_35",
         "TARGET": "PLAYER2"
+    },
+    {
+        "ROUND": 14,
+        "CASTER": "PLAYER1",
+        "SPELL": "BLIGHTATTENUATE",
+        "TARGET": "PLAYER2"
+    },
+    {
+        "ROUND": 15,
+        "CASTER": "PLAYER2",
+        "SPELL": "WICKEDBULL_T3B",
+        "TARGET": "PLAYER1"
     }
 ]

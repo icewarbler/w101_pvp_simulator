@@ -356,7 +356,7 @@ class Aura(Effect):
         self.adj = adj
 
     def __str__(self):
-        return f"{self.type}: {self.duration}"
+        return f"{self.type}: {self.duration} {self.adj}"
     
     def store_at(self):
         return "PLAYER"
@@ -368,7 +368,14 @@ class Aura(Effect):
         self.duration -= 1
 
 # decreases health
+@Effect.register("DOT")
 class DOT(Effect):
+    type = "DOT"
+
+    @classmethod
+    def from_json(cls, effect):
+        return cls(effect["SCHOOL"], effect["DURATION"], effect["AMOUNT"], effect["VALUE_PER_STACK"])
+        
     def __init__(
             self,
             school,
@@ -381,14 +388,17 @@ class DOT(Effect):
         self.stacks = stacks
         self.value = value
 
+    def __str__(self):
+        return f"{self.type}: {self.school} {self.duration} {self.value}"
+
     def store_at(self):
         return "PLAYER"
 
     def begin_round(self):
-        pass
+        self.duration -= 1
 
     def end_round(self):
-        self.duration -= 1
+        pass
 
 # increases health
 class HOT(Effect):
