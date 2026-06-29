@@ -17,8 +17,6 @@ class Match:
         self.turn = turn
         self.global_effect = []
 
-        self.current_instance = None
-
     def getPlayer1(self):
         return self.p1
     
@@ -46,26 +44,20 @@ class Match:
     def change_bubble(self, bubble):
         self.global_effect = bubble
 
-    # def consume_instance(spell_instance):
-    #     for charm in spell_instance.charms_used:
-    #         pass
-    #     for ward in spell_instance.wards_used:
-    #         pass
+    def consume_instance(spell_instance):
+        for charm in spell_instance.charms_used:
+            pass
+        for ward in spell_instance.wards_used:
+            pass
                 
     # have to store caster pierce as well as this damage
     # bubble and enemy stats are added when the dot is activated
     # this function is called when dot is cast
     # other stat function is called at begin of turn
-    def dot_outgoing_damage(self, caster_player, enemy_player, effect):
-        effect_target = effect["TARGET"]
-        if effect_target == "SELF":
-            abs_target = caster_player
-        elif effect_target == "ENEMY":
-            abs_target = enemy_player
+    def dot_damage(self, caster_player, effect, context):
+        effect_school = effect.school
 
-        effect_school = effect["SCHOOL"]
-
-        effect_value = effect["VALUE"]
+        effect_value = effect.value
 
         print(f"Effect val: {effect_value}")
 
@@ -92,21 +84,25 @@ class Match:
                 used_charm_families.add(charm.family)
                 print(f"Charm used: {charm.school} of val {charm.value}")
                 effect_value = charm.mod_damage(effect_value)
-                caster_player.del_effect(charm)
+                if charm not in context.charms_used:
+                    context.add_used_charm(caster_player, charm)
+            #    caster_player.del_effect(charm)
 
-    def do_damage(self, caster_player, enemy_player, effect):
-        effect_target = effect["TARGET"]
-        if effect_target == "SELF":
+        print(f"DOT value: {effect_value}")
+        effect.new_damage(effect_value)
+
+    def do_damage(self, caster_player, enemy_player, effect, context):
+        if effect.target == "SELF":
             abs_target = caster_player
-        elif effect_target == "ENEMY":
+        elif effect.target == "ENEMY":
             abs_target = enemy_player
 
-        effect_school = effect["SCHOOL"]
+        effect_school = effect.school
 
-        if effect["TYPE"] == "SINGLE_DAMAGE":
-            effect_value = effect["VALUE"]
-        elif effect["TYPE"] == "RANGE_DAMAGE":
-            effect_value = random.randrange(effect["MIN"], effect["MAX"], 5)
+        if effect.type == "SINGLE_DAMAGE":
+            effect_value = effect.value
+        elif effect.type == "RANGE_DAMAGE":
+            effect_value = random.randrange(effect.min, effect.max, 5)
         
         print(f"Effect val: {effect_value}")
 
@@ -149,7 +145,8 @@ class Match:
                 used_charm_families.add(charm.family)
                 print(f"Charm used: {charm.school} of val {charm.value}")
                 effect_value = charm.mod_damage(effect_value)
-                caster_player.del_effect(charm)
+                context.add_used_charm(caster_player, charm)
+            #    caster_player.del_effect(charm)
 
         # if Charm in caster_player.get_effects():
         #     print("blade")
@@ -197,6 +194,7 @@ class Match:
                 used_families.add(ward.family)
                 print(f"Ward used: {ward.school} of val {ward.value}")
                 effect_value = ward.mod_damage(effect_value)
+             #   context.add_used_ward(abs_target, ward)
                 abs_target.del_effect(ward)
         
     #  print(f"Post-ward effect_value: {effect_value}")
@@ -211,10 +209,10 @@ class Match:
         print(f"Does {effect_value} damage!")
         print(f"{abs_target.name} HEALTH: {abs_target.curr_health}")
 
-    def play_gambit(self, caster_player, enemy_player, effect):
-        gambit_cause = effect.cause
+    def play_gambit(self, caster_player, enemy_player, gambit, context):
+        gambit_cause = gambit.cause
         print(gambit_cause)
-        gambit_effect = effect.per_effect
+        gambit_effect = gambit.per_effect
 
     #  print(json.dumps(gambit_cause, indent=4))
     #  print(json.dumps(gambit_effect, indent=4))

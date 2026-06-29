@@ -12,6 +12,7 @@ from w101_effects import Aura
 from w101_effects import Bubble
 from w101_player import Player
 from w101_match_setup import Match
+from spell_instance import SpellInstance
 
 def print_turn_info(round, caster_player, spell_name):
     print(f"Round {round}: {caster_player.name} casts {spell_name}")
@@ -52,12 +53,11 @@ def cast_spell(match_obj, caster_player, enemy_player, spell_data):
     if spell_data in (None, "NONE"):
         return
 
-    spell_effects = spell_data.get("EFFECTS")
-
+    context = SpellInstance(spell_data, caster_player, enemy_player)
 
     # loop through the effects of the spell
     # then apply them to the right player in match_obj
-    for effect in spell_effects:
+    for effect in context.spell["EFFECTS"]:
         effect_type = effect["TYPE"]
 
         print(f"Adding effect: {effect_type}")
@@ -89,14 +89,19 @@ def cast_spell(match_obj, caster_player, enemy_player, spell_data):
                     continue
                 
                 for _ in range(amount):
-                    abs_target.add_effect(effect_obj)
+
+                    new_effect = effect_obj.clone()
+
+                    if new_effect.type == "DOT":
+                        new_effect.get_damage(match_obj, caster_player, context)
+                    abs_target.add_effect(new_effect)
 
             
             case "MATCH":
                 match_obj.global_effect = effect_obj
 
             case None:
-                effect_obj.apply(match_obj, caster_player, enemy_player, effect)
+                effect_obj.apply(match_obj, caster_player, enemy_player, context)
 
       #  print(f"{effect_obj} has persistance: {effect_obj.is_persistant()}")
         # if effect_obj.is_persistant():
@@ -105,7 +110,9 @@ def cast_spell(match_obj, caster_player, enemy_player, spell_data):
         # else:
         #     effect_obj.apply(match_obj, caster_player, enemy_player)
 
-        continue
+    for charm, player in context.charms_used.items():
+        print(f"Used charm: {charm}")
+        player.del_effect(charm)
 
 
 # match_obj is what is changing over time --

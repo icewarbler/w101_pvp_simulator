@@ -15,6 +15,9 @@ class Effect():
     def __str__(self):
         return self.type
 
+    def clone(self):
+        pass
+
     type = None
 
     def begin_round(self):
@@ -61,13 +64,15 @@ class Single_Damage:
 
     @classmethod
     def from_json(cls, effect):
-        return cls(effect["SCHOOL"], effect["VALUE"])
+        return cls(effect["TARGET"], effect["SCHOOL"], effect["VALUE"])
     
     def __init__(
             self,
+            target,
             school,
             value
     ):
+        self.target = target
         self.school = school
         self.value = value
 
@@ -77,8 +82,8 @@ class Single_Damage:
     def store_at(self):
         return None
     
-    def apply(self, match, caster, enemy, effect):
-        match.do_damage(caster, enemy, effect)
+    def apply(self, match, caster, enemy, context):
+        match.do_damage(caster, enemy, self, context)
 
 @Effect.register("RANGE_DAMAGE")
 class Range_Damage:
@@ -86,9 +91,10 @@ class Range_Damage:
 
     @classmethod
     def from_json(cls, effect):
-        return cls(effect["SCHOOL"], effect["MIN"], effect["MAX"])
+        return cls(effect["TARGET"], effect["SCHOOL"], effect["MIN"], effect["MAX"])
     
-    def __init__(self, school, min, max):
+    def __init__(self, target, school, min, max):
+        self.target = target
         self.school = school
         self.min = min
         self.max = max
@@ -99,8 +105,8 @@ class Range_Damage:
     def store_at(self):
         return None
     
-    def apply(self, match, caster, enemy, effect):
-        match.do_damage(caster, enemy, effect)
+    def apply(self, match, caster, enemy, context):
+        match.do_damage(caster, enemy, self, context)
 
 
 class Heal:
@@ -118,6 +124,9 @@ class Charm(Effect):
     ):
         self.value = value
         self.family = family
+
+    def clone(self):
+        return Charm(self.value, self.family)
 
     def begin_round(self):
         pass
@@ -139,6 +148,9 @@ class Blade(Charm):
 
     def __str__(self):
         return f"{self.type}: {self.school} {self.value}"
+    
+    def clone(self):
+        return Blade(self.school, self.value, self.family)
     
     def store_at(self):
         return "PLAYER"
@@ -166,6 +178,9 @@ class Weakness(Charm):
 
     def __str__(self):
         return f"{self.type}: {self.school} {self.value}"
+    
+    def clone(self):
+        return Weakness(self.school, self.value, self.family)
     
     def store_at(self):
         return "PLAYER"
@@ -218,6 +233,9 @@ class Ward(Effect):
 
         self.family = family
 
+    def clone(self):
+        return Ward(self.school, self.value, self.family)
+
     def begin_round(self):
         pass
 
@@ -245,6 +263,9 @@ class DOT_Trap(Ward):
 
     def __str__(self):
         return f"{self.type}: {self.school} {self.value}"
+    
+    def clone(self):
+        return DOT_Trap(self.school, self.value, self.family)
     
     def store_at(self):
         return "PLAYER"
@@ -277,6 +298,9 @@ class Trap(Ward):
     def __str__(self):
         return f"{self.type}: {self.school} {self.value}"
     
+    def clone(self):
+        return Trap(self.school, self.value, self.family)
+    
     def store_at(self):
         return "PLAYER"
     
@@ -307,6 +331,9 @@ class Shield(Ward):
 
     def __str__(self):
         return f"{self.type}: {self.school} {self.value}"
+    
+    def clone(self):
+        return Shield(self.school, self.value, self.family)
     
     def store_at(self):
         return "PLAYER"
@@ -358,6 +385,9 @@ class Aura(Effect):
     def __str__(self):
         return f"{self.type}: {self.duration} {self.adj}"
     
+    def clone(self):
+        return Aura(self.duration, self.adj)
+    
     def store_at(self):
         return "PLAYER"
 
@@ -390,6 +420,9 @@ class DOT(Effect):
 
     def __str__(self):
         return f"{self.type}: {self.school} {self.duration} {self.value}"
+    
+    def clone(self):
+        return DOT(self.school, self.duration, self.stacks, self.value)
 
     def store_at(self):
         return "PLAYER"
@@ -399,6 +432,12 @@ class DOT(Effect):
 
     def end_round(self):
         pass
+
+    def get_damage(self, match, caster, context):
+        match.dot_damage(caster, self, context)
+
+    def new_damage(self, value):
+        self.value = value
 
 # increases health
 class HOT(Effect):
@@ -447,6 +486,9 @@ class Backlash(Effect):
     def __str__(self):
         return f"{self.type}: {self.accumulated} {self.duration}"
     
+    def clone(self):
+        return Backlash(self.duration, self.value_per_turn, self.condition)
+    
     def store_at(self):
         return "PLAYER"
 
@@ -481,5 +523,5 @@ class Gambit(Effect):
     def store_at(self):
         return None
 
-    def apply(self, match, caster, enemy, effect):
-        match.play_gambit(caster, enemy, self)
+    def apply(self, match, caster, enemy, context):
+        match.play_gambit(caster, enemy, self, context)
