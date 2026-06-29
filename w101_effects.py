@@ -113,12 +113,9 @@ class Heal:
 class Charm(Effect):
     def __init__(
             self,
-            school,
             value,
             family
     ):
-        self.type = "CHARM"
-        self.school = school
         self.value = value
         self.family = family
 
@@ -127,6 +124,33 @@ class Charm(Effect):
     
     def end_round(self):
         pass
+
+@Effect.register("BLADE")
+class Blade(Charm):
+    type = "BLADE"
+
+    @classmethod
+    def from_json(cls, effect):
+        return cls(effect["SCHOOL"], effect["VALUE"], effect["FAMILY"])
+    
+    def __init__(self, school, value, family):
+        super().__init__(value, family)
+        self.school = school
+
+    def __str__(self):
+        return f"{self.type}: {self.school} {self.value}"
+    
+    def store_at(self):
+        return "PLAYER"
+    
+    def begin_round(self):
+        pass
+
+    def end_round(self):
+        pass
+
+    def mod_damage(self, damage):
+        return damage * (1 + self.value * 0.01)
 
 @Effect.register("WEAKNESS")
 class Weakness(Charm):
@@ -137,7 +161,8 @@ class Weakness(Charm):
         return cls(effect["SCHOOL"], effect["VALUE"], effect["FAMILY"])
     
     def __init__(self, school, value, family):
-        super().__init__(school, value, family)
+        super().__init__(value, family)
+        self.school = school
 
     def __str__(self):
         return f"{self.type}: {self.school} {self.value}"
@@ -153,6 +178,32 @@ class Weakness(Charm):
 
     def mod_damage(self, damage):
         return damage * (1 - self.value * 0.01)
+    
+@Effect.register("HEAL_WEAKNESS")
+class Heal_Weakness(Charm):
+    type = "WEAKNESS"
+
+    @classmethod
+    def from_json(cls, effect):
+        return cls( effect["VALUE"], effect["FAMILY"])
+    
+    def __init__(self, value, family):
+        super().__init__(value, family)
+
+    def __str__(self):
+        return f"{self.type}: {self.value}"
+    
+    def store_at(self):
+        return "PLAYER"
+    
+    def begin_round(self):
+        pass
+
+    def end_round(self):
+        pass
+
+    def mod_damage(self, damage):
+        pass
 
 
 class Ward(Effect):
@@ -305,7 +356,7 @@ class Aura(Effect):
         self.adj = adj
 
     def __str__(self):
-        return f"{self.type}: {self.duration} {self.adj}"
+        return f"{self.type}: {self.duration}"
     
     def store_at(self):
         return "PLAYER"

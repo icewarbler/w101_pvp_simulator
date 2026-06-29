@@ -198,7 +198,7 @@ def start_match(match_obj):
     insert_starting_conditions(match_obj)
 
     # puts every entry read from w101_spells.json into a dict
-    spell_lookup = { spell["SPELL"]: spell for spell in spells }
+    spell_lookup = { spell["ID"]: spell for spell in spells }
 
     #df = pd.DataFrame(match)
 
@@ -262,7 +262,7 @@ def start_match(match_obj):
                 eat_target = enemy_player
             
             ate = False
-            
+
             print(f"eat_effect: {eat_effect}")
             for effect in reversed(eat_target.effects):
                 if effect.type == eat_effect:
@@ -303,6 +303,13 @@ def start_match(match_obj):
         else:
             for effect in p2e2:
                 effect.end_round()
+        
+        if caster_player.aura is not None:
+            caster_player.aura.end_round()
+            print(caster_player.aura)
+        
+        if enemy_player.aura is not None:
+            print(enemy_player.aura)
 
         print_effects(match_obj.getPlayer1())
         print_effects(match_obj.getPlayer2())

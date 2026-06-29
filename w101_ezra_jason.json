@@ -2,7 +2,7 @@
     {
         "ROUND": 0,
         "CASTER": "PLAYER1",
-        "SPELL": "DARK WEAVER",
+        "SPELL": "DARKWEAVER_T2",
         "TARGET": "PLAYER2",
         "CRIT": "TRUE",
         "MODIFIERS": [
@@ -97,7 +97,7 @@
     {
         "ROUND": 1,
         "CASTER": "PLAYER2",
-        "SPELL": "DARK FIEND",
+        "SPELL": "DARKFIEND",
         "TARGET": "PLAYER1",
         "CRIT": "TRUE",
         "MODIFIERS": [
@@ -580,7 +580,7 @@
     {
         "ROUND": 4,
         "CASTER": "PLAYER1",
-        "SPELL": "ICE TRAP",
+        "SPELL": "ICETRAP_40",
         "TARGET": "PLAYER2",
         "PLAYER1_HEALTH1": 12879,
         "PLAYER2_HEALTH1": 7158,
@@ -740,31 +740,54 @@
     {
         "ROUND": 5,
         "CASTER": "PLAYER2",
-        "SPELL": "AMMUT",
+        "SPELL": "AMMUT_T4B",
         "TARGET": "PLAYER1"
     },
     {
         "ROUND": 6,
         "CASTER": "PLAYER1",
-        "SPELL": "FROSTFEATHER",
+        "SPELL": "FROSTFEATHER_T2",
         "TARGET": "PLAYER2"
     },
     {
         "ROUND": 7,
         "CASTER": "PLAYER2",
-        "SPELL": "ELEMENTAL SHIELD",
+        "SPELL": "ELEMENTALSHIELD_55",
         "TARGET": "PLAYER2"
     },
     {
         "ROUND": 8,
         "CASTER": "PLAYER1",
-        "SPELL": "WEAKNESS",
+        "SPELL": "WEAKNESS_30",
         "TARGET": "PLAYER2"
     },
     {
         "ROUND": 9,
         "CASTER": "PLAYER2",
-        "SPELL": "HEPHAESTUS",
+        "SPELL": "HEPHAESTUS_T2",
         "TARGET": "PLAYER1"
+    },
+    {
+        "ROUND": 10,
+        "CASTER": "PLAYER1",
+        "SPELL": "BRACE",
+        "TARGET": "PLAYER1"
+    },
+    {
+        "ROUND": 11,
+        "CASTER": "PLAYER2",
+        "SPELL": "NONE"
+    },
+    {
+        "ROUND": 12,
+        "CASTER": "PLAYER1",
+        "SPELL": "SNOWSERPENT_T3C",
+        "TARGET": "PLAYER2"
+    },
+    {
+        "ROUND": 13,
+        "CASTER": "PLAYER2",
+        "SPELL": "FIREBLADE_35",
+        "TARGET": "PLAYER2"
     }
 ]

@@ -33,6 +33,7 @@
         ]
     },
     {
+        "ID": "SAMOORAI",
         "SPELL": "SAMOORAI",
         "SCHOOL": "BALANCE",
         "PIPCOST": 3,
@@ -55,6 +56,7 @@
         ]
     },
     {
+        "ID": "SPIRITWEAKNESS_30",
         "SPELL": "SPIRIT WEAKNESS",
         "SCHOOL": "BALANCE",
         "PIPCOST": 0,
@@ -84,6 +86,7 @@
         ]
     },
     {
+        "ID": "STEALPIP",
         "SPELL": "STEAL PIP",
         "SCHOOL": "BALANCE",
         "PIPCOST": 0,
@@ -145,6 +148,7 @@
     },
 
     {
+        "ID": "PUTREFECATION",
         "SPELL": "PUTREFACTION",
         "SCHOOL": "DEATH",
         "PIPCOST:": 2,
@@ -165,6 +169,7 @@
     },
 
     {
+        "ID": "A-BAAHH-CALYPSE",
         "SPELL": "A-BAAHH-CALYPSE",
         "SCHOOL": "FIRE",
         "PIPCOST": 3,
@@ -227,7 +232,8 @@
     },
     
     {
-         "SPELL": "BRIMSTONE REVENANT",
+        "ID": "BRIMSTONEREVENANT",
+        "SPELL": "BRIMSTONE REVENANT",
         "SCHOOL": "FIRE",
         "PIPCOST": 2,
         "SCHOOLPIPS": "FIRE",
@@ -251,6 +257,7 @@
     },
 
     {
+        "ID": "FIREBLADE_35",
         "SPELL": "FIREBLADE",
         "SCHOOL": "FIRE",
         "PIPCOST": 0,
@@ -262,12 +269,15 @@
             {
                 "TYPE": "BLADE",
                 "TARGET": "SELF",
-                "VALUE": 35
+                "SCHOOL": "FIRE",
+                "VALUE": 35,
+                "FAMILY": "FIREBLADE_35"
             }
         ]
     },
     
     {
+        "ID": "HELEPHANT",
         "SPELL": "HELEPHANT",
         "SCHOOL": "FIRE",
         "PIPCOST": 6,
@@ -312,7 +322,8 @@
     },
 
     {
-        "SPELL": "KING ARTORIUS (FIRE) (TIER 2B)",
+        "ID": "KINGARTORIUS_FIRE_T2G",
+        "SPELL": "KING ARTORIUS (FIRE)",
         "SCHOOL": "FIRE",
         "PIPCOST": 8,
         "ACCURACY": 75,
@@ -344,7 +355,8 @@
     },
 
     {
-        "SPELL": "WICKED BULL (TIER 2B)",
+        "ID": "WICKEDBULL_T2B",
+        "SPELL": "WICKED BULL",
         "SCHOOL": "FIRE",
         "PIPCOST": 6,
         "SHADCOST": 1,
@@ -462,6 +474,41 @@
     },
 
     {
+        "ID": "SNOWSERPENT_T3C",
+        "SPELL": "SNOW SERPENT",
+        "SCHOOL": "ICE",
+        "PIPCOST": 2,
+        "ACCURACY": 80,
+        "TYPE": ["GAMBIT", "SINGLE_DAMAGE"],
+        "DESCRIPTION":
+            "Removes a trap from target to apply 2 -65% healing charms on target then deals 150 ice damage to target",
+        "EFFECTS": [
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": {
+                    "ACTION": "GAMBIT",
+                    "TYPE": "TRAP",
+                    "TARGET": "ENEMY",
+                    "MAX": 1
+                },
+                "PER_EFFECT": {
+                    "TYPE": "HEAL_WEAKNESS",
+                    "TARGET": "ENEMY",
+                    "VALUE": 65,
+                    "FAMILY": "ICESERPENT_INFECTION65"
+                }
+            },
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "ICE",
+                "VALUE": 150
+            }
+        ]
+    },
+
+    {
+        "ID": "SCIONOFMYTH",
         "SPELL": "SCION OF MYTH",
         "TIER": "5B",
         "SCHOOL": "MYTH",
@@ -492,6 +539,7 @@
     },
 
     {
+        "ID": "DARKNOVA",
         "SPELL": "DARK NOVA",
         "SCHOOL": "SHADOW",
         "PIPCOST": 0,
@@ -565,6 +613,7 @@
     },
 
     {
+        "ID": "ATTENUATE",
         "SPELL": "ATTENUATE",
         "SCHOOL": "STAR",
         "PIPCOST": 0,
@@ -588,6 +637,7 @@
     },
 
     {
+        "ID": "BRACE",
         "SPELL": "BRACE",
         "SCHOOL": "STAR",
         "PIPCOST": 0,
@@ -598,7 +648,7 @@
         "EFFECTS": [
             {
                 "TYPE": "AURA",
-                "DURATION": 4,
+                "DURATION": 5,
                 "TARGET": "SELF",
                 "ADJ": {
                     "TYPE": "SHIELD",
@@ -611,6 +661,7 @@
     },
 
     {
+        "ID": "FURNACE",
         "SPELL": "FURNACE",
         "SCHOOL": "STAR",
         "PIPCOST": 0,
@@ -672,6 +723,7 @@
     },
 
     {
+        "ID": "STARFALL",
         "SPELL": "STARFALL",
         "SCHOOL": "STAR",
         "PIPCOST": 0,

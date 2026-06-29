@@ -7,6 +7,7 @@ from w101_effects import Trap
 from w101_effects import Charm
 from w101_effects import Aura
 from w101_effects import Ward
+from w101_effects import Weakness
 from w101_player import Player
 
 class Match:
@@ -178,6 +179,39 @@ class Match:
             abs_target = enemy_player
 
         match gambit_cause.get("ACTION"):
+            case "GAMBIT":
+                to_remove = []
+                gambit_type = gambit_cause.get("TYPE")
+                for effect in caster_player.get_effects():
+                    if effect.type == gambit_type:
+                        to_remove.append(effect)
+                        
+                        if len(to_remove) == gambit_cause.get("MAX"):
+                            break
+
+                amount = len(to_remove)
+
+                for effect in to_remove:
+                    abs_target.del_effect(effect)
+
+                per_effect_type = gambit_effect.get("TYPE")
+                
+                for _ in range(amount):
+                    if per_effect_type == "HEAL_WEAKNESS":
+                        gambit_effect_target = gambit_effect["TARGET"]
+
+                        if gambit_effect_target == "SELF":
+                            abs_target = caster_player
+                        elif gambit_effect_target == "ENEMY":
+                            abs_target = enemy_player
+
+                        per_effect_value = gambit_effect.get("VALUE")
+                        per_effect_family = gambit_effect.get("FAMILY")
+
+                        hiii = Weakness(per_effect_value, per_effect_family)
+
+                        self.add_effect(abs_target, hiii)
+
             case "CLEAR":
                 to_remove = []
                 gambit_type = gambit_cause.get("TYPE")
