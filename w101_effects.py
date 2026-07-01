@@ -294,8 +294,8 @@ class DOT_Trap(Ward):
     def end_round(self):
         pass
 
-    def mod_damage(self, damage):
-        return damage * (1 + self.value * 0.01)
+    def mod_damage(self, damage, pierce):
+        return pierce, damage * (1 + self.value * 0.01)
 
 @Effect.register("TRAP")
 class Trap(Ward):
@@ -330,8 +330,8 @@ class Trap(Ward):
     def end_round(self):
         pass
 
-    def mod_damage(self, damage):
-        return damage * (1 + self.value * 0.01)
+    def mod_damage(self, damage, pierce):
+        return pierce, damage * (1 + self.value * 0.01)
 
 @Effect.register("SHIELD")
 class Shield(Ward):
@@ -366,8 +366,16 @@ class Shield(Ward):
     def end_round(self):
         pass
 
-    def mod_damage(self, damage):
-        return damage * (1 - self.value * 0.01)
+    def mod_damage(self, damage, pierce):
+        mod_val = self.value
+        mod_val -= pierce
+        if mod_val < 0:
+            pierce = -(mod_val)
+            mod_val = 0
+        else:
+            pierce = 0
+        print(f"shield val after pierce: {mod_val}; pierce: {pierce}")
+        return pierce, damage * (1 - mod_val * 0.01)
 
 #Your gear (% then flat)-> 
 # your aura -> 
@@ -453,7 +461,7 @@ class DOT(Effect):
         self.pierce_val = 0
 
     def __str__(self):
-        return f"{self.type}: {self.school} {self.duration} {self.value}"
+        return f"{self.type}: {self.school} {self.duration} {self.value_per_tick} / {self.value}"
     
     def clone(self):
         return DOT(self.school, self.duration, self.stacks, self.value)
@@ -472,13 +480,16 @@ class DOT(Effect):
 
     def new_damage(self, value):
         self.value = value
+        self.leftover_value = value
 
     def new_tick_damage(self, value):
         self.value_per_tick = value
 
     def tick(self, caster, match):
         match.do_tick(caster, self)
+        print(f"{self.leftover_value}")
         self.leftover_value -= self.value_per_tick
+        print(f"{caster.name} took {self.value_per_tick} damage from dot; leftover: {self.leftover_value}")
 
     def set_pierce(self, value):
         self.pierce_val = value

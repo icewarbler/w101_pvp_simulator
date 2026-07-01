@@ -32,10 +32,12 @@ def insert_starting_conditions(match_obj):
 
   #  print(f"{match_obj.global_effect}")
 
+    p1.curr_health = 12887
+    p2.curr_health = 9479
+
     p1.add_effect(Trap("FIRE", 65, None))
     adj = [{
         "TYPE": "SHIELD",
-        "SUBTYPE": "DAMAGE",
         "SCHOOL": "UNIVERSAL",
         "VALUE": 20
     }]
@@ -158,6 +160,8 @@ def start_match(match_obj):
 
     for turn in match:
         round = turn.get("ROUND")
+        # if round > 20:
+        #     break
         caster = turn.get("CASTER")
 
         # caster stored in the match obj has definite names for players
@@ -271,6 +275,10 @@ def start_match(match_obj):
             print_turn_info(round, caster_player, spell_name)
 
             cast_spell(match_obj, caster_player, enemy_player, spell_data)
+
+        if caster_player.curr_health <= 0 or enemy_player.curr_health <= 0:
+            match_obj.end_match(caster_player, enemy_player)
+            break
 
         p1e2 = match_obj.getPlayer1().get_effects()
         p2e2 = match_obj.getPlayer2().get_effects()

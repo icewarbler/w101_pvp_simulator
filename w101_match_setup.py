@@ -57,6 +57,11 @@ class Match:
 
         print(f"with damage: {effect_value}")
 
+        caster_pierce = caster_player.pierce[effect_school]
+        effect.pierce_val = caster_pierce
+
+        print(f"pierce_val: {effect.pierce_val} {effect_school}") 
+
         # gets caster's aura
         if caster_player.aura is not None:
             adj = caster_player.aura.adj
@@ -88,6 +93,13 @@ class Match:
                     context.add_used_charm(caster_player, charm)
             #    caster_player.del_effect(charm)
 
+        # gets the global
+        b = self.global_effect
+
+        if b.school == effect_school:
+            print(f"Found bubble with value {b.value}")
+            effect_value += effect_value * b.value * 0.01
+
         print(f"DOT value: {effect_value}")
         effect.new_damage(effect_value)
 
@@ -97,6 +109,7 @@ class Match:
 
     def do_tick(self, caster, dot):
         effect_value = dot.value_per_tick
+        pierce_val = dot.pierce_val
         # gets any auras the enemy may have
        # enemy_aura = next( (effect for effect in abs_target.effects if isinstance(effect, Aura)), None )
         if caster.aura is not None:
@@ -110,7 +123,14 @@ class Match:
                     print(json.dumps(modifier, indent=4))
                     # ignore if not shield/trap type aura
                     if modifier["TYPE"] == "SHIELD":
-                        effect_value -= effect_value * modifier["VALUE"] * 0.01
+                        mod_val = modifier["VALUE"]
+                        print(f"mod_val: {mod_val}; pierce_val: {pierce_val}")
+                        mod_val -= pierce_val
+                        if mod_val < 0:
+                            pierce_val = -(mod_val)
+                            print(f"pierce_val: {pierce_val}; mod_val: {mod_val}")
+                            mod_val = 0
+                        effect_value -= effect_value * mod_val * 0.01
                     elif modifier["TYPE"] == "TRAP":
                         effect_value += effect_value * modifier["VALUE"] * 0.01
 
@@ -128,13 +148,18 @@ class Match:
                     continue
                 used_families.add(ward.family)
                 print(f"Ward used: {ward.school} of val {ward.value}")
-                effect_value = ward.mod_damage(effect_value)
+                pierce_val, effect_value = ward.mod_damage(effect_value, pierce_val)
+                print(f"post-ward effect_value: {effect_value}; pierce_val: {pierce_val}")
                 caster.del_effect(ward)
         
     #  print(f"Post-ward effect_value: {effect_value}")
 
         # gets enemy resist
         enemy_res = caster.get_incoming_resist(dot.school)
+        print(f"init enemy res: {enemy_res}")
+        enemy_res -= pierce_val
+        print(f"enemy res: {enemy_res}; pierce_val: {pierce_val}")
+        enemy_res = 0 if enemy_res < 0 else enemy_res
         effect_value -= effect_value * enemy_res * 0.01
     #  print(f"Post-resist effect_value: {effect_value}")
 
@@ -172,10 +197,12 @@ class Match:
     # print(caster_player.name)
     # print(f"default dmg: {effect_value}")
 
-        print(f"caster pierce: {caster_player.pierce[effect_school]} {effect_school}") 
+        pierce_val = caster_player.pierce[effect_school]
+
+        print(f"caster pierce: {pierce_val} {effect_school}") 
 
         # gets caster's outgoing damage
-       # print(caster_player.get_outgoing_damage(effect_school))
+        print(caster_player.get_outgoing_damage(effect_school))
     # print(f"value: {effect_value}")
         effect_value += (effect_value * caster_player.get_outgoing_damage(effect_school) * 0.01)
     #  print(f"a1: {effect_value}")
@@ -238,7 +265,14 @@ class Match:
                     print(json.dumps(modifier, indent=4))
                     # ignore if not shield/trap type aura
                     if modifier["TYPE"] == "SHIELD":
-                        effect_value -= effect_value * modifier["VALUE"] * 0.01
+                        mod_val = modifier["VALUE"]
+                        print(f"mod_val: {mod_val}; pierce_val: {pierce_val}")
+                        mod_val -= pierce_val
+                        if mod_val < 0:
+                            pierce_val = -(mod_val)
+                            print(f"pierce_val: {pierce_val}; mod_val: {mod_val}")
+                            mod_val = 0
+                        effect_value -= effect_value * mod_val * 0.01
                     elif modifier["TYPE"] == "TRAP":
                         effect_value += effect_value * modifier["VALUE"] * 0.01
 
@@ -257,8 +291,9 @@ class Match:
                 if ward.type == "DOT_TRAP":
                     continue
                 used_families.add(ward.family)
-                print(f"Ward used: {ward.school} of val {ward.value}")
-                effect_value = ward.mod_damage(effect_value)
+                print(f"{ward.type} used: {ward.school} of val {ward.value}")
+                pierce_val, effect_value = ward.mod_damage(effect_value, pierce_val)
+                print(f"post-ward effect_value: {effect_value}; pierce_val: {pierce_val}")
              #   context.add_used_ward(abs_target, ward)
                 abs_target.del_effect(ward)
         
@@ -266,7 +301,10 @@ class Match:
 
         # gets enemy resist
         enemy_res = abs_target.get_incoming_resist(effect_school)
-        print(f"enemy res: {enemy_res}")
+        print(f"init enemy res: {enemy_res}")
+        enemy_res -= pierce_val
+        print(f"enemy res: {enemy_res}; pierce_val: {pierce_val}")
+        enemy_res = 0 if enemy_res < 0 else enemy_res
         effect_value -= effect_value * enemy_res * 0.01
     #  print(f"Post-resist effect_value: {effect_value}")
 
@@ -379,3 +417,9 @@ class Match:
                         jel = Trap(per_effect_school, per_effect_value, per_effect_family)
 
                         self.add_effect(abs_target, jel)
+
+    def end_match(self, caster_player, enemy_player):
+        if caster_player.curr_health <= 0:
+            print(f"{caster_player.name} has been defeated!")
+        elif enemy_player.curr_health <= 0:
+            print(f"{enemy_player.name} has been defeated!")

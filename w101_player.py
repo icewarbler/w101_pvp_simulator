@@ -52,7 +52,11 @@ class Player:
         return self.incoming_resist.get(school)
     
     def explode_dot(self, dot, multiplier):
-        dot.leftover_value += (dot.leftover_value * multiplier * 0.01)
+        res = self.incoming_resist[dot.school]
+        res -= dot.pierce_val
+        res = 0 if res < 0 else res
+        dot.leftover_value =  dot.leftover_value * multiplier * 0.01
+        dot.leftover_value *= (1 - res * 0.01)
         self.dec_health(dot.leftover_value)
         print(f"{self.name} took {dot.leftover_value} damage from dot")
         self.del_effect(dot)
