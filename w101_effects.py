@@ -421,6 +421,9 @@ class Aura(Effect):
     def end_round(self):
         self.duration -= 1
 
+    def expired(self):
+        return self.duration <= 0
+
 # decreases health
 @Effect.register("DOT")
 class DOT(Effect):
@@ -445,6 +448,7 @@ class DOT(Effect):
         self.value = value
 
         self.value_per_tick = 0
+        self.leftover_value = value
 
         self.pierce_val = 0
 
@@ -474,6 +478,7 @@ class DOT(Effect):
 
     def tick(self, caster, match):
         match.do_tick(caster, self)
+        self.leftover_value -= self.value_per_tick
 
     def set_pierce(self, value):
         self.pierce_val = value

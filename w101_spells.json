@@ -232,7 +232,7 @@
     },
 
     {
-        "ID": "A-BAAHH-CALYPSE",
+        "ID": "A-BAAHH-CALYPSE_T2",
         "SPELL": "A-BAAHH-CALYPSE",
         "SCHOOL": "FIRE",
         "PIPCOST": 3,
@@ -240,21 +240,25 @@
         "TYPE": ["DAMAGE", "GAMBIT"],
         "ACCURACY": 75,
         "DESCRIPTION":
-            "DEALS 410 FIRE DAMAGE AND DETONATES TWO DOT EFFECTS ON TARGET TO DEAL 145% OF REMAINING DAMAGE",
+            "DEALS 420 FIRE DAMAGE AND DETONATES TWO DOT EFFECTS ON TARGET TO DEAL 145% OF REMAINING DAMAGE",
         "EFFECTS": [
             {
                 "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
                 "SCHOOL": "FIRE",
                 "VALUE": 410
             },
             {
                 "TYPE": "GAMBIT",
                 "CAUSE": {
-                    "SUBTYPE": "DETONATE",
-                    "TARGET": "DOT"
+                    "ACTION": "DETONATE",
+                    "TYPE": "DOT",
+                    "TARGET": "ENEMY",
+                    "MAX": 2
                 },
-                "EFFECT": {
-                    "SUBTYPE": "SINGLE_DAMAGE"
+                "PER_EFFECT": {
+                    "SUBTYPE": "SINGLE_DAMAGE",
+                    "VALUE": 145
                 }
             }
         ]
@@ -426,7 +430,7 @@
         "ACCURACY": 75,
         "TYPE": ["DAMAGE", "DOT", "SHADOW"],
         "DESCRIPTION":
-            "DEALS 100 FIRE DAMAGE TO TARGET AND APPLIES 4 DOT EFFECTS THAT EACH DEAL 660 FIRE DAMAGE OVER 6 ROUNDS ON TARGET. REMOVES A HOT EFFECT ON SELF OR STORES BACKLASH PER ROUND",
+            "DEALS 100 FIRE DAMAGE TO TARGET AND APPLIES 4 DOT EFFECTS THAT EACH DEAL 660 FIRE DAMAGE OVER 6 ROUNDS ON TARGET. REMOVES A HOT EFFECT ON SELF OR STORES +10% MAX HEALTH BACKLASH PER ROUND",
         "EFFECTS": [
             {
                 "TYPE": "SINGLE_DAMAGE",
@@ -448,7 +452,7 @@
                 "TYPE": "BACKLASH",
                 "TARGET": "SELF",
                 "DURATION": 4,
-                "VALUE_PER_TURN": 5,
+                "VALUE_PER_TURN": 10,
                 "CONDITION": {
                     "EFFECT": "HOT",
                     "TARGET": "SELF"
@@ -646,6 +650,25 @@
                 "TARGET": "ENEMY",
                 "SCHOOL": "ICE",
                 "VALUE": 150
+            }
+        ]
+    },
+
+    {
+        "ID": "SUPERSNOWBURST",
+        "SPELL": "SUPER SNOWBURST",
+        "SCHOOL": "ICE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["DAMAGE"],
+        "DESCRIPTION":
+            "DEALS 180 ICE DAMAGE TO TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "ICE",
+                "VALUE": 180
             }
         ]
     },

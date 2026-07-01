@@ -286,6 +286,8 @@ def start_match(match_obj):
             print("Caster aura:")
             caster_player.aura.end_round()
             print(caster_player.aura)
+            if caster_player.aura.expired():
+                caster_player.aura = None
         
         if enemy_player.aura is not None:
             print("Enemy aura:")

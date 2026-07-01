@@ -8,6 +8,7 @@ from w101_effects import Charm
 from w101_effects import Aura
 from w101_effects import Ward
 from w101_effects import Weakness
+from w101_effects import DOT
 from w101_player import Player
 
 class Match:
@@ -289,6 +290,23 @@ class Match:
             abs_target = enemy_player
 
         match gambit_cause.get("ACTION"):
+            case "DETONATE":
+                to_explode = []
+                gambit_type = gambit_cause.get("TYPE")
+
+                for effect in abs_target.get_effects():
+                    if effect.type == gambit_type:
+                        to_explode.append(effect)
+                        
+                        if len(to_explode) == gambit_cause.get("MAX"):
+                            break
+
+                amount = len(to_explode)
+
+                for effect in to_explode:
+                    multiplier = gambit_effect.get("VALUE")
+                    abs_target.explode_dot(effect, multiplier)
+
             case "GAMBIT":
                 to_remove = []
                 gambit_type = gambit_cause.get("TYPE")

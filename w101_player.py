@@ -50,6 +50,12 @@ class Player:
 
     def get_incoming_resist(self, school):
         return self.incoming_resist.get(school)
+    
+    def explode_dot(self, dot, multiplier):
+        dot.leftover_value += (dot.leftover_value * multiplier * 0.01)
+        self.dec_health(dot.leftover_value)
+        print(f"{self.name} took {dot.leftover_value} damage from dot")
+        self.del_effect(dot)
     #Your gear (% then flat)-> 
 # your aura -> 
 # your charms-> 

@@ -824,5 +824,16 @@
         "CASTER": "PLAYER2",
         "SPELL": "TENEBROUSTREBUCHET_T3B",
         "TARGET": "PLAYER1"
+    },
+    {
+        "ROUND": 20,
+        "CASTER": "PLAYER1",
+        "SPELL": "SUPERSNOWBURST"
+    },
+    {
+        "ROUND": 21,
+        "CASTER": "PLAYER2",
+        "SPELL": "A-BAAHH-CALYPSE_T2",
+        "TARGET": "PLAYER1"
     }
 ]
