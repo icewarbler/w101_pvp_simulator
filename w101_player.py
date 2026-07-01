@@ -33,6 +33,8 @@ class Player:
         self.effects = []
 
         self.aura = None
+
+        self.backlash = None
     
     def add_effect(self, effect):
         self.effects.append(effect)

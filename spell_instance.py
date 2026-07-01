@@ -1,5 +1,5 @@
 # This holds an instance of the current spell
-# Used right now to hold blades for multiple damage effects in a single spell
+# Used right now to hold charms for multiple damage effects in a single spell
 # (wards do not need to be held)
 class SpellInstance:
     def __init__(self, spell, caster, enemy):

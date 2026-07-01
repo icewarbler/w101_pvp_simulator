@@ -34,6 +34,8 @@ class Effect():
 class Bubble(Effect):
     type = "BUBBLE"
 
+    categories = {"BUBBLE"}
+
     @classmethod
     def from_json(cls, effect):
         return cls(effect["SCHOOL"], effect["VALUE"])
@@ -62,6 +64,8 @@ class Bubble(Effect):
 class Single_Damage:
     type = "SINGLE_DAMAGE"
 
+    categories = {"DAMAGE", "SINGLE_DAMAGE"}
+
     @classmethod
     def from_json(cls, effect):
         return cls(effect["TARGET"], effect["SCHOOL"], effect["VALUE"])
@@ -88,6 +92,8 @@ class Single_Damage:
 @Effect.register("RANGE_DAMAGE")
 class Range_Damage:
     type = "RANGE_DAMAGE"
+
+    categories = {"DAMAGE", "RANGE_DAMAGE"}
 
     @classmethod
     def from_json(cls, effect):
@@ -117,6 +123,8 @@ class Heal:
         self.value = value
 
 class Charm(Effect):
+    categories = {"CHARM"}
+
     def __init__(
             self,
             value,
@@ -137,6 +145,8 @@ class Charm(Effect):
 @Effect.register("BLADE")
 class Blade(Charm):
     type = "BLADE"
+
+    categories = {"CHARM", "BLADE"}
 
     @classmethod
     def from_json(cls, effect):
@@ -168,6 +178,8 @@ class Blade(Charm):
 class Weakness(Charm):
     type = "WEAKNESS"
 
+    categories = {"CHARM", "WEAKNESS"}
+
     @classmethod
     def from_json(cls, effect):
         return cls(effect["SCHOOL"], effect["VALUE"], effect["FAMILY"])
@@ -198,6 +210,8 @@ class Weakness(Charm):
 class Heal_Weakness(Charm):
     type = "WEAKNESS"
 
+    categories = {"CHARM", "HEAL_WEAKNESS"}
+
     @classmethod
     def from_json(cls, effect):
         return cls( effect["VALUE"], effect["FAMILY"])
@@ -222,6 +236,8 @@ class Heal_Weakness(Charm):
 
 
 class Ward(Effect):
+    categories = {"WARD"}
+
     def __init__(
             self,
             school,
@@ -248,6 +264,8 @@ class Ward(Effect):
 @Effect.register("DOT_TRAP")
 class DOT_Trap(Ward):
     type = "DOT_TRAP"
+
+    categories = {"WARD", "TRAP", "DOT_TRAP"}
 
     @classmethod
     def from_json(cls, effect):
@@ -283,6 +301,8 @@ class DOT_Trap(Ward):
 class Trap(Ward):
     type = "TRAP"
 
+    categories = {"WARD", "TRAP"}
+
     @classmethod
     def from_json(cls, effect):
         return cls(effect["SCHOOL"], effect["VALUE"], effect["FAMILY"])
@@ -316,6 +336,8 @@ class Trap(Ward):
 @Effect.register("SHIELD")
 class Shield(Ward):
     type = "SHIELD"
+
+    categories = {"WARD", "SHIELD"}
 
     @classmethod
     def from_json(cls, effect):
@@ -369,6 +391,8 @@ class Shield(Ward):
 class Aura(Effect):
     type = "AURA"
 
+    categories = {"AURA"}
+
     @classmethod
     def from_json(cls, effect):
         return cls(effect["DURATION"], effect["ADJ"])
@@ -402,6 +426,8 @@ class Aura(Effect):
 class DOT(Effect):
     type = "DOT"
 
+    categories = {"DOT"}
+
     @classmethod
     def from_json(cls, effect):
         return cls(effect["SCHOOL"], effect["DURATION"], effect["AMOUNT"], effect["VALUE_PER_STACK"])
@@ -417,6 +443,10 @@ class DOT(Effect):
         self.duration = duration
         self.stacks = stacks
         self.value = value
+
+        self.value_per_tick = 0
+
+        self.pierce_val = 0
 
     def __str__(self):
         return f"{self.type}: {self.school} {self.duration} {self.value}"
@@ -439,8 +469,75 @@ class DOT(Effect):
     def new_damage(self, value):
         self.value = value
 
+    def new_tick_damage(self, value):
+        self.value_per_tick = value
+
+    def tick(self, caster, match):
+        match.do_tick(caster, self)
+
+    def set_pierce(self, value):
+        self.pierce_val = value
+
+@Effect.register("BOMB_DOT")
+class Bomb_DOT(Effect):
+    type = "BOMB_DOT"
+
+    categories = {"DOT", "BOMB_DOT"}
+
+    @classmethod
+    def from_json(cls, effect):
+        return cls(effect["SCHOOL"], effect["DURATION"], effect["AMOUNT"], effect["VALUE_PER_STACK"])
+        
+    def __init__(
+            self,
+            school,
+            duration,
+            stacks,
+            value
+    ):
+        self.school = school
+        self.duration = duration
+        self.stacks = stacks
+        self.value = value
+
+        self.pierce_val = 0
+
+    def __str__(self):
+        return f"{self.type}: {self.school} {self.duration} {self.value}"
+    
+    def clone(self):
+        return Bomb_DOT(self.school, self.duration, self.stacks, self.value)
+
+    def store_at(self):
+        return "PLAYER"
+
+    def begin_round(self):
+        self.duration -= 1
+
+    def end_round(self):
+        pass
+
+    def get_damage(self, match, caster, context):
+        match.dot_damage(caster, self, context)
+
+    def new_damage(self, value):
+        self.value = value
+
+    def set_pierce(self, value):
+        self.pierce_val = value
+
+
 # increases health
+@Effect.register("HOT")
 class HOT(Effect):
+    type = "HOT"
+
+    categories = {"HOT"}
+
+    @classmethod
+    def from_json(cls, effect):
+        return cls(effect["DURATION"], effect["AMOUNT"], effect["VALUE_PER_STACK"])
+
     def __init__(
             self,
             duration,
@@ -463,6 +560,8 @@ class HOT(Effect):
 @Effect.register("BACKLASH")
 class Backlash(Effect):
     type = "BACKLASH"
+
+    categories = {"BACKLASH"}
 
     @classmethod
     def from_json(cls, effect):
@@ -508,6 +607,8 @@ class Backlash(Effect):
 @Effect.register("GAMBIT")
 class Gambit(Effect):
     type = "GAMBIT"
+
+    categories = {"GAMBIT"}
 
     @classmethod
     def from_json(cls, effect):

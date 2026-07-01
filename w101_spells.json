@@ -1,5 +1,38 @@
 [
     {
+        "ID": "ELEMENTALSHIELD_50",
+        "SPELL": "ELEMENTAL SHIELD",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["WARD", "SHIELD"],
+        "DESCRIPTION":
+            "APPLIES A -50% FIRE, -50% ICE, AND -50% STORM SHIELD TO TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "SHIELD",
+                "TARGET": "SELF",
+                "SCHOOL": "FIRE",
+                "VALUE": 50,
+                "FAMILY": "ELEMENTALSHIELD_FIRESHIELD50"
+            },
+            {
+                "TYPE": "SHIELD",
+                "TARGET": "SELF",
+                "SCHOOL": "ICE",
+                "VALUE": 50,
+                "FAMILY": "ELEMENTALSHIELD_ICESHIELD50"
+            },
+            {
+                "TYPE": "SHIELD",
+                "TARGET": "SELF",
+                "SCHOOL": "STORM",
+                "VALUE": 50,
+                "FAMILY": "ELEMENTALSHIELD_STORMSHIELD50"
+            }
+        ]
+    },
+    {
         "ID": "ELEMENTALSHIELD_55",
         "SPELL": "ELEMENTAL SHIELD",
         "SCHOOL": "BALANCE",
@@ -385,6 +418,46 @@
     },
 
     {
+        "ID": "TENEBROUSTREBUCHET_T3B",
+        "SPELL": "TENEBROUS TREBUCHET",
+        "SCHOOL": "FIRE",
+        "PIPCOST": 5,
+        "SHADCOST": 1,
+        "ACCURACY": 75,
+        "TYPE": ["DAMAGE", "DOT", "SHADOW"],
+        "DESCRIPTION":
+            "DEALS 100 FIRE DAMAGE TO TARGET AND APPLIES 4 DOT EFFECTS THAT EACH DEAL 660 FIRE DAMAGE OVER 6 ROUNDS ON TARGET. REMOVES A HOT EFFECT ON SELF OR STORES BACKLASH PER ROUND",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "FIRE",
+                "VALUE": 100
+            },
+
+            {
+                "TYPE": "DOT",
+                "TARGET": "ENEMY",
+                "SCHOOL": "FIRE",
+                "DURATION": 6,
+                "AMOUNT": 4,
+                "VALUE_PER_STACK": 660
+            },
+
+            {
+                "TYPE": "BACKLASH",
+                "TARGET": "SELF",
+                "DURATION": 4,
+                "VALUE_PER_TURN": 5,
+                "CONDITION": {
+                    "EFFECT": "HOT",
+                    "TARGET": "SELF"
+                }
+            }
+        ]
+    },
+
+    {
         "ID": "WICKEDBULL_T2B",
         "SPELL": "WICKED BULL",
         "SCHOOL": "FIRE",
@@ -573,6 +646,40 @@
                 "TARGET": "ENEMY",
                 "SCHOOL": "ICE",
                 "VALUE": 150
+            }
+        ]
+    },
+
+    {
+        "ID": "SPINYSAUR_T2B",
+        "SPELL": "SPINYSAUR",
+        "SCHOOL": "LIFE",
+        "PIPCOST": 10,
+        "ACCURACY": 90,
+        "TYPE": ["DAMAGE", "GAMBIT", "MANIPULATION"],
+        "DESCRIPTION":
+            "PUTS 3 DOT EFFECTS THAT EACH DEAL 315 LIFE DAMAGE AFTER 6 ROUNDS ON TARGET AND REMOVES UP TO 4 DOT EFFECTS FROM CASTER TO GIVE ONE POWER PIP TO CASTER PER DOT REMOVED",
+        "EFFECTS": [
+            {
+                "TYPE": "BOMB_DOT",
+                "TARGET": "ENEMY",
+                "SCHOOL": "LIFE",
+                "DURATION": 6,
+                "AMOUNT": 3,
+                "VALUE_PER_STACK": 315
+            },
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": {
+                    "ACTION": "CLEAR",
+                    "TYPE": "DOT",
+                    "TARGET": "SELF",
+                    "MAX": 4
+                },
+                "PER_EFFECT": {
+                    "ACTION": "GAIN",
+                    "TYPE": "PIP"
+                }
             }
         ]
     },

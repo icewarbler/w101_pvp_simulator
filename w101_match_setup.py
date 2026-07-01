@@ -25,13 +25,6 @@ class Match:
     
     def getBubble(self):
         return self.global_effect
-    
-    # def add_ward(self, target, spell):
-    #     ward = Effect(
-    #         effect_type = "WARD",
-    #         value = getCurrentSpell().effects.ward.value
-    #     )
-    #     target.add_effect(ward)
 
     def add_effect(self, target_obj, effect):
 
@@ -43,12 +36,6 @@ class Match:
 
     def change_bubble(self, bubble):
         self.global_effect = bubble
-
-    def consume_instance(spell_instance):
-        for charm in spell_instance.charms_used:
-            pass
-        for ward in spell_instance.wards_used:
-            pass
                 
     # have to store caster pierce as well as this damage
     # bubble and enemy stats are added when the dot is activated
@@ -59,7 +46,7 @@ class Match:
 
         effect_value = effect.value
 
-        print(f"Effect val: {effect_value}")
+        print(f"Base effect val: {effect_value}")
 
         # gets caster's outgoing damage
         print(caster_player.get_outgoing_damage(effect_school))
@@ -67,10 +54,22 @@ class Match:
         effect_value += (effect_value * caster_player.get_outgoing_damage(effect_school) * 0.01)
     #  print(f"a1: {effect_value}")
 
+        print(f"with damage: {effect_value}")
+
         # gets caster's aura
         if caster_player.aura is not None:
-            print("inside")
-            # do stuff
+            adj = caster_player.aura.adj
+
+         #   print(json.dumps(adj, indent=4))
+
+            # ignore if not correct school
+            for modifier in adj:
+                if modifier["SCHOOL"] in (effect_school, "UNIVERSAL"):
+                    # ignore if not blade/weakness type aura
+                    if modifier["TYPE"] == "WEAKNESS":
+                        effect_value -= effect_value * modifier["VALUE"] * 0.01
+                    elif modifier["TYPE"] == "BLADE":
+                        effect_value += effect_value * modifier["VALUE"] * 0.01
 
         # gets any blades/weaknesses caster may have
         caster_charms = [ effect for effect in caster_player.effects if isinstance(effect, Charm) ]
@@ -91,6 +90,58 @@ class Match:
         print(f"DOT value: {effect_value}")
         effect.new_damage(effect_value)
 
+        tick_damage = effect_value / effect.duration
+        effect.new_tick_damage(tick_damage)
+        print(f"tick dmg: {effect.value_per_tick}")
+
+    def do_tick(self, caster, dot):
+        effect_value = dot.value_per_tick
+        # gets any auras the enemy may have
+       # enemy_aura = next( (effect for effect in abs_target.effects if isinstance(effect, Aura)), None )
+        if caster.aura is not None:
+            adj = caster.aura.adj
+
+        #    print(json.dumps(adj, indent=4))
+
+            # ignore if not correct school
+            for modifier in adj:
+                if modifier["SCHOOL"] in (dot.school, "UNIVERSAL"):
+                    print(json.dumps(modifier, indent=4))
+                    # ignore if not shield/trap type aura
+                    if modifier["TYPE"] == "SHIELD":
+                        effect_value -= effect_value * modifier["VALUE"] * 0.01
+                    elif modifier["TYPE"] == "TRAP":
+                        effect_value += effect_value * modifier["VALUE"] * 0.01
+
+    #  print(f"post-aura effect_value: {effect_value}")
+
+
+        # gets enemy shields/traps
+        enemy_wards = [ effect for effect in caster.effects if isinstance(effect, Ward) ]
+
+        used_families = set()
+
+        for ward in enemy_wards:
+            if ward.school in (dot.school, "UNIVERSAL"):
+                if ward.family in used_families:
+                    continue
+                used_families.add(ward.family)
+                print(f"Ward used: {ward.school} of val {ward.value}")
+                effect_value = ward.mod_damage(effect_value)
+                caster.del_effect(ward)
+        
+    #  print(f"Post-ward effect_value: {effect_value}")
+
+        # gets enemy resist
+        enemy_res = caster.get_incoming_resist(dot.school)
+        effect_value -= effect_value * enemy_res * 0.01
+    #  print(f"Post-resist effect_value: {effect_value}")
+
+        caster.dec_health(effect_value)
+        print(f"DOT tick does {effect_value} damage!")
+        print(f"{caster.name} HEALTH: {caster.curr_health}")
+
+
     def do_damage(self, caster_player, enemy_player, effect, context):
         if effect.target == "SELF":
             abs_target = caster_player
@@ -104,7 +155,7 @@ class Match:
         elif effect.type == "RANGE_DAMAGE":
             effect_value = random.randrange(effect.min, effect.max, 5)
         
-        print(f"Effect val: {effect_value}")
+        print(f"Base effect val: {effect_value}")
 
 
         # the order for activating damage is:
@@ -123,15 +174,27 @@ class Match:
         print(f"caster pierce: {caster_player.pierce[effect_school]} {effect_school}") 
 
         # gets caster's outgoing damage
-        print(caster_player.get_outgoing_damage(effect_school))
+       # print(caster_player.get_outgoing_damage(effect_school))
     # print(f"value: {effect_value}")
         effect_value += (effect_value * caster_player.get_outgoing_damage(effect_school) * 0.01)
     #  print(f"a1: {effect_value}")
 
         # gets caster's aura
+        # gets caster's aura
         if caster_player.aura is not None:
-            print("inside")
-            # do stuff
+            adj = caster_player.aura.adj
+
+           # print(json.dumps(adj, indent=4))
+
+            # ignore if not correct school
+            for modifier in adj:
+                if modifier["SCHOOL"] in (effect_school, "UNIVERSAL"):
+                    print(json.dumps(modifier, indent=4))
+                    # ignore if not blade/weakness type aura
+                    if modifier["TYPE"] == "WEAKNESS":
+                        effect_value -= effect_value * modifier["VALUE"] * 0.01
+                    elif modifier["TYPE"] == "BLADE":
+                        effect_value += effect_value * modifier["VALUE"] * 0.01
 
         # gets any blades/weaknesses caster may have
         caster_charms = [ effect for effect in caster_player.effects if isinstance(effect, Charm) ]
@@ -166,11 +229,12 @@ class Match:
         if abs_target.aura is not None:
             adj = abs_target.aura.adj
 
-            print(json.dumps(adj, indent=4))
+        #    print(json.dumps(adj, indent=4))
 
             # ignore if not correct school
             for modifier in adj:
                 if modifier["SCHOOL"] in (effect_school, "UNIVERSAL"):
+                    print(json.dumps(modifier, indent=4))
                     # ignore if not shield/trap type aura
                     if modifier["TYPE"] == "SHIELD":
                         effect_value -= effect_value * modifier["VALUE"] * 0.01
@@ -277,6 +341,8 @@ class Match:
                 per_effect_type = gambit_effect.get("TYPE")
                 
                 for _ in range(amount):
+                    if per_effect_type == "PIP":
+                        print(f"Adding a pip???")
                     if per_effect_type == "TRAP":
                         gambit_effect_target = gambit_effect["TARGET"]
 
@@ -295,14 +361,3 @@ class Match:
                         jel = Trap(per_effect_school, per_effect_value, per_effect_family)
 
                         self.add_effect(abs_target, jel)
-
-
-    # def get_p1_effects(self):
-    #     return self.p1e
-    
-    # def get_p2_effects(self):
-    #     return self.p2e
-
-    # def delete_effect(self, target):
-    #     if target == "p1":
-

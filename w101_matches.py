@@ -10,6 +10,8 @@ from w101_effects import Shield
 from w101_effects import Backlash
 from w101_effects import Aura
 from w101_effects import Bubble
+from w101_effects import DOT
+from w101_effects import Bomb_DOT
 from w101_player import Player
 from w101_match_setup import Match
 from spell_instance import SpellInstance
@@ -65,7 +67,7 @@ def cast_spell(match_obj, caster_player, enemy_player, spell_data):
         effect_class = Effect.registry[effect["TYPE"]]
         effect_obj = effect_class.from_json(effect)
 
-      #  print(effect_obj)
+        print(effect_obj)
 
         match effect_obj.store_at():
             case "PLAYER":
@@ -86,6 +88,16 @@ def cast_spell(match_obj, caster_player, enemy_player, spell_data):
 
                 if effect_obj.type == "AURA":
                     abs_target.aura = effect_obj
+                    continue
+
+                if effect_obj.type == "BACKLASH":
+                    if abs_target.backlash is not None:
+                        perc_dmg = caster_player.backlash.accumulated
+                        dmg_taken = caster_player.max_health * (perc_dmg * 0.01)
+                        print(f"{caster_player.name} takes {dmg_taken} damage!")
+                        caster_player.dec_health(dmg_taken)
+                        print(f"{caster_player.name} HEALTH: {math.floor(caster_player.curr_health)}")
+                    abs_target.backlash = effect_obj
                     continue
                 
                 for _ in range(amount):
@@ -163,37 +175,50 @@ def start_match(match_obj):
 
         print("----")
 
+
         # only activate effect of the player who is casting
         # this is where backlash is taken
-        if caster == "PLAYER1":
-            for effect in p1e1:
-                effect.begin_round()
-                if effect.expired():
-                    if effect.type == "BACKLASH":
-                        perc_dmg = effect.accumulated
-                        dmg_taken = caster_player.max_health * (perc_dmg * 0.01)
-                        print(f"{caster_player.name} takes {dmg_taken} damage!")
-                        caster_player.dec_health(dmg_taken)
-                        print(f"{caster_player.name} HEALTH: {math.floor(caster_player.curr_health)}")
-                    caster_player.del_effect(effect)
-        else:
-            for effect in p2e1:
-                effect.begin_round()
-                if effect.expired():
-                    if effect.type == "BACKLASH":
-                        perc_dmg = effect.accumulated
-                        dmg_taken = caster_player.max_health * (perc_dmg * 0.01)
-                        print(f"{caster_player.name} takes {dmg_taken} damage!")
-                        caster_player.dec_health(dmg_taken)
-                        print(f"{caster_player.name} HEALTH: {math.floor(caster_player.curr_health)}")
-                    caster_player.del_effect(effect)
+
+        # if caster == "PLAYER1":
+        #     for effect in p1e1:
+        #         effect.begin_round()
+        #         if effect.expired():
+        #             if effect.type == "BACKLASH":
+        #                 perc_dmg = effect.accumulated
+        #                 dmg_taken = caster_player.max_health * (perc_dmg * 0.01)
+        #                 print(f"{caster_player.name} takes {dmg_taken} damage!")
+        #                 caster_player.dec_health(dmg_taken)
+        #                 print(f"{caster_player.name} HEALTH: {math.floor(caster_player.curr_health)}")
+        #             caster_player.del_effect(effect)
+        # else:
+        #     for effect in p2e1:
+        #         effect.begin_round()
+        #         if effect.expired():
+        #             if effect.type == "BACKLASH":
+        #                 perc_dmg = effect.accumulated
+        #                 dmg_taken = caster_player.max_health * (perc_dmg * 0.01)
+        #                 print(f"{caster_player.name} takes {dmg_taken} damage!")
+        #                 caster_player.dec_health(dmg_taken)
+        #                 print(f"{caster_player.name} HEALTH: {math.floor(caster_player.curr_health)}")
+        #             caster_player.del_effect(effect)
+
+     #   caster_backlash = next( (effect for effect in caster_player.effects if isinstance(effect, Backlash)), None )
+
+        # this is where backlash is taken
+        if caster_player.backlash:
+            if caster_player.backlash.expired():
+                perc_dmg = caster_player.backlash.accumulated
+                dmg_taken = caster_player.max_health * (perc_dmg * 0.01)
+                print(f"{caster_player.name} takes {dmg_taken} damage!")
+                caster_player.dec_health(dmg_taken)
+                print(f"{caster_player.name} HEALTH: {math.floor(caster_player.curr_health)}")
+                caster_player.backlash = None
 
         # this is where backlash eats
-        caster_backlash = next( (effect for effect in caster_player.effects if isinstance(effect, Backlash)), None )
-        print(f"caster_backlash: {caster_backlash}")
-        if caster_backlash:
-            eat_effect = caster_backlash.condition["EFFECT"]
-            effect_target = caster_backlash.condition["TARGET"]
+        print(f"caster_backlash: {caster_player.backlash}")
+        if caster_player.backlash:
+            eat_effect = caster_player.backlash.condition["EFFECT"]
+            effect_target = caster_player.backlash.condition["TARGET"]
 
             if effect_target == "SELF":
                 eat_target = caster_player
@@ -204,15 +229,29 @@ def start_match(match_obj):
 
             print(f"eat_effect: {eat_effect}")
             for effect in reversed(eat_target.effects):
-                if effect.type == eat_effect:
+                if eat_effect in effect.categories:
                     eat_target.del_effect(effect)
                     print(f"eating effect: {effect} from {eat_target.name}")
                     ate = True
                     break
 
             if not ate:
-                caster_backlash.inc_backlash()
+                caster_player.backlash.inc_backlash()
                 print("Did not eat an effect")
+
+        # this is where DOTs activate
+        caster_dots = [ effect for effect in caster_player.effects if isinstance(effect, DOT) ]
+
+        for dot in caster_dots:
+            print(f"DOT: {dot}")
+            dot.tick(caster_player, match_obj)
+            dot.begin_round()
+
+        caster_bombs = [ effect for effect in caster_player.effects if isinstance(effect, Bomb_DOT) ]
+
+        for dot in caster_bombs:
+            print(f"DOT: {dot}")
+            dot.begin_round()
 
         print_effects(match_obj.getPlayer1())
         print_effects(match_obj.getPlayer2())
@@ -251,6 +290,15 @@ def start_match(match_obj):
         if enemy_player.aura is not None:
             print("Enemy aura:")
             print(enemy_player.aura)
+
+        if caster_player.backlash is not None:
+            print("Caster backlash:")
+            caster_player.backlash.end_round()
+            print(caster_player.backlash)
+        
+        if enemy_player.backlash is not None:
+            print("Enemy backlash:")
+            print(enemy_player.backlash)
 
         print_effects(match_obj.getPlayer1())
         print_effects(match_obj.getPlayer2())

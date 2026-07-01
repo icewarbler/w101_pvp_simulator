@@ -801,5 +801,28 @@
         "CASTER": "PLAYER2",
         "SPELL": "WICKEDBULL_T3B",
         "TARGET": "PLAYER1"
+    },
+    {
+        "ROUND": 16,
+        "CASTER": "PLAYER1",
+        "SPELL": "ELEMENTALSHIELD_50",
+        "TARGET": "PLAYER1"
+    },
+    {
+        "ROUND": 17,
+        "CASTER": "PLAYER2",
+        "SPELL": "NONE"
+    },
+    {
+        "ROUND": 18,
+        "CASTER": "PLAYER1",
+        "SPELL": "SPINYSAUR_T2B",
+        "TARGET": "PLAYER2"   
+    },
+    {
+        "ROUND": 19,
+        "CASTER": "PLAYER2",
+        "SPELL": "TENEBROUSTREBUCHET_T3B",
+        "TARGET": "PLAYER1"
     }
 ]
