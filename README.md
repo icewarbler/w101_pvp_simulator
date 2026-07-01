@@ -21,7 +21,7 @@ a pvp sim for wiz!!!
 
 [x] HOTs
 
-[—] detonates
+[-] detonates
 
 [x] pips
 
