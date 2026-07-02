@@ -1,19 +1,19 @@
 import json
 import pandas as pd
 import math
-from w101_effects import Effect
-from w101_effects import Single_Damage
-from w101_effects import Charm
-from w101_effects import Ward
-from w101_effects import Trap
-from w101_effects import Shield
-from w101_effects import Backlash
-from w101_effects import Aura
-from w101_effects import Bubble
-from w101_effects import DOT
-from w101_effects import Bomb_DOT
-from w101_player import Player
-from w101_match_setup import Match
+from effects import Effect
+from effects import Single_Damage
+from effects import Charm
+from effects import Ward
+from effects import Trap
+from effects import Shield
+from effects import Backlash
+from effects import Aura
+from effects import Bubble
+from effects import DOT
+from effects import Bomb_DOT
+from player import Player
+from match import Match
 from spell_instance import SpellInstance
 
 def print_turn_info(round, caster_player, spell_name):
@@ -47,6 +47,70 @@ def insert_starting_conditions(match_obj):
     p2.add_effect(Trap("ICE", 30, None))
     p2.add_effect(Trap("STORM", 30, None))
 
+    p1.pips.update({
+        "DEATH": 1,
+        "LIFE": 3
+    })
+
+    p1.shadpips = 1
+    p2.shadpips = 2
+
+    p2.pips.update({
+        "REG": 2,
+        "FIRE": 1,
+        "MYTH": 1,
+        "STORM": 1
+    })
+
+def handle_pips(caster_player, context):
+    before_casting = {school: caster_player.pips[school] for school in caster_player.pips}
+    print(f"{caster_player.name} has {before_casting} pips and {caster_player.shadpips} shad pips before casting")
+    while context.pips > 0:
+        print(f"{context.pips}")
+        # eats from school pips first
+        for school, cost in context.schoolpips.items():
+            print(f"here")
+            while before_casting.get(school, 0) > 0 and cost > 0:
+                print(f"{caster_player.name} eats {cost} {school} pip")
+                before_casting[school] -= 1
+                cost -= 1
+
+        # then eats from regular pips
+        while before_casting.get("REG", 0) > 0:
+            print(f"{before_casting["REG"]}")
+            before_casting["REG"] -= 1
+            context.pips -= 1
+            print(f"{before_casting["REG"]}")
+        
+        # then eats from power pips
+        while before_casting.get("POWER", 0) > 0:
+            before_casting["POWER"] -= 1
+            context.pips -= 1
+
+        # then eats from remaining school pips
+        for school, cost in before_casting.items():
+            print(f"{school}: {cost}")
+            if cost > 0:
+                before_casting[school] -= 1
+                print(f"before_casting[school] cost > 0: {before_casting[school]}")
+                context.pips -= 2
+
+        if context.pips < 0:
+            # do pip conserve stuff here!
+            reg_pips = before_casting.get("REG", 0)
+            reg_pips += 1
+            before_casting["REG"] = reg_pips
+        
+        print(f"{context.pips} pips left to eat")
+
+ #   caster_player.pips = { school: caster_player.pips.get(school, 0) - context.pips for school in caster_player.pips }
+    caster_player.shadpips -= context.shadpips
+
+    caster_player.pips = before_casting
+
+    print(f"{caster_player.name} has {before_casting} pips and {caster_player.shadpips} shad pips after casting")
+
+  #  print(f"{caster_player.name} has {caster_player.pips} pips and {caster_player.shadpips} shad pips left")
 # fire ice storm (traps/shields) -> put on order
 # ice storm fire (blades) -> put on order
 # cleanse charm removes fire weakness - ice/storm left
@@ -56,8 +120,14 @@ def cast_spell(match_obj, caster_player, enemy_player, spell_data):
     # if a player passes that turn, skip
     if spell_data in (None, "NONE"):
         return
+    
+    pipcost = spell_data.get("PIPCOST", 0)
+    schoolpipcost = spell_data.get("SCHOOLPIPS", {})
+    shadcost = spell_data.get("SHADCOST", 0)
 
-    context = SpellInstance(spell_data, caster_player, enemy_player)
+    context = SpellInstance(spell_data, caster_player, enemy_player, pipcost, schoolpipcost, shadcost)
+
+    print(f"{caster_player.name} pays {pipcost} pips, {schoolpipcost} school pips, and {shadcost} shad pips")
 
     # loop through the effects of the spell
     # then apply them to the right player in match_obj
@@ -128,6 +198,7 @@ def cast_spell(match_obj, caster_player, enemy_player, spell_data):
         print(f"Used charm: {charm}")
         player.del_effect(charm)
 
+#    handle_pips(caster_player, context)
 
 # match_obj is what is changing over time --
 # "match" var just refers to the raw match json code
@@ -137,13 +208,13 @@ def cast_spell(match_obj, caster_player, enemy_player, spell_data):
 # (player info)
 def start_match(match_obj):
     try:
-        with open("w101_ezra_jason.json", "r") as f:
+        with open("../json_data/ezra_jason.json", "r") as f:
             match = json.load(f)
     except json.JSONDecodeError:
         print("ERROR! FAILED TO DECODE JSON!")
 
     try:
-        with open("w101_spells.json") as f:
+        with open("../json_data/spells.json") as f:
             spells = json.load(f)
     except json.JSONDecodeError:
         print("ERROR! FAILED TO DECODE JSON!")
@@ -160,8 +231,8 @@ def start_match(match_obj):
 
     for turn in match:
         round = turn.get("ROUND")
-        # if round > 20:
-        #     break
+        if round > 4:
+            break
         caster = turn.get("CASTER")
 
         # caster stored in the match obj has definite names for players
@@ -313,6 +384,13 @@ def start_match(match_obj):
         print_effects(match_obj.getPlayer1())
         print_effects(match_obj.getPlayer2())
 
+        school_pip = turn.get("SELECTED_SCHOOL")
+
+
+        # print(type(caster_player.pips))
+        # print(caster_player.pips)
+        caster_player.pips[school_pip] += 1
+
             # if hasattr(effect, "duration"):
             #     print(f"Duration: {effect.duration}")
      
@@ -333,13 +411,13 @@ def start_match(match_obj):
     # backlash spells always eats up an effect of any school and any value
 
 try:
-    with open("w101_players.json", "r") as f:
+    with open("../json_data/players.json", "r") as f:
         players = json.load(f)
 except json.JSONDecodeError:
     print("ERROR! FAILED TO DECODE JSON!")
 
 try:
-    with open("w101_matchups.json", "r") as f:
+    with open("../json_data/matchups.json", "r") as f:
         matchups = json.load(f)
 except json.JSONDecodeError:
     print("ERROR! FAILED TO DECODE JSON!")

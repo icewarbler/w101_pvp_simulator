@@ -1,9 +1,0 @@
-{ 
-    "RND": ["START", "END"], 
-    "PLAYER": ["ALEX", "MARIA"], 
-    "SPELL": [""], 
-    "HEALTH": "", 
-    "PIPS": "", 
-    "DEBUF": "", 
-    "BUFF": ""
-}

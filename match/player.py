@@ -1,6 +1,7 @@
-from w101_effects import Effect
+from effects import Effect
 import pandas as pd
 import json
+from collections import defaultdict
 
 class Player:
     def __init__(
@@ -28,13 +29,26 @@ class Player:
         self.incoming_resist = incoming_resist
         self.pierce = pierce
 
-        self.pips = []
+        # Balance
+        # Death
+        # Fire
+        # Ice
+        # Life
+        # Myth
+        # Storm
+        # Reg
+        # Power
+        self.pips = defaultdict(int)
+        self.shadpips = 0
+
+        self.selected_school = school
 
         self.effects = []
 
         self.aura = None
 
         self.backlash = None
+
     
     def add_effect(self, effect):
         self.effects.append(effect)
@@ -60,6 +74,7 @@ class Player:
         self.dec_health(dot.leftover_value)
         print(f"{self.name} took {dot.leftover_value} damage from dot")
         self.del_effect(dot)
+
     #Your gear (% then flat)-> 
 # your aura -> 
 # your charms-> 

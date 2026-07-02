@@ -236,7 +236,7 @@
         "SPELL": "A-BAAHH-CALYPSE",
         "SCHOOL": "FIRE",
         "PIPCOST": 3,
-        "SCHOOLPIPS": "FIRE",
+        "SCHOOLPIPS": {"FIRE": 1},
         "TYPE": ["DAMAGE", "GAMBIT"],
         "ACCURACY": 75,
         "DESCRIPTION":
@@ -367,7 +367,7 @@
         "SPELL": "HEPHAESTUS",
         "SCHOOL": "FIRE",
         "PIPCOST": 3,
-        "SCHOOLPIPS": "FIRE",
+        "SCHOOLPIPS": {"FIRE": 1},
         "ACCURACY": 75,
         "TYPE": ["DAMAGE", "RANGE_DAMAGE", "BUBBLE"],
         "DESCRIPTION":

@@ -1,15 +1,15 @@
 import json
 import pandas as pd
 import random
-from w101_effects import Effect
-from w101_effects import Single_Damage
-from w101_effects import Trap
-from w101_effects import Charm
-from w101_effects import Aura
-from w101_effects import Ward
-from w101_effects import Weakness
-from w101_effects import DOT
-from w101_player import Player
+from effects import Effect
+from effects import Single_Damage
+from effects import Trap
+from effects import Charm
+from effects import Aura
+from effects import Ward
+from effects import Weakness
+from effects import DOT
+from player import Player
 
 class Match:
     def __init__(self, p1, p2, turn):
