@@ -4,7 +4,7 @@
         "CASTER": "PLAYER1",
         "SPELL": "DARKWEAVER_T2",
         "TARGET": "PLAYER2",
-        "CRIT": "TRUE",
+        "CRIT": true,
         "P1_SHAD": 1,
         "P2_SHAD": 2,
         "PLAYER1_PIPS": {
@@ -12,13 +12,14 @@
             "LIFE": 1
         },
         "PLAYER2_PIPS": {
+            "RP": 2,
             "FIRE": 1,
             "MYTH": 1,
-            "STORM": 1,
-            "RP": 2
+            "STORM": 1
         },
         "SELECTED_SCHOOL": "LIFE",
-        "GAIN_SHAD": "FALSE"
+        "GAIN_SHAD": false,
+        "CONSERVE_PIP": true
     },
 
     {
@@ -26,7 +27,7 @@
         "CASTER": "PLAYER2",
         "SPELL": "DARKFIEND",
         "TARGET": "PLAYER1",
-        "CRIT": "TRUE",
+        "CRIT": true,
         "P1_SHAD": 1,
         "P2_SHAD": 2,
         "PLAYER1_PIPS": {
@@ -34,13 +35,13 @@
             "RP": 1
         },
         "PLAYER2_PIPS": {
+            "RP": 2,
             "FIRE": 1,
             "MYTH": 1,
-            "STORM": 1,
-            "RP": 2
+            "STORM": 1
         },
         "SELECTED_SCHOOL": "FIRE",
-        "GAIN_SHAD": "FALSE"
+        "GAIN_SHAD": false
     },
     {
         "ROUND": 2,
@@ -60,7 +61,7 @@
             "RP": 2
         },
         "SELECTED_SCHOOL": "LIFE",
-        "GAIN_SHAD": "FALSE"
+        "GAIN_SHAD": false
     },
     {
         "ROUND": 3,
@@ -73,13 +74,13 @@
             "RP": 1
         },
         "PLAYER2_PIPS": {
+            "RP": 2,
             "FIRE": 2,
             "MYTH": 1,
-            "STORM": 1,
-            "RP": 2
+            "STORM": 1
         },
         "SELECTED_SCHOOL": "ICE",
-        "GAIN_SHAD": "FALSE"
+        "GAIN_SHAD": false
     },
     {
         "ROUND": 4,
@@ -100,7 +101,7 @@
             "RP": 2
         },
         "SELECTED_SCHOOL": "LIFE",
-        "GAIN_SHAD": "FALSE"
+        "GAIN_SHAD": false
     },
     {
         "ROUND": 5,
@@ -108,7 +109,7 @@
         "SPELL": "AMMUT_T4B",
         "TARGET": "PLAYER1",
         "SELECTED_SCHOOL": "ICE",
-        "GAIN_SHAD": "FALSE"
+        "GAIN_SHAD": false
     },
     {
         "ROUND": 6,
@@ -116,7 +117,7 @@
         "SPELL": "FROSTFEATHER_T2",
         "TARGET": "PLAYER2",
         "SELECTED_SCHOOL": "LIFE",
-        "GAIN_SHAD": "FALSE"
+        "GAIN_SHAD": false
     },
     {
         "ROUND": 7,
@@ -124,7 +125,7 @@
         "SPELL": "ELEMENTALSHIELD_55",
         "TARGET": "PLAYER2",
         "SELECTED_SCHOOL": "FIRE",
-        "GAIN_SHAD": "FALSE"
+        "GAIN_SHAD": false
     },
     {
         "ROUND": 8,
@@ -132,7 +133,7 @@
         "SPELL": "WEAKNESS_30",
         "TARGET": "PLAYER2",
         "SELECTED_SCHOOL": "LIFE",
-        "GAIN_SHAD": "TRUE"
+        "GAIN_SHAD": true
     },
     {
         "ROUND": 9,
@@ -140,7 +141,7 @@
         "SPELL": "HEPHAESTUS_T2",
         "TARGET": "PLAYER1",
         "SELECTED_SCHOOL": "FIRE",
-        "GAIN_SHAD": "TRUE"
+        "GAIN_SHAD": true
     },
     {
         "ROUND": 10,
@@ -148,14 +149,14 @@
         "SPELL": "BRACE",
         "TARGET": "PLAYER1",
         "SELECTED_SCHOOL": "LIFE",
-        "GAIN_SHAD": "FALSE"
+        "GAIN_SHAD": false
     },
     {
         "ROUND": 11,
         "CASTER": "PLAYER2",
         "SPELL": "NONE",
         "SELECTED_SCHOOL": "FIRE",
-        "GAIN_SHAD": "FALSE"
+        "GAIN_SHAD": false
     },
     {
         "ROUND": 12,
@@ -163,7 +164,7 @@
         "SPELL": "SNOWSERPENT_T3C",
         "TARGET": "PLAYER2",
         "SELECTED_SCHOOL": "LIFE",
-        "GAIN_SHAD": "FALSE"
+        "GAIN_SHAD": false
     },
     {
         "ROUND": 13,
@@ -171,7 +172,7 @@
         "SPELL": "FIREBLADE_35",
         "TARGET": "PLAYER2",
         "SELECTED_SCHOOL": "FIRE",
-        "GAIN_SHAD": "FALSE"
+        "GAIN_SHAD": false
     },
     {
         "ROUND": 14,
@@ -179,7 +180,7 @@
         "SPELL": "BLIGHTATTENUATE",
         "TARGET": "PLAYER2",
         "SELECTED_SCHOOL": "DEATH",
-        "GAIN_SHAD": "FALSE"
+        "GAIN_SHAD": false
     },
     {
         "ROUND": 15,
@@ -187,7 +188,7 @@
         "SPELL": "WICKEDBULL_T3B",
         "TARGET": "PLAYER1",
         "SELECTED_SCHOOL": "ICE",
-        "GAIN_SHAD": "FALSE"
+        "GAIN_SHAD": false
     },
     {
         "ROUND": 16,
@@ -195,14 +196,14 @@
         "SPELL": "ELEMENTALSHIELD_50",
         "TARGET": "PLAYER1",
         "SELECTED_SCHOOL": "LIFE",
-        "GAIN_SHAD": "FALSE"
+        "GAIN_SHAD": false
     },
     {
         "ROUND": 17,
         "CASTER": "PLAYER2",
         "SPELL": "NONE",
         "SELECTED_SCHOOL": "FIRE",
-        "GAIN_SHAD": "FALSE"
+        "GAIN_SHAD": false
     },
     {
         "ROUND": 18,
@@ -210,7 +211,7 @@
         "SPELL": "SPINYSAUR_T2B",
         "TARGET": "PLAYER2",
         "SELECTED_SCHOOL": "LIFE",
-        "GAIN_SHAD": "FALSE"
+        "GAIN_SHAD": false
     },
     {
         "ROUND": 19,
@@ -218,14 +219,14 @@
         "SPELL": "TENEBROUSTREBUCHET_T3B",
         "TARGET": "PLAYER1",
         "SELECTED_SCHOOL": "FIRE",
-        "GAIN_SHAD": "FALSE"
+        "GAIN_SHAD": false
     },
     {
         "ROUND": 20,
         "CASTER": "PLAYER1",
         "SPELL": "SUPERSNOWBURST",
         "SELECTED_SCHOOL": "DEATH",
-        "GAIN_SHAD": "FALSE"
+        "GAIN_SHAD": false
     },
     {
         "ROUND": 21,
@@ -233,6 +234,6 @@
         "SPELL": "A-BAAHH-CALYPSE_T2",
         "TARGET": "PLAYER1",
         "SELECTED_SCHOOL": "FIRE",
-        "GAIN_SHAD": "FALSE"
+        "GAIN_SHAD": false
     }
 ]

@@ -267,6 +267,7 @@
     {
         "ID": "AMMUT_T4B",
         "SPELL": "AMMUT",
+        "SCHOOL": "FIRE",
         "PIPCOST": 6,
         "TYPE": ["DAMAGE", "GAMBIT"],
         "ACCURACY": 75,

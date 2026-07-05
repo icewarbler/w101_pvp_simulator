@@ -1,7 +1,6 @@
 from effects import Effect
 import pandas as pd
 import json
-from collections import defaultdict
 
 class Player:
     def __init__(
@@ -38,7 +37,7 @@ class Player:
         # Storm
         # Reg
         # Power
-        self.pips = defaultdict(int)
+        self.pips = []
         self.shadpips = 0
 
         self.selected_school = school
@@ -95,7 +94,19 @@ class Player:
 
     def del_effect(self, effect):
         self.effects.remove(effect)
-        
+
+    def last_pip_index(self, school):
+        return next((i for i in range(len(self.pips) - 1, -1, -1) if self.pips[i].school == school), None)
+    
+    def sort_pips(self):
+        reg = [pip for pip in self.pips if pip.school == "REG"]
+        power = [pip for pip in self.pips if pip.school == "POWER"]
+        school = [pip for pip in self.pips if pip.school not in ("REG", "POWER")]
+        school.sort(key=lambda pip: pip.school)
+        self.pips = reg + power + school
+
+    def remove_pip(self, pip):
+        self.pips.remove(pip)
 
     # def add_blade(self):
 

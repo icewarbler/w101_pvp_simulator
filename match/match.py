@@ -10,6 +10,7 @@ from effects import Ward
 from effects import Weakness
 from effects import DOT
 from player import Player
+from pip import Pip
 
 class Match:
     def __init__(self, p1, p2, turn):
@@ -399,6 +400,13 @@ class Match:
                 for _ in range(amount):
                     if per_effect_type == "PIP":
                         print(f"Adding a pip???")
+                        reg_idx = caster_player.last_pip_index("REG")
+
+                        if reg_idx is None:
+                            caster_player.pips.insert(0, Pip("POWER"))
+                        else:        
+                            caster_player.pips.insert(reg_idx + 1, Pip("POWER"))
+                            
                     if per_effect_type == "TRAP":
                         gambit_effect_target = gambit_effect["TARGET"]
 

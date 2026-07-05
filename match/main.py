@@ -15,6 +15,7 @@ from effects import Bomb_DOT
 from player import Player
 from match import Match
 from spell_instance import SpellInstance
+from pip import Pip
 
 def print_turn_info(round, caster_player, spell_name):
     print(f"Round {round}: {caster_player.name} casts {spell_name}")
@@ -47,68 +48,161 @@ def insert_starting_conditions(match_obj):
     p2.add_effect(Trap("ICE", 30, None))
     p2.add_effect(Trap("STORM", 30, None))
 
-    p1.pips.update({
-        "DEATH": 1,
-        "LIFE": 3
-    })
+    # p1.pips.update({
+    #     "DEATH": 1,
+    #     "LIFE": 3
+    # })
+
+    p1.pips.append(Pip("DEATH"))
+    p1.pips.append(Pip("LIFE"))
+    p1.pips.append(Pip("LIFE"))
+    p1.pips.append(Pip("LIFE"))
 
     p1.shadpips = 1
     p2.shadpips = 2
 
-    p2.pips.update({
-        "REG": 2,
-        "FIRE": 1,
-        "MYTH": 1,
-        "STORM": 1
-    })
+    # p2.pips.update({
+    #     "REG": 2,
+    #     "FIRE": 1,
+    #     "MYTH": 1,
+    #     "STORM": 1
+    # })
+
+    p2.pips.append(Pip("REG"))
+    p2.pips.append(Pip("REG"))
+    p2.pips.append(Pip("FIRE"))
+    p2.pips.append(Pip("MYTH"))
+    p2.pips.append(Pip("STORM"))
 
 def handle_pips(caster_player, context):
-    before_casting = {school: caster_player.pips[school] for school in caster_player.pips}
-    print(f"{caster_player.name} has {before_casting} pips and {caster_player.shadpips} shad pips before casting")
+  #  before_casting = {school: caster_player.pips[school] for school in caster_player.pips}
+    print(f"{caster_player.name} has {[pip for pip in caster_player.pips]} pips and {caster_player.shadpips} shad pips before casting")
+
+    priority_school = context.spell.get("SCHOOL")
+    caster_school = caster_player.school
+    print(f"spell school: {priority_school}; caster school: {caster_school}")
+    if caster_school == priority_school:
+        use_power = True
+    else:
+        use_power = False
+
+    # eats from school pips first
+    for school, cost in context.schoolpips.items():
+        print(f"Found a school pip: {school}")
+        to_rem = next((pip for pip in caster_player.pips if pip.school == school), None)
+        if to_rem is None:
+            raise AssertionError("Impossible to cast spell without required school pip(s)!")
+        caster_player.remove_pip(to_rem)
+
     while context.pips > 0:
-        print(f"{context.pips}")
-        # eats from school pips first
-        for school, cost in context.schoolpips.items():
-            print(f"here")
-            while before_casting.get(school, 0) > 0 and cost > 0:
-                print(f"{caster_player.name} eats {cost} {school} pip")
-                before_casting[school] -= 1
-                cost -= 1
+        odd = True if context.pips % 2 == 1 else False
+
+        # even number of pips means no reg pips consumed
+        if not odd:
+            school_pip = next((pip for pip in caster_player.pips if pip.school == priority_school), None)
+            if school_pip is not None:
+            #    print(f"Removing even pip: {not_reg_pip}")
+                print(f"Removing school pip: {school_pip}")
+                caster_player.remove_pip(school_pip)
+            else:
+                if use_power:
+                    not_reg_pip = next((pip for pip in caster_player.pips if pip.school != "REG"), None)
+                    if not_reg_pip is not None:
+                        print(f"removing not-reg pip: {not_reg_pip}")
+                        caster_player.remove_pip(not_reg_pip)
+                        context.pips -= 2
+                        continue
+                    # if not_reg_pip is None:
+                    #     reg_pips = [pip for pip in caster_player.pips if pip.school == "REG"]
+                
+                    #     # if there are no non-regular pips, it is assumed that there are enough regular pips (2)
+                    #     # uses 2 regular pips
+                    #     for i, pip in enumerate(reg_pips):
+                    #         if i >= 2:
+                    #             break 
+                    #         caster_player.remove_pip(pip)
+                    # else:
+                    #     caster_player.remove_pip(not_reg_pip)
+
+                # there must be reg pips or else the spell should not cast
+                reg_pips = [pip for pip in caster_player.pips if pip.school == "REG"]
+
+                for i, pip in enumerate(reg_pips):
+                    if i >= 2:
+                        break 
+                    print(f"removing reg pip: {pip}")
+                    caster_player.remove_pip(pip)
+
+            context.pips -= 2
+
+            #    print(f"no regular pips!")
+            #     reg_pips = [pip for pip in caster_player.pips if pip.school == "REG"]
+                
+            #     # if there are no non-regular pips, it is assumed that there are enough regular pips (2)
+            #     # uses 2 regular pips
+            #     for i, pip in enumerate(reg_pips):
+            #         if i >= 2:
+            #             break 
+            #         caster_player.remove_pip(pip)
+            # context.pips -= 2
+                
+        # odd number means try to consume one reg pip
+        # if no reg pip, then do pip conserve
+        else:
+            reg_pip = next((pip for pip in caster_player.pips if pip.school == "REG"), None)
+            if reg_pip:
+                caster_player.remove_pip(reg_pip)
+            else:
+                to_rem = caster_player.pips[0]
+             #   print(f"To remove pip: {to_rem}")
+                caster_player.remove_pip(to_rem)
+             #   conserved = True
+            #    if conserved:
+             #       caster_player.pips.insert(0, Pip("REG"))
+                #    print(f"After insertin reg: {caster_player.pips}")
+            context.pips -= 1
+
+        # for school, cost in context.schoolpips.items():
+        #     print(f"here")
+        #     while before_casting.get(school, 0) > 0 and cost > 0:
+        #         print(f"{caster_player.name} eats {cost} {school} pip")
+        #         before_casting[school] -= 1
+        #         cost -= 1
 
         # then eats from regular pips
-        while before_casting.get("REG", 0) > 0:
-            print(f"{before_casting["REG"]}")
-            before_casting["REG"] -= 1
-            context.pips -= 1
-            print(f"{before_casting["REG"]}")
+        # while before_casting.get("REG", 0) > 0:
+        #     print(f"{before_casting["REG"]}")
+        #     before_casting["REG"] -= 1
+        #     context.pips -= 1
+        #     print(f"{before_casting["REG"]}")
         
         # then eats from power pips
-        while before_casting.get("POWER", 0) > 0:
-            before_casting["POWER"] -= 1
-            context.pips -= 1
+        # while before_casting.get("POWER", 0) > 0:
+        #     before_casting["POWER"] -= 1
+        #     context.pips -= 1
 
         # then eats from remaining school pips
-        for school, cost in before_casting.items():
-            print(f"{school}: {cost}")
-            if cost > 0:
-                before_casting[school] -= 1
-                print(f"before_casting[school] cost > 0: {before_casting[school]}")
-                context.pips -= 2
+        # for school, cost in before_casting.items():
+        #     print(f"{school}: {cost}")
+        #     if cost > 0:
+        #         before_casting[school] -= 1
+        #         print(f"before_casting[school] cost > 0: {before_casting[school]}")
+        #         context.pips -= 2
 
-        if context.pips < 0:
-            # do pip conserve stuff here!
-            reg_pips = before_casting.get("REG", 0)
-            reg_pips += 1
-            before_casting["REG"] = reg_pips
+        # if context.pips < 0:
+        #     # do pip conserve stuff here!
+        #     reg_pips = before_casting.get("REG", 0)
+        #     reg_pips += 1
+        #     before_casting["REG"] = reg_pips
         
         print(f"{context.pips} pips left to eat")
+        print(f"Player has: {caster_player.pips}")
 
  #   caster_player.pips = { school: caster_player.pips.get(school, 0) - context.pips for school in caster_player.pips }
     caster_player.shadpips -= context.shadpips
 
-    caster_player.pips = before_casting
 
-    print(f"{caster_player.name} has {before_casting} pips and {caster_player.shadpips} shad pips after casting")
+    print(f"{caster_player.name} has {caster_player.pips} pips and {caster_player.shadpips} shad pips after casting")
 
   #  print(f"{caster_player.name} has {caster_player.pips} pips and {caster_player.shadpips} shad pips left")
 # fire ice storm (traps/shields) -> put on order
@@ -129,6 +223,7 @@ def cast_spell(match_obj, caster_player, enemy_player, spell_data):
 
     print(f"{caster_player.name} pays {pipcost} pips, {schoolpipcost} school pips, and {shadcost} shad pips")
 
+    handle_pips(caster_player, context)
     # loop through the effects of the spell
     # then apply them to the right player in match_obj
     for effect in context.spell["EFFECTS"]:
@@ -198,8 +293,6 @@ def cast_spell(match_obj, caster_player, enemy_player, spell_data):
         print(f"Used charm: {charm}")
         player.del_effect(charm)
 
-#    handle_pips(caster_player, context)
-
 # match_obj is what is changing over time --
 # "match" var just refers to the raw match json code
 
@@ -231,8 +324,8 @@ def start_match(match_obj):
 
     for turn in match:
         round = turn.get("ROUND")
-        if round > 4:
-            break
+        # if round > 20:
+        #     break
         caster = turn.get("CASTER")
 
         # caster stored in the match obj has definite names for players
@@ -362,34 +455,66 @@ def start_match(match_obj):
                 effect.end_round()
         
         if caster_player.aura is not None:
-            print("Caster aura:")
+        #    print("Caster aura:")
             caster_player.aura.end_round()
-            print(caster_player.aura)
+         #   print(caster_player.aura)
             if caster_player.aura.expired():
                 caster_player.aura = None
         
         if enemy_player.aura is not None:
-            print("Enemy aura:")
+         #   print("Enemy aura:")
             print(enemy_player.aura)
 
         if caster_player.backlash is not None:
-            print("Caster backlash:")
+        #    print("Caster backlash:")
             caster_player.backlash.end_round()
-            print(caster_player.backlash)
+        #    print(caster_player.backlash)
         
         if enemy_player.backlash is not None:
-            print("Enemy backlash:")
-            print(enemy_player.backlash)
+            pass
+        #    print("Enemy backlash:")
+        #    print(enemy_player.backlash)
 
         print_effects(match_obj.getPlayer1())
         print_effects(match_obj.getPlayer2())
 
+        if turn.get("CONSERVE_PIP") in (None, "NONE"):
+            conserved = None
+         #   conserved = conservation_math()
+        else:
+            conserved = turn["CONSERVE_PIP"]
+        
+        if conserved:
+            caster_player.pips.insert(0, Pip("REG"))
+
         school_pip = turn.get("SELECTED_SCHOOL")
 
+      #  print(type(caster_player.pips))
+      #  reg_idx = caster_player.pips.index("REG")
 
-        # print(type(caster_player.pips))
-        # print(caster_player.pips)
-        caster_player.pips[school_pip] += 1
+        # for pip in caster_player.pips:
+        #     print(f"{pip}")
+
+     #   reg_idx = next((i for i, pip in enumerate(caster_player.pips) if pip.school == "REG"), 0)
+
+        reg_idx = caster_player.last_pip_index("REG")
+
+        if reg_idx is None:
+            caster_player.pips.insert(0, Pip(school_pip))
+        else:        
+            caster_player.pips.insert(reg_idx + 1, Pip(school_pip))
+
+        print(f"Before sorting: {caster_player.pips}")
+
+        caster_player.sort_pips()
+        # caster_player.pips[reg_idx:]
+        # caster_player.pips[school_pip] += 1
+        print(caster_player.pips)
+
+        if turn.get("GAIN_SHAD") == True:
+            caster_player.shadpips += 1
+
+        print(f"{caster_player.name} has {caster_player.shadpips} shadpips")
 
             # if hasattr(effect, "duration"):
             #     print(f"Duration: {effect.duration}")
