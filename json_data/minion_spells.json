@@ -1,0 +1,115 @@
+[
+    {
+        "ID": "BALANCEBLADE_25",
+        "SPELL": "BALANCEBLADE",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "EFFECTS": [
+            {
+                "TYPE": "BLADE",
+                "TARGET": "ALLY",
+                "SCHOOL": "UNIVERSAL",
+                "VALUE": 25,
+                "FAMILY": "BALANCEBLADE_UNI25"
+            }
+        ]
+    },
+    {
+        "ID": "DOUBLEWEAKNESS_25",
+        "SPELL": "DOUBLE WEAKNESS",
+        "SCHOOL": "STORM",
+        "PIPCOST": 1,
+        "ACCURACY": 100,
+        "EFFECTS": [
+            {
+                "TYPE": "WEAKNESS",
+                "TARGET": "ENEMY",
+                "SCHOOL": "UNIVERSAL",
+                "VALUE": 25,
+                "AMOUNT": 2,
+                "FAMILY": "DOUBLEWEAKNESS_UNI25"
+            }
+        ]
+    },
+    {
+        "ID": "DUOCHROMABLADE_30",
+        "SPELL": "DUO CHROMA BLADE",
+        "SCHOOL": "STORM",
+        "PIPCOST": 1,
+        "ACCURACY": 100,
+        "EFFECTS": [
+            {
+                "TYPE": "BLADE",
+                "TARGET": "ALLY",
+                "SCHOOL": "ALLY_SCHOOL",
+                "VALUE": 30,
+                "AMOUNT": 2,
+                "FAMILY": "DUOCHROMABLADE_30"
+            }
+        ]
+    },
+    {
+        "ID": "GREATERSWORD_40",
+        "SPELL": "GREATER SWORD",
+        "SCHOOL": "STORM",
+        "PIPCOST": 1,
+        "ACCURACY": 100,
+        "EFFECTS": [
+            {
+                "TYPE": "BLADE",
+                "TARGET": "ALLY",
+                "SCHOOL": "UNIVERSAL",
+                "VALUE": 40,
+                "FAMILY": "GREATERSWORD_UNI40"
+            }
+        ]
+    },
+    {
+        "ID": "GREATERWEAKNESS_35",
+        "SPELL": "GREATER WEAKNESS",
+        "SCHOOL": "STORM",
+        "PIPCOST": 1,
+        "ACCURACY": 100,
+        "EFFECTS": [
+            {
+                "TYPE": "WEAKNESS",
+                "TARGET": "ENEMY",
+                "SCHOOL": "UNIVERSAL",
+                "VALUE": 35,
+                "FAMILY": "GREATERWEAKNESS_UNI35"
+            }
+        ]
+    },
+    {
+        "ID": "WEAKNESS_25",
+        "SPELL": "WEAKNESS",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["CHARM"],
+        "DESCRIPTION":
+            "APPLIES A -25% DAMAGE CHARM",
+        "EFFECTS": [
+            {
+                "TYPE": "WEAKNESS",
+                "TARGET": "ENEMY",
+                "SCHOOL": "UNIVERSAL",
+                "VALUE": 25,
+                "FAMILY": "WEAKNESS_UNI25"
+            }
+        ]
+    },
+    {
+        "ID": "EXITCOMBAT",
+        "SPELL": "EXIT COMBAT",
+        "SCHOOL": "STAR",
+        "PIPCOST": 1,
+        "ACCURACY": 100,
+        "EFFECTS": [
+            {
+                "TYPE": "EXIT_COMBAT"
+            }
+        ]
+    }
+]

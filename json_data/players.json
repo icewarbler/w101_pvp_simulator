@@ -369,5 +369,171 @@
         },
         "POWERPIPS": 101,
         "SHAD_RATING": 153
+    },
+    {
+        "NAME": "BO SANDSTONE",
+        "LEVEL": 180,
+        "SCHOOL": "BALANCE",
+        "SECONDARYSCHOOL": "STORM",
+        "MAX_HEALTH": 13632,
+        "OUTGOING_DAMAGE": {
+            "FIRE": 48,
+            "ICE": 98,
+            "STORM": 48,
+            "MYTH": 48,
+            "LIFE": 48,
+            "DEATH": 48,
+            "BALANCE": 223,
+            "SHADOW": 48
+        },
+        "INCOMING_RESIST": {
+            "FIRE": 69,
+            "ICE": 69,
+            "STORM": 69,
+            "MYTH": 69,
+            "LIFE": 69,
+            "DEATH": 69,
+            "BALANCE": 69,
+            "SHADOW": 69
+        },
+        "ACCURACY": {
+            "FIRE": 0,
+            "ICE": 5,
+            "STORM": 0,
+            "MYTH": 0,
+            "LIFE": 0,
+            "DEATH": 0,
+            "BALANCE": 32,
+            "SHADOW": 0
+        },
+        "CRIT": {
+            "FIRE": 0,
+            "ICE": 0,
+            "STORM": 0,
+            "MYTH": 0,
+            "LIFE": 0,
+            "DEATH": 0,
+            "BALANCE": 597,
+            "SHADOW": 0
+        },
+        "BLOCK": {
+            "FIRE": 790,
+            "ICE": 790,
+            "STORM": 790,
+            "MYTH": 790,
+            "LIFE": 790,
+            "DEATH": 790,
+            "BALANCE": 790,
+            "SHADOW": 790
+        },
+        "PIERCE": {
+            "FIRE": 4,
+            "ICE": 14,
+            "STORM": 10,
+            "MYTH": 4,
+            "LIFE": 4,
+            "DEATH": 4,
+            "BALANCE": 47,
+            "SHADOW": 4
+        },
+        "PIP_CONVERT": {
+            "FIRE": 122,
+            "ICE": 122,
+            "STORM": 122,
+            "MYTH": 122,
+            "LIFE": 122,
+            "DEATH": 122,
+            "BALANCE": 883
+        },
+        "POWERPIPS": 103,
+        "SHAD_RATING": 131,
+        "DECK": {
+            "ELEMENTALSHIELD_50": 2,
+            "SAMOORAI": 6,
+            "STEALPIP": 2,
+            "WEAKNESS_25": 3
+        }
+    },
+    {
+        "NAME": "BAMBI",
+        "LEVEL": 180,
+        "SCHOOL": "STORM",
+        "SECONDARYSCHOOL": "DEATH",
+        "MAX_HEALTH": 9092,
+        "OUTGOING_DAMAGE": {
+            "FIRE": 38,
+            "ICE": 38,
+            "STORM": 206,
+            "MYTH": 38,
+            "LIFE": 48,
+            "DEATH": 38,
+            "BALANCE": 38,
+            "SHADOW": 38
+        },
+        "INCOMING_RESIST": {
+            "FIRE": 35,
+            "ICE": 35,
+            "STORM": 35,
+            "MYTH": 35,
+            "LIFE": 35,
+            "DEATH": 35,
+            "BALANCE": 35,
+            "SHADOW": 35
+        },
+        "ACCURACY": {
+            "FIRE": 0,
+            "ICE": 0,
+            "STORM": 38,
+            "MYTH": 0,
+            "LIFE": 0,
+            "DEATH": 0,
+            "BALANCE": 0,
+            "SHADOW": 0
+        },
+        "CRIT": {
+            "FIRE": 0,
+            "ICE": 0,
+            "STORM": 739,
+            "MYTH": 0,
+            "LIFE": 0,
+            "DEATH": 0,
+            "BALANCE": 0,
+            "SHADOW": 0
+        },
+        "BLOCK": {
+            "FIRE": 598,
+            "ICE": 598,
+            "STORM": 598,
+            "MYTH": 598,
+            "LIFE": 598,
+            "DEATH": 598,
+            "BALANCE": 598,
+            "SHADOW": 598
+        },
+        "PIERCE": {
+            "FIRE": 4,
+            "ICE": 4,
+            "STORM": 35,
+            "MYTH": 4,
+            "LIFE": 4,
+            "DEATH": 4,
+            "BALANCE": 4,
+            "SHADOW": 4
+        },
+        "PIP_CONVERT": {
+            "FIRE": 267,
+            "ICE": 267,
+            "STORM": 912,
+            "MYTH": 267,
+            "LIFE": 267,
+            "DEATH": 267,
+            "BALANCE": 267
+        },
+        "POWERPIPS": 103,
+        "SHAD_RATING": 107,
+        "DECK": {
+            "TOWERSHIELD": 1,
+            "BALANCEBLADE": 3
+        }
     }
 ]

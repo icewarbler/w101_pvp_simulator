@@ -66,11 +66,69 @@
         ]
     },
     {
-        "ID": "SAMOORAI",
+        "ID": "LOREMASTER_3B",
+        "SPELL": "LOREMASTER",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 2,
+        "SCHOOLPIPS": {"BALANCE": 1},
+        "ACCURACY": 85,
+        "TYPE": ["DAMAGE", "SINGLE_DAMAGE", "WEAKNESS", "CHARM"],
+        "DESCRIPTION":
+            "DEALS 330 BALANCE DAMAGE TO TARGET AND APPLIES A -35% WEAKNESS TO TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "BALANCE",
+                "VALUE": 330
+            },
+            {
+                "TYPE": "WEAKNESS",
+                "TARGET": "ENEMY",
+                "SCHOOL": "UNIVERSAL",
+                "VALUE": 35,
+                "FAMILY": "LOREMASTER_UNI35"
+            }
+        ]
+    },
+    {
+        "ID": "ONISSHADOW",
+        "SPELL": "ONI'S SHADOW",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 2,
+        "ACCURACY": 100,
+        "TYPE": ["AURA", "WARD", "TRAP"],
+        "DESCRIPTION":
+            "PLACES A -20% INCOMING UNIVERSAL DAMAGE AURA ON SELF AND 2 +35% TRAPS ON TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "AURA",
+                "DURATION": 5,
+                "TARGET": "SELF",
+                "ADJ": [
+                    {
+                        "TYPE": "SHIELD",
+                        "SCHOOL": "UNIVERSAL",
+                        "VALUE": 20
+                    }
+                ]
+            },
+            {
+                "TYPE": "TRAP",
+                "TARGET": "ENEMY",
+                "SCHOOL": "UNIVERSAL",
+                "VALUE": 35,
+                "AMOUNT": 2,
+                "FAMILY": "ONISSHADOW_TRAP35"
+            }
+        ]
+    },
+    {
+        "ID": "SAMOORAI_2B",
         "SPELL": "SAMOORAI",
         "SCHOOL": "BALANCE",
         "PIPCOST": 3,
-        "SCHOOLPIPS": "BALANCE",
+        "SCHOOLPIPS": {"BALANCE": 1},
         "ACCURACY": 85,
         "TYPE": ["DAMAGE", "WARD", "SHIELD"],
         "DESCRIPTION":
@@ -79,12 +137,65 @@
             {
                 "TYPE": "SINGLE_DAMAGE",
                 "SCHOOL": "BALANCE",
+                "TARGET": "ENEMY",
                 "VALUE": 385
             },
             {
                 "TYPE": "SHIELD",
+                "TARGET": "SELF",
                 "SCHOOL": "UNIVERSAL",
-                "VALUE": 70
+                "VALUE": 70,
+                "FAMILY": "SAMOORAI_SHIELD70"
+            }
+        ]
+    },
+    {
+        "ID": "SAMOORAI_3B",
+        "SPELL": "SAMOORAI",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 3,
+        "SCHOOLPIPS": {"BALANCE": 1},
+        "ACCURACY": 85,
+        "TYPE": ["DAMAGE", "WARD", "SHIELD"],
+        "DESCRIPTION":
+            "DOES 395 BALANCE DAMAGE TO TARGET AND APPLIES A -70% UNIVERSAL SHIELD TO SELF",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "SCHOOL": "BALANCE",
+                "TARGET": "ENEMY",
+                "VALUE": 395
+            },
+            {
+                "TYPE": "SHIELD",
+                "TARGET": "SELF",
+                "SCHOOL": "UNIVERSAL",
+                "VALUE": 70,
+                "FAMILY": "SAMOORAI_SHIELD70"
+            }
+        ]
+    },
+    {
+        "ID": "SCARAB_2C",
+        "SPELL": "SCARAB",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 1,
+        "ACCURACY": 85,
+        "TYPE": ["MANIPULATION", "GAMBIT", "DAMAGE", "SINGLE_DAMAGE"],
+        "DESCRIPTION":
+            "SWAPS A WEAKNESS WITH TARGET THEN DEALS 60 BALANCE DAMAGE TO TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": {
+                    "ACTION": "SWAP",
+                    "TYPE": "WEAKNESS",
+                    "TARGET": "ENEMY",
+                    "MAX": 1
+                },
+                "PER_EFFECT": {
+                    "TYPE": "WEAKNESS"
+                }
             }
         ]
     },
@@ -92,7 +203,7 @@
         "ID": "SPIRITWEAKNESS_30",
         "SPELL": "SPIRIT WEAKNESS",
         "SCHOOL": "BALANCE",
-        "PIPCOST": 0,
+        "PIPCOST": 1,
         "ACCURACY": 100,
         "TYPE": ["CHARM", "WEAKNESS"],
         "DESCRIPTION":
@@ -102,19 +213,22 @@
                 "TYPE": "WEAKNESS",
                 "TARGET": "ENEMY",
                 "SCHOOL": "DEATH",
-                "VALUE": 30
+                "VALUE": 30,
+                "FAMILY": "SPIRITWEAKNESS_DEATH30"
             },
             {
                 "TYPE": "WEAKNESS",
                 "TARGET": "ENEMY",
                 "SCHOOL": "MYTH",
-                "VALUE": 30
+                "VALUE": 30,
+                "FAMILY": "SPIRITWEAKNESS_MYTH30"
             },
             {
                 "TYPE": "WEAKNESS",
                 "TARGET": "ENEMY",
                 "SCHOOL": "LIFE",
-                "VALUE": 30
+                "VALUE": 30,
+                "FAMILY": "SPIRITWEAKNESS_LIFE30"
             }
         ]
     },
@@ -138,6 +252,24 @@
                     "SUBTYPE": "GAIN",
                     "TARGET": "PIP"
                 }
+            }
+        ]
+    },
+    {
+        "ID": "SUPERCLASH",
+        "SPELL": "SUPER CLASH",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["DAMAGE", "SINGLE_DAMAGE"],
+        "DESCRIPTION":
+            "DOES 180 BALANCE DAMAGE TO TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "BALANCE",
+                "VALUE": 180
             }
         ]
     },
@@ -822,17 +954,19 @@
         "TYPE": ["AURA"],
         "DESCRIPTION":
             "APPLIES A +20% INCOMING DAMAGE AURA FOR 4 ROUNDS",
-        "EFFECT": [
+        "EFFECTS": [
             {
                 "TYPE": "AURA",
                 "DURATION": 4,
                 "TARGET": "ENEMY",
-                "ADJ": {
-                    "TYPE": "TRAP",
-                    "SUBTYPE": "DAMAGE",
-                    "SCHOOL": "UNIVERSAL",
-                    "VALUE": 20
-                }
+                "ADJ": [
+                    {
+                        "TYPE": "TRAP",
+                        "SUBTYPE": "DAMAGE",
+                        "SCHOOL": "UNIVERSAL",
+                        "VALUE": 20
+                    }
+                ]
             }
         ]
     },
@@ -946,6 +1080,24 @@
                     "SCHOOL": "UNIVERSAL",
                     "VALUE": 15
                 }
+            }
+        ]
+    },
+    {
+        "ID": "WATERELEMENTAL",
+        "SPELL": "WATER ELEMENTAL",
+        "SCHOOL": "STORM",
+        "PIPCOST": 3,
+        "ACCURACY": 100,
+        "TYPE": ["MINION"],
+        "DESCRIPTION":
+            "SUMMON A MINION OF STORM",
+        "EFFECTS": [
+            {
+                "TYPE": "MINION",
+                "TARGET": "SELF",
+                "DURATION": 7,
+                "ID": "WATER_ELEMENTAL"
             }
         ]
     }

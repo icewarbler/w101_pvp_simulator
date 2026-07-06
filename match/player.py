@@ -48,6 +48,8 @@ class Player:
 
         self.backlash = None
 
+        self.minion = None
+
     
     def add_effect(self, effect):
         self.effects.append(effect)

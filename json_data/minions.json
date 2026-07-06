@@ -1,0 +1,19 @@
+[
+    {
+        "ID": "WATER_ELEMENTAL",
+        "NAME": "WATER ELEMENTAL",
+        "RANK": 4,
+        "HEALTH": 1771,
+        "SCHOOL": "STORM",
+        "STARTINGPIPS": 1,
+        "DECK": [
+            "DOUBLE_WEAKNESS",
+            "GREATER_WEAKNESS",
+            "WEAKNESS",
+            "DUO_CHROMA_BLADE",
+            "GREATER_SWORD",
+            "BALANCEBLADE",
+            "EXIT_COMBAT"
+        ]
+    }
+]

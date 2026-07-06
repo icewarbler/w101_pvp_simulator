@@ -231,6 +231,8 @@ class Match:
         used_charm_families = set()
 
         for charm in caster_charms:
+            if charm.type == "HEAL_WEAKNESS":
+                continue
             if charm.school in (effect_school, "UNIVERSAL"):
                 if charm.family in used_charm_families:
                     continue
@@ -247,9 +249,10 @@ class Match:
         # gets the global
         b = self.getBubble()
 
-        if b.school == effect_school:
-        #  print(f"Found bubble with value {b.value}")
-            effect_value += effect_value * b.value * 0.01
+        if b:
+            if b.school == effect_school:
+            #  print(f"Found bubble with value {b.value}")
+                effect_value += effect_value * b.value * 0.01
         
     #  print(f"post-bubble effect_value: {effect_value}")
 
@@ -316,7 +319,7 @@ class Match:
     def play_gambit(self, caster_player, enemy_player, gambit, context):
         gambit_cause = gambit.cause
         print(gambit_cause)
-        gambit_effect = gambit.per_effect
+        # gambit_effect = gambit.per_effect
 
     #  print(json.dumps(gambit_cause, indent=4))
     #  print(json.dumps(gambit_effect, indent=4))
@@ -329,6 +332,38 @@ class Match:
             abs_target = enemy_player
 
         match gambit_cause.get("ACTION"):
+            case "SWAP":
+                # "TYPE": "GAMBIT",
+                # "CAUSE": {
+                #     "ACTION": "SWAP",
+                #     "TYPE": "WEAKNESS",
+                #     "TARGET": "ENEMY",
+                #     "MAX": 1
+                # }
+                print(f"gambit_cause[TYPE]: {gambit_cause["TYPE"]}")
+                for t in abs_target.effects:
+                    print(f"effect: {t.type}")
+                enemy_effect = next(( effect for effect in (abs_target.effects[::-1]) if gambit_cause["TYPE"] in effect.categories), None)
+
+                caster_effect = next(( effect for effect in (caster_player.effects[::-1]) if gambit_cause["TYPE"] in effect.categories), None)
+
+                print(f"Taking effect {enemy_effect} from enemy")
+                print(f"Taking effect {caster_effect} from caster")
+
+                # removes effects
+                if enemy_effect is not None:
+                    abs_target.del_effect(enemy_effect)
+                
+                if caster_effect is not None:
+                    caster_player.del_effect(caster_effect)
+
+                # adds effects
+                if caster_effect is not None:
+                    abs_target.add_effect(caster_effect)
+
+                if enemy_effect is not None:
+                    caster_player.add_effect(enemy_effect)
+
             case "DETONATE":
                 to_explode = []
                 gambit_type = gambit_cause.get("TYPE")
@@ -341,6 +376,8 @@ class Match:
                             break
 
                 amount = len(to_explode)
+
+                gambit_effect = gambit.per_effect
 
                 for effect in to_explode:
                     multiplier = gambit_effect.get("VALUE")
@@ -406,7 +443,7 @@ class Match:
                             caster_player.pips.insert(0, Pip("POWER"))
                         else:        
                             caster_player.pips.insert(reg_idx + 1, Pip("POWER"))
-                            
+
                     if per_effect_type == "TRAP":
                         gambit_effect_target = gambit_effect["TARGET"]
 

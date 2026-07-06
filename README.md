@@ -23,7 +23,7 @@ a pvp sim for wiz!!!
 
 [-] detonates
 
-[x] pips
+[✓] pips
 
 [x] archmastery
 

@@ -1,9 +1,12 @@
 import json
 import pandas as pd
 import math
+import random
 from effects import Effect
 from effects import Single_Damage
 from effects import Charm
+from effects import Weakness
+from effects import Heal_Weakness
 from effects import Ward
 from effects import Trap
 from effects import Shield
@@ -26,53 +29,78 @@ def print_effects(player):
         print(f"{effect}")
 
 def insert_starting_conditions(match_obj):
-    p1 = match_obj.getPlayer1() # ezra
-    p2 = match_obj.getPlayer2() # jason
+    print(f"start name: {match_obj.getPlayer1().name}")
+    if match_obj.getPlayer1().name == "EZRA POLARKNIGHT":
+        p1 = match_obj.getPlayer1() # ezra
+        p2 = match_obj.getPlayer2() # jason
 
-    match_obj.change_bubble(Bubble("FIRE", 25))
+        match_obj.change_bubble(Bubble("FIRE", 25))
 
-  #  print(f"{match_obj.global_effect}")
+    #  print(f"{match_obj.global_effect}")
 
-    p1.curr_health = 12887
-    p2.curr_health = 9479
+        p1.curr_health = 12887
+        p2.curr_health = 9479
 
-    p1.add_effect(Trap("FIRE", 65, None))
-    adj = [{
-        "TYPE": "SHIELD",
-        "SCHOOL": "UNIVERSAL",
-        "VALUE": 20
-    }]
-    p1.aura = Aura(2, adj)
+        p1.add_effect(Trap("FIRE", 65, None))
+        adj = [{
+            "TYPE": "SHIELD",
+            "SCHOOL": "UNIVERSAL",
+            "VALUE": 20
+        }]
+        p1.aura = Aura(2, adj)
 
-    p2.add_effect(Trap("FIRE", 30, None))
-    p2.add_effect(Trap("ICE", 30, None))
-    p2.add_effect(Trap("STORM", 30, None))
+        p2.add_effect(Trap("FIRE", 30, None))
+        p2.add_effect(Trap("ICE", 30, None))
+        p2.add_effect(Trap("STORM", 30, None))
 
-    # p1.pips.update({
-    #     "DEATH": 1,
-    #     "LIFE": 3
-    # })
+        # p1.pips.update({
+        #     "DEATH": 1,
+        #     "LIFE": 3
+        # })
 
-    p1.pips.append(Pip("DEATH"))
-    p1.pips.append(Pip("LIFE"))
-    p1.pips.append(Pip("LIFE"))
-    p1.pips.append(Pip("LIFE"))
+        p1.pips.append(Pip("DEATH"))
+        p1.pips.append(Pip("LIFE"))
+        p1.pips.append(Pip("LIFE"))
+        p1.pips.append(Pip("LIFE"))
 
-    p1.shadpips = 1
-    p2.shadpips = 2
+        p1.shadpips = 1
+        p2.shadpips = 2
 
-    # p2.pips.update({
-    #     "REG": 2,
-    #     "FIRE": 1,
-    #     "MYTH": 1,
-    #     "STORM": 1
-    # })
+        # p2.pips.update({
+        #     "REG": 2,
+        #     "FIRE": 1,
+        #     "MYTH": 1,
+        #     "STORM": 1
+        # })
 
-    p2.pips.append(Pip("REG"))
-    p2.pips.append(Pip("REG"))
-    p2.pips.append(Pip("FIRE"))
-    p2.pips.append(Pip("MYTH"))
-    p2.pips.append(Pip("STORM"))
+        p2.pips.append(Pip("REG"))
+        p2.pips.append(Pip("REG"))
+        p2.pips.append(Pip("FIRE"))
+        p2.pips.append(Pip("MYTH"))
+        p2.pips.append(Pip("STORM"))
+
+    if match_obj.getPlayer1().name == "SUMI":
+        p1 = match_obj.getPlayer1() # sumi
+        p2 = match_obj.getPlayer2() # john
+
+        p1.curr_health = 14610
+        p2.curr_health = 13358
+
+        p1.add_effect(Heal_Weakness(65, "INFECTION_65"))
+
+        p1.add_effect(Weakness("ICE", 30, "ELEMENTALWEAKNESS_ICE30"))
+        p1.add_effect(Weakness("STORM", 30, "ELEMENTALWEAKNESS_STORM30"))
+        p1.add_effect(Weakness("FIRE", 30, "ELEMENTALWEAKNESS_FIRE30"))
+
+        p2.add_effect(Weakness("UNIVERSAL", 35, None))
+
+        p1.pips.append(Pip("REG"))
+        p1.pips.append(Pip("BALANCE"))
+
+        p2.pips.append(Pip("POWER"))
+        p2.pips.append(Pip("POWER"))
+        p2.pips.append(Pip("BALANCE"))
+        p2.pips.append(Pip("FIRE"))
 
 def handle_pips(caster_player, context):
   #  before_casting = {school: caster_player.pips[school] for school in caster_player.pips}
@@ -112,17 +140,6 @@ def handle_pips(caster_player, context):
                         caster_player.remove_pip(not_reg_pip)
                         context.pips -= 2
                         continue
-                    # if not_reg_pip is None:
-                    #     reg_pips = [pip for pip in caster_player.pips if pip.school == "REG"]
-                
-                    #     # if there are no non-regular pips, it is assumed that there are enough regular pips (2)
-                    #     # uses 2 regular pips
-                    #     for i, pip in enumerate(reg_pips):
-                    #         if i >= 2:
-                    #             break 
-                    #         caster_player.remove_pip(pip)
-                    # else:
-                    #     caster_player.remove_pip(not_reg_pip)
 
                 # there must be reg pips or else the spell should not cast
                 reg_pips = [pip for pip in caster_player.pips if pip.school == "REG"]
@@ -134,17 +151,6 @@ def handle_pips(caster_player, context):
                     caster_player.remove_pip(pip)
 
             context.pips -= 2
-
-            #    print(f"no regular pips!")
-            #     reg_pips = [pip for pip in caster_player.pips if pip.school == "REG"]
-                
-            #     # if there are no non-regular pips, it is assumed that there are enough regular pips (2)
-            #     # uses 2 regular pips
-            #     for i, pip in enumerate(reg_pips):
-            #         if i >= 2:
-            #             break 
-            #         caster_player.remove_pip(pip)
-            # context.pips -= 2
                 
         # odd number means try to consume one reg pip
         # if no reg pip, then do pip conserve
@@ -229,12 +235,13 @@ def cast_spell(match_obj, caster_player, enemy_player, spell_data):
     for effect in context.spell["EFFECTS"]:
         effect_type = effect["TYPE"]
 
-        print(f"Adding effect: {effect_type}")
+     #   print(f"Adding effect: {effect_type}")
 
         effect_class = Effect.registry[effect["TYPE"]]
         effect_obj = effect_class.from_json(effect)
 
-        print(effect_obj)
+        print(f"Adding effect: {effect_obj}")
+     #   print(effect_obj)
 
         match effect_obj.store_at():
             case "PLAYER":
@@ -249,9 +256,13 @@ def cast_spell(match_obj, caster_player, enemy_player, spell_data):
                     if effect_obj.school == "ENEMY_SCHOOL":
                             effect_obj.school = enemy_player.school
 
+                if effect_obj.type == "MINION":
+                    abs_target.minion = effect_obj
+                    continue
+
                 amount = effect.get("AMOUNT", 1)
 
-                print(effect_obj)
+            #    print(effect_obj)
 
                 if effect_obj.type == "AURA":
                     abs_target.aura = effect_obj
@@ -293,6 +304,35 @@ def cast_spell(match_obj, caster_player, enemy_player, spell_data):
         print(f"Used charm: {charm}")
         player.del_effect(charm)
 
+
+def minion_turn(caster_player, enemy_player, minion, minion_spell):
+    print(f"min dur: {minion.duration}")
+    if minion.duration == 7: 
+        return
+    
+    minion_spell = minion.cast_spell(minion_spell)
+
+    print(f"**Minion casts spell {minion_spell.get("SPELL")}")
+
+    for effect in minion_spell.get("EFFECTS"):
+        effect_class = Effect.registry[effect["TYPE"]]
+        effect_obj = effect_class.from_json(effect)
+        effect_target = effect.get("TARGET")
+        if effect_target == "ALLY":
+            print(f"Adding effect {effect_obj} to {caster_player.name}!")
+            caster_player.add_effect(effect_obj)
+        else:
+            if enemy_player.minion:
+                target = random.randrange(0,2)
+                if target == 0:
+                    enemy_player.add_effect(effect)
+                else:
+                    enemy_player.minion.add_effect(effect)
+            else:
+                print(f"Adding effect {effect_obj} to {enemy_player.name}!")
+                enemy_player.add_effect(effect_obj)
+
+
 # match_obj is what is changing over time --
 # "match" var just refers to the raw match json code
 
@@ -300,11 +340,18 @@ def cast_spell(match_obj, caster_player, enemy_player, spell_data):
 # it uses match_obj to determine the parameters of the match
 # (player info)
 def start_match(match_obj):
-    try:
-        with open("../json_data/ezra_jason.json", "r") as f:
-            match = json.load(f)
-    except json.JSONDecodeError:
-        print("ERROR! FAILED TO DECODE JSON!")
+    if match_obj.p1.name == "EZRA POLARKNIGHT":
+        try:
+            with open("../json_data/ezra_jason.json", "r") as f:
+                match = json.load(f)
+        except json.JSONDecodeError:
+            print("ERROR! FAILED TO DECODE JSON!")
+    else:
+        try:
+            with open("../json_data/sumi_john.json", "r") as f:
+                match = json.load(f)
+        except json.JSONDecodeError:
+            print("ERROR! FAILED TO DECODE JSON!")
 
     try:
         with open("../json_data/spells.json") as f:
@@ -324,7 +371,7 @@ def start_match(match_obj):
 
     for turn in match:
         round = turn.get("ROUND")
-        # if round > 20:
+        # if round > 13:
         #     break
         caster = turn.get("CASTER")
 
@@ -452,17 +499,19 @@ def start_match(match_obj):
                 effect.end_round()
         else:
             for effect in p2e2:
+                print(f"{effect}")
                 effect.end_round()
         
         if caster_player.aura is not None:
-        #    print("Caster aura:")
             caster_player.aura.end_round()
+            print("Caster aura:")
+            print(caster_player.aura)
          #   print(caster_player.aura)
             if caster_player.aura.expired():
                 caster_player.aura = None
         
         if enemy_player.aura is not None:
-         #   print("Enemy aura:")
+            print("Enemy aura:")
             print(enemy_player.aura)
 
         if caster_player.backlash is not None:
@@ -475,8 +524,14 @@ def start_match(match_obj):
         #    print("Enemy backlash:")
         #    print(enemy_player.backlash)
 
+        if caster_player.minion:
+            print(f"doing minion turn...")
+            minion_turn(caster_player, enemy_player, caster_player.minion, turn.get("MINION_CAST"))
+            caster_player.minion.duration -= 1
+
         print_effects(match_obj.getPlayer1())
         print_effects(match_obj.getPlayer2())
+
 
         if turn.get("CONSERVE_PIP") in (None, "NONE"):
             conserved = None
@@ -504,7 +559,7 @@ def start_match(match_obj):
         else:        
             caster_player.pips.insert(reg_idx + 1, Pip(school_pip))
 
-        print(f"Before sorting: {caster_player.pips}")
+      #  print(f"Before sorting: {caster_player.pips}")
 
         caster_player.sort_pips()
         # caster_player.pips[reg_idx:]
@@ -598,7 +653,7 @@ for match in matchups:
     match_dat.append(match_obj)
 
 #test_run(match_dat[0])
-start_match(match_dat[0])
+start_match(match_dat[1])
 
 #print(match_dat[0].p1.name)
 # start_match(match_dat[0])

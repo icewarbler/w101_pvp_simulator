@@ -1,3 +1,5 @@
+import json
+
 class Effect():
     registry = {}
 
@@ -208,9 +210,9 @@ class Weakness(Charm):
     
 @Effect.register("HEAL_WEAKNESS")
 class Heal_Weakness(Charm):
-    type = "WEAKNESS"
+    type = "HEAL_WEAKNESS"
 
-    categories = {"CHARM", "HEAL_WEAKNESS"}
+    categories = {"CHARM", "WEAKNESS", "HEAL_WEAKNESS"}
 
     @classmethod
     def from_json(cls, effect):
@@ -415,7 +417,11 @@ class Aura(Effect):
         self.adj = adj
 
     def __str__(self):
-        return f"{self.type}: {self.duration} {self.adj}"
+        # for effect in self.adj:
+        #     print(f"effect type: {type(effect)}")
+        #     print(f"effect: {effect}")
+        #     print(f"effect: {effect.get("TYPE")}")
+        return f"{self.type}: {self.duration} {[effect.get("TYPE") for effect in self.adj]}"
     
     def clone(self):
         return Aura(self.duration, self.adj)
@@ -642,3 +648,55 @@ class Gambit(Effect):
 
     def apply(self, match, caster, enemy, context):
         match.play_gambit(caster, enemy, self, context)
+
+@Effect.register("MINION")
+class Minion(Effect):
+    type = "MINION"
+
+    categories = {"MINION"}
+
+    @classmethod
+    def from_json(cls, effect):
+        return cls(effect["ID"], effect["DURATION"])
+    
+    def __init__(self, id, duration):
+        self.id = id
+        self.duration = duration
+
+        self.deck = []
+        self.effects = []
+
+    def __str__(self):
+        return self.type
+
+    def clone(self):
+        pass
+
+    def store_at(self):
+        return "PLAYER"
+
+    def begin_round(self):
+        pass
+
+    def end_round(self):
+        pass
+
+    def expired(self):
+        return False
+    
+    def cast_spell(self, spell_id):
+        try:
+            with open("../json_data/minion_spells.json") as f:
+                spells = json.load(f)
+        except json.JSONDecodeError:
+            print("ERROR! FAILED TO DECODE JSON!")
+
+        # puts every entry read from w101_spells.json into a dict
+        spell_lookup = { spell["ID"]: spell for spell in spells }
+
+        spell = spell_lookup[spell_id]
+        
+        return spell
+    
+    def add_effect(self, effect):
+        self.effects.append(effect)

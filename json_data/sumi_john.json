@@ -3,36 +3,120 @@
         "ROUND": 0,
         "CASTER": "PLAYER1",
         "SPELL": "BRACE",
-        "TARGET": "PLAYER1"
+        "TARGET": "PLAYER1",
+        "SELECTED_SCHOOL": "BALANCE"
     },
     {
         "ROUND": 1,
         "CASTER": "PLAYER2",
         "SPELL": "ATTENUATE",
-        "TARGET": "PLAYER1"
+        "TARGET": "PLAYER1",
+        "SELECTED_SCHOOL": "FIRE"
     },
     {
         "ROUND": 2,
         "CASTER": "PLAYER1",
         "SPELL": "STABILIZE",
-        "TARGET": "PLAYER1"
+        "TARGET": "PLAYER1",
+        "SELECTED_SCHOOL": "BALANCE"
     },
     {
         "ROUND": 3,
         "CASTER": "PLAYER2",
         "SPELL": "BRACE",
-        "TARGET": "PLAYER2"
+        "TARGET": "PLAYER2",
+        "SELECTED_SCHOOL": "FIRE"
     },
     {
         "ROUND": 4,
         "CASTER": "PLAYER1",
-        "SPELL": "SPIRIT WEAKNESS",
-        "TARGET": "PLAYER2"
+        "SPELL": "SPIRITWEAKNESS_30",
+        "TARGET": "PLAYER2",
+        "SELECTED_SCHOOL": "BALANCE"
     },
     {
         "ROUND": 5,
         "CASTER": "PLAYER2",
-        "SPELL": "SAMOORAI",
-        "TARGET": "PLAYER1"
+        "SPELL": "SAMOORAI_2B",
+        "TARGET": "PLAYER1",
+        "SELECTED_SCHOOL": "BALANCE",
+        "CONSERVE_PIP": true
+    },
+    {
+        "ROUND": 6,
+        "CASTER": "PLAYER1",
+        "SPELL": "SAMOORAI_3B",
+        "TARGET": "PLAYER2",
+        "SELECTED_SCHOOL": "STORM",
+        "CONSERVE_PIP": true
+    },
+    {
+        "ROUND": 7,
+        "CASTER": "PLAYER2",
+        "SPELL": "WEAKNESS_30",
+        "TARGET": "PLAYER1",
+        "SELECTED_SCHOOL": "FIRE",
+        "GAIN_SHAD": true
+    },
+    {
+        "ROUND": 8,
+        "CASTER": "PLAYER1",
+        "SPELL": "NONE",
+        "SELECTED_SCHOOL": "STORM",
+        "GAIN_SHAD": true
+    },
+    {
+        "ROUND": 9,
+        "CASTER": "PLAYER2",
+        "SPELL": "SUPERCLASH",
+        "TARGET": "PLAYER1",
+        "CRIT": true,
+        "SELECTED_SCHOOL": "BALANCE"
+    },
+    {
+        "ROUND": 10,
+        "CASTER": "PLAYER1",
+        "SPELL": "WATERELEMENTAL",
+        "SELECTED_SCHOOL": "BALANCE"
+    },
+    {
+        "ROUND": 11,
+        "CASTER": "PLAYER2",
+        "SPELL": "ONISSHADOW",
+        "TARGET": "PLAYER1",
+        "SELECTED_SCHOOL": "POWER"
+    },
+    {
+        "ROUND": 12,
+        "CASTER": "PLAYER1",
+        "SPELL": "SCARAB_2C",
+        "TARGET": "PLAYER2",
+        "CRIT": true,
+        "CONSERVE_PIP": true,
+        "MINION_CAST": "WEAKNESS_25",
+        "SELECTED_SCHOOL": "BALANCE"
+    },
+    {
+        "ROUND": 13,
+        "CASTER": "PLAYER2",
+        "SPELL": "LOREMASTER_3B",
+        "TARGET": "PLAYER1",
+        "SELECTED_SCHOOL": "BALANCE"
+    },
+    {
+        "ROUND": 14,
+        "CASTER": "PLAYER1",
+        "SPELL": "STABILIZE",
+        "TARGET": "PLAYER1",
+        "MINION_CAST": "BALANCEBLADE_25",
+        "SELECTED_SCHOOL": "BALANCE"
+    },
+    {
+        "ROUND": 15,
+        "CASTER": "PLAYER2",
+        "SPELL": "SAMOORAI_2B",
+        "TARGET": "PLAYER1",
+        "CRIT": true,
+        "SELECTED_SCHOOL": "BALANCE"
     }
 ]
