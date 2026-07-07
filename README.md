@@ -31,7 +31,7 @@ a pvp sim for wiz!!!
 
 [x] heal blades/traps
 
-[x] pierce
+[-] pierce
 
 [x] pierce blades
 
@@ -39,4 +39,4 @@ a pvp sim for wiz!!!
 
 [x] block
 
-[x] minions
+[-] minions

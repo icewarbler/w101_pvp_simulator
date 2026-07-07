@@ -417,12 +417,10 @@ class Aura(Effect):
         self.adj = adj
 
     def __str__(self):
-        # for effect in self.adj:
-        #     print(f"effect type: {type(effect)}")
-        #     print(f"effect: {effect}")
-        #     print(f"effect: {effect.get("TYPE")}")
-        return f"{self.type}: {self.duration} {[effect.get("TYPE") for effect in self.adj]}"
-    
+        effects = ", ".join(str(e) for e in self.adj)
+        return f"{self.type} ({self.duration} turns): {effects}"
+       # return f"{self.type}: {self.duration} { {effect.get("TYPE"): effect.get("VALUE") for effect in self.adj} }"
+
     def clone(self):
         return Aura(self.duration, self.adj)
     

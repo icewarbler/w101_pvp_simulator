@@ -1,10 +1,12 @@
 [
     {
         "PLAYER1": "EZRA POLARKNIGHT",
-        "PLAYER2": "JASON NIGHT"
+        "PLAYER2": "JASON NIGHT",
+        "MATCH_FILE": "json_data/ezra_jason.json"
     },
     {
         "PLAYER1": "SUMI",
-        "PLAYER2": "JOHN WEAVE"
+        "PLAYER2": "JOHN WEAVE",
+        "MATCH_FILE": "json_data/sumi_john.json"
     }
 ]

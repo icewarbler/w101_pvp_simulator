@@ -118,5 +118,30 @@
         "TARGET": "PLAYER1",
         "CRIT": true,
         "SELECTED_SCHOOL": "BALANCE"
+    },
+    {
+        "ROUND": 16,
+        "CASTER": "PLAYER1",
+        "SPELL": "ATTENUATE",
+        "TARGET": "PLAYER2",
+        "MINION_CAST": "GREATERWEAKNESS_35",
+        "SELECTED_SCHOOL": "BALANCE"
+    },
+    {
+        "ROUND": 17,
+        "CASTER": "PLAYER2",
+        "SPELL": "BRACE",
+        "TARGET": "PLAYER2",
+        "SELECTED_SCHOOL": "ICE"
+    },
+    {
+        "ROUND": 12,
+        "CASTER": "PLAYER1",
+        "SPELL": "SAMOORAI_3B",
+        "TARGET": "PLAYER2",
+        "CRIT": true,
+        "BLOCKED": true,
+        "MINION_CAST": "DUOCHROMABLADE_30",
+        "SELECTED_SCHOOL": "BALANCE"
     }
 ]

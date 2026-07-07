@@ -1,22 +1,28 @@
 import json
-import pandas as pd
 import random
-from effects import Effect
-from effects import Single_Damage
-from effects import Trap
-from effects import Charm
-from effects import Aura
-from effects import Ward
-from effects import Weakness
-from effects import DOT
-from player import Player
-from pip import Pip
+import math
+from .effects import Effect
+from .effects import Single_Damage
+from .effects import Trap
+from .effects import Charm
+from .effects import Aura
+from .effects import Ward
+from .effects import Weakness
+from .effects import DOT
+from .effects import Heal_Weakness
+from .effects import Bubble
+from .player import Player
+from .pip import Pip
+from .spell_instance import SpellInstance
 
 class Match:
-    def __init__(self, p1, p2, turn):
+    def __init__(self, p1, p2, turn, match_file):
         self.p1 = p1
         self.p2 = p2
         self.turn = turn
+
+        self.match_file = match_file
+
         self.global_effect = []
 
     def getPlayer1(self):
@@ -398,6 +404,8 @@ class Match:
                 for effect in to_remove:
                     abs_target.del_effect(effect)
 
+                gambit_effect = gambit.per_effect
+
                 per_effect_type = gambit_effect.get("TYPE")
                 
                 for _ in range(amount):
@@ -432,6 +440,8 @@ class Match:
                 for effect in to_remove:
                     abs_target.del_effect(effect)
 
+                gambit_effect = gambit.per_effect
+
                 per_effect_type = gambit_effect.get("TYPE")
                 
                 for _ in range(amount):
@@ -462,6 +472,311 @@ class Match:
                         jel = Trap(per_effect_school, per_effect_value, per_effect_family)
 
                         self.add_effect(abs_target, jel)
+
+    def insert_starting_conditions(self):
+        print(f"start name: {self.p1.name}")
+        if self.p1.name == "EZRA POLARKNIGHT":
+            p1 = self.p1 # ezra
+            p2 = self.p2 # jason
+
+            self.change_bubble(Bubble("FIRE", 25))
+
+        #  print(f"{match_obj.global_effect}")
+
+            p1.curr_health = 12887
+            p2.curr_health = 9479
+
+            p1.add_effect(Trap("FIRE", 65, None))
+            adj = [{
+                "TYPE": "SHIELD",
+                "SCHOOL": "UNIVERSAL",
+                "VALUE": 20
+            }]
+            p1.aura = Aura(2, adj)
+
+            p2.add_effect(Trap("FIRE", 30, None))
+            p2.add_effect(Trap("ICE", 30, None))
+            p2.add_effect(Trap("STORM", 30, None))
+
+            p1.pips.append(Pip("DEATH"))
+            p1.pips.append(Pip("LIFE"))
+            p1.pips.append(Pip("LIFE"))
+            p1.pips.append(Pip("LIFE"))
+
+            p1.shadpips = 1
+            p2.shadpips = 2
+
+            p2.pips.append(Pip("REG"))
+            p2.pips.append(Pip("REG"))
+            p2.pips.append(Pip("FIRE"))
+            p2.pips.append(Pip("MYTH"))
+            p2.pips.append(Pip("STORM"))
+
+        if self.p1.name == "SUMI":
+            p1 = self.p1 # sumi
+            p2 = self.p2 # john
+
+            p1.curr_health = 14610
+            p2.curr_health = 13358
+
+            p1.add_effect(Heal_Weakness(65, "INFECTION_65"))
+
+            p1.add_effect(Weakness("ICE", 30, "ELEMENTALWEAKNESS_ICE30"))
+            p1.add_effect(Weakness("STORM", 30, "ELEMENTALWEAKNESS_STORM30"))
+            p1.add_effect(Weakness("FIRE", 30, "ELEMENTALWEAKNESS_FIRE30"))
+
+            p2.add_effect(Weakness("UNIVERSAL", 35, None))
+
+            p1.pips.append(Pip("REG"))
+            p1.pips.append(Pip("BALANCE"))
+
+            p2.pips.append(Pip("POWER"))
+            p2.pips.append(Pip("POWER"))
+            p2.pips.append(Pip("BALANCE"))
+            p2.pips.append(Pip("FIRE"))
+
+    def cast_spell(self, caster_player, enemy_player, spell_data):
+        # if a player passes that turn, skip
+        if spell_data in (None, "NONE"):
+            return
+        
+        pipcost = spell_data.get("PIPCOST", 0)
+        schoolpipcost = spell_data.get("SCHOOLPIPS", {})
+        shadcost = spell_data.get("SHADCOST", 0)
+
+        context = SpellInstance(spell_data, caster_player, enemy_player, pipcost, schoolpipcost, shadcost)
+
+        print(f"{caster_player.name} pays {pipcost} pips, {schoolpipcost} school pips, and {shadcost} shad pips")
+
+        caster_player.handle_pips(context)
+
+        # loop through the effects of the spell
+        # then apply them to the right player in match_obj
+        for effect in context.spell["EFFECTS"]:
+            effect_class = Effect.registry[effect["TYPE"]]
+            effect_obj = effect_class.from_json(effect)
+            print(f"Adding effect: {effect_obj}")
+
+            match effect_obj.store_at():
+                case "PLAYER":
+                    effect_target = effect["TARGET"]
+
+                    if effect_target == "SELF":
+                        abs_target = caster_player
+                    elif effect_target == "ENEMY":
+                        abs_target = enemy_player
+
+                    if hasattr(effect_obj, "school"):
+                        if effect_obj.school == "ENEMY_SCHOOL":
+                            effect_obj.school = enemy_player.school
+                        elif effect_obj.school == "ALLY_SCHOOL":
+                            effect_obj.school = caster_player.school
+
+                    if effect_obj.type == "MINION":
+                        abs_target.minion = effect_obj
+                        continue
+
+                    if effect_obj.type == "AURA":
+                        abs_target.aura = effect_obj
+                        continue
+
+                    if effect_obj.type == "BACKLASH":
+                        if abs_target.backlash is not None:
+                            perc_dmg = caster_player.backlash.accumulated
+                            dmg_taken = caster_player.max_health * (perc_dmg * 0.01)
+                            print(f"{caster_player.name} takes {dmg_taken} damage!")
+                            caster_player.dec_health(dmg_taken)
+                            print(f"{caster_player.name} HEALTH: {math.floor(caster_player.curr_health)}")
+                        abs_target.backlash = effect_obj
+                        continue
+
+                    amount = effect.get("AMOUNT", 1)
+
+                    for _ in range(amount):
+                        new_effect = effect_obj.clone()
+
+                        if new_effect.type == "DOT":
+                            new_effect.get_damage(self, caster_player, context)
+
+                        abs_target.add_effect(new_effect)
+                    
+                case "MATCH":
+                    self.global_effect = effect_obj
+
+                case None:
+                    effect_obj.apply(self, caster_player, enemy_player, context)
+
+        for charm, player in context.charms_used.items():
+            print(f"Used charm: {charm}")
+            player.del_effect(charm)
+
+    def minion_turn(self, caster_player, enemy_player, minion, minion_spell):
+        print(f"min dur: {minion.duration}")
+        if minion.duration == 7: 
+            return
+        
+        minion_spell = minion.cast_spell(minion_spell)
+        print(f"**Minion casts spell {minion_spell.get("SPELL")}")
+
+        for effect in minion_spell.get("EFFECTS"):
+            effect_class = Effect.registry[effect["TYPE"]]
+            effect_obj = effect_class.from_json(effect)
+
+            effect_target = effect.get("TARGET")
+            if effect_target == "ALLY":
+                if hasattr(effect_obj, "school"):
+                    if effect_obj.school == "ALLY_SCHOOL":
+                        effect_obj.school = caster_player.school
+
+                print(f"Adding effect {effect_obj} to {caster_player.name}!")
+
+                amount = effect.get("AMOUNT", 1)
+                for _ in range(amount):
+                    new_effect = effect_obj.clone()
+
+                    caster_player.add_effect(new_effect)
+            else:
+                if enemy_player.minion:
+                    target = random.randrange(0,2)
+                    if target == 0:
+                        enemy_player.add_effect(effect)
+                    else:
+                        enemy_player.minion.add_effect(effect)
+                else:
+                    print(f"Adding effect {effect_obj} to {enemy_player.name}!")
+                    enemy_player.add_effect(effect_obj)
+
+    def load_json(self, file):
+        try:
+            with open(file, "r") as f:
+                return json.load(f)
+        except json.JSONDecodeError:
+            print("ERROR! FAILED TO DECODE JSON!")
+
+    def start_match(self):
+        match_dat = self.load_json(self.match_file)
+        spells = self.load_json("json_data/spells.json")
+
+        self.insert_starting_conditions()
+
+        spell_lookup = { spell["ID"]: spell for spell in spells }
+
+        print(f"P1 HEALTH: {self.p1.curr_health}")
+        print(f"P2 HEALTH: {self.p2.curr_health}")
+
+        for turn in match_dat:
+            round = turn["ROUND"]
+            # if round > 13:
+            #     break
+            caster = turn["CASTER"]
+
+            if caster == "PLAYER1":
+                caster_player = self.p1
+                enemy_player = self.p2
+            elif caster == "PLAYER2":
+                caster_player = self.p2
+                enemy_player = self.p1
+
+            print("----")
+
+            # this is where backlash is taken
+            if caster_player.backlash:
+                caster_player.take_backlash()
+
+            # this is where backlash eats
+            print(f"caster_backlash: {caster_player.backlash}")
+            if caster_player.backlash:
+                caster_player.backlash_eat(enemy_player)
+
+            # this is where DOTs activate
+            caster_player.activate_dots(self)
+
+            caster_player.activate_bombs()
+
+            self.p1.print_effects()
+            self.p2.print_effects()
+
+            # gets the spell name cast on that turn from w101_ezra_jason.json
+            spell_name = turn["SPELL"]
+
+            # if a player passes that turn, skip
+            if spell_name in (None, "NONE"):
+                print(f"**PASS")
+                print(f"Round {round}: {caster_player.name} PASSES")
+
+            if spell_name not in (None, "NONE"):
+                print(f"**SPELL: {spell_name}")
+                # get data from that spell to add to match
+                spell_data = spell_lookup.get(spell_name)
+
+                print(f"Round {round}: {caster_player.name} casts {spell_name}")
+
+                self.cast_spell(caster_player, enemy_player, spell_data)
+
+            # checks if a player has reached 0 health (end match)
+            if caster_player.curr_health <= 0 or enemy_player.curr_health <= 0:
+                self.end_match(caster_player, enemy_player)
+                break
+
+            if caster == "PLAYER1":
+                for effect in self.p1.effects:
+                    effect.end_round()
+            else:
+                for effect in self.p2.effects:
+                    effect.end_round()
+
+            if caster_player.aura is not None:
+                caster_player.aura.end_round()
+                print("Caster aura:")
+                print(caster_player.aura)
+                if caster_player.aura.expired():
+                    caster_player.aura = None
+            
+            if enemy_player.aura is not None:
+                print("Enemy aura:")
+                print(enemy_player.aura)
+
+            if caster_player.backlash is not None:
+                caster_player.backlash.end_round()
+
+            if caster_player.minion:
+                print(f"doing minion turn...")
+                self.minion_turn(caster_player, enemy_player, caster_player.minion, turn.get("MINION_CAST"))
+                caster_player.minion.duration -= 1
+
+            self.p1.print_effects()
+            self.p2.print_effects()
+
+            # pip conservation stuff
+            # pip conservation means that for a spell that requires odd pips
+            # using up a power pip leaves behind a regular pip
+            if turn.get("CONSERVE_PIP") in (None, "NONE"):
+                conserved = None
+            else:
+                conserved = turn["CONSERVE_PIP"]
+            
+            if conserved:
+                caster_player.pips.insert(0, Pip("REG"))
+
+            # archmastery stuff
+            school_pip = turn.get("SELECTED_SCHOOL")
+
+            # places the pip after all the regular pips
+            reg_idx = caster_player.last_pip_index("REG")
+
+            if reg_idx is None:
+                caster_player.pips.insert(0, Pip(school_pip))
+            else:        
+                caster_player.pips.insert(reg_idx + 1, Pip(school_pip))
+
+            caster_player.sort_pips()
+            print(caster_player.pips)
+
+            if turn.get("GAIN_SHAD") == True:
+                caster_player.shadpips += 1
+
+            print(f"{caster_player.name} has {caster_player.shadpips} shadpips")
+
 
     def end_match(self, caster_player, enemy_player):
         if caster_player.curr_health <= 0:
