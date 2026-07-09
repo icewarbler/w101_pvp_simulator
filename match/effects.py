@@ -1,4 +1,5 @@
 import json
+from .dataloader import load_json
 
 class Effect():
     registry = {}
@@ -683,11 +684,7 @@ class Minion(Effect):
         return False
     
     def cast_spell(self, spell_id):
-        try:
-            with open("../json_data/minion_spells.json") as f:
-                spells = json.load(f)
-        except json.JSONDecodeError:
-            print("ERROR! FAILED TO DECODE JSON!")
+        spells = load_json("json_data/minion_spells.json")
 
         # puts every entry read from w101_spells.json into a dict
         spell_lookup = { spell["ID"]: spell for spell in spells }

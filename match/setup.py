@@ -1,13 +1,7 @@
 import json
 from .player import Player
 from .match import Match
-
-def load_json(file):
-    try:
-        with open(file, "r") as f:
-            return json.load(f)
-    except json.JSONDecodeError:
-        print("ERROR! FAILED TO DECODE JSON!")
+from .dataloader import load_json
 
 def create_matches(players_file, matchups_file):
     players = load_json(players_file)
@@ -40,6 +34,3 @@ def create_player(player_data):
         player_data["INCOMING_RESIST"],
         player_data["PIERCE"]
     )
-
-def create_match():
-    pass

@@ -4,6 +4,7 @@ import math
 from .effects import Effect
 from .effects import Single_Damage
 from .effects import Trap
+from .effects import Shield
 from .effects import Charm
 from .effects import Aura
 from .effects import Ward
@@ -16,7 +17,7 @@ from .pip import Pip
 from .spell_instance import SpellInstance
 
 class Match:
-    def __init__(self, p1, p2, turn, match_file):
+    def __init__(self, p1, p2, turn, match_file=None):
         self.p1 = p1
         self.p2 = p2
         self.turn = turn
@@ -338,6 +339,48 @@ class Match:
             abs_target = enemy_player
 
         match gambit_cause.get("ACTION"):
+            case "ECHO":
+                effect_count = 0
+               # gambit_type = gambit_cause.get("TYPE")
+                for effect in abs_target.effects:
+                    if effect.type == gambit_cause.get("TYPE"):
+                        effect_count += 1
+                        
+                        if effect_count == gambit_cause.get("MAX"):
+                            break
+
+                print(f"amount: {effect_count}")
+
+                gambit_effect = gambit.per_effect
+
+                effect_class = Effect.registry[gambit_effect["TYPE"]]
+                effect_obj = effect_class.from_json(gambit_effect)
+
+            #    per_effect_type = gambit_effect.get("TYPE")
+
+                gambit_effect_target = gambit_effect["TARGET"]
+
+                if gambit_effect_target == "SELF":
+                    abs_target = caster_player
+                elif gambit_effect_target == "ENEMY":
+                    abs_target = enemy_player
+                
+                for _ in range(effect_count):
+                    # per_effect_school = gambit_effect.get("SCHOOL")
+                    # per_effect_value = gambit_effect.get("VALUE")
+                    # per_effect_family = gambit_effect.get("FAMILY")
+
+                 #   effect_class = Effect.registry[gambit_effect["TYPE"]]
+                 #   effect_obj = effect_class.from_json(gambit_effect)
+                    new_effect = effect_obj.clone()
+
+                    abs_target.add_effect(new_effect)
+                 #   hiii = Shield(per_effect_school, per_effect_value, per_effect_family)
+
+                    print(f"Adding effect {new_effect} to {abs_target.name}")
+
+                  #  self.add_effect(abs_target, hiii)
+
             case "SWAP":
                 # "TYPE": "GAMBIT",
                 # "CAUSE": {
@@ -654,7 +697,8 @@ class Match:
             print("ERROR! FAILED TO DECODE JSON!")
 
     def start_match(self):
-        match_dat = self.load_json(self.match_file)
+        if self.match_file:
+            match_dat = self.load_json(self.match_file)
         spells = self.load_json("json_data/spells.json")
 
         self.insert_starting_conditions()

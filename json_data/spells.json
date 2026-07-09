@@ -66,6 +66,87 @@
         ]
     },
     {
+        "ID": "HYDRA_2B",
+        "SPELL": "HYDRA",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 6,
+        "ACCURACY": 85,
+        "TYPE": ["DAMAGE", "GAMBIT", "WARD", "SHIELD"],
+        "DESCRIPTION":
+            "DEALS 150 FIRE, ICE, AND STORM DAMAGE TO TARGET AND APPLIES A -55% DAMAGE SHIELD ON CASTER PER SHIELD ON TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "FIRE",
+                "VALUE": 150
+            },
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "ICE",
+                "VALUE": 150
+            },
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "STORM",
+                "VALUE": 150
+            },
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": {
+                    "ACTION": "ECHO",
+                    "TARGET": "ENEMY",
+                    "TYPE": "SHIELD",
+                    "MAX": 5
+                },
+                "PER_EFFECT": {
+                    "TARGET": "SELF",
+                    "TYPE": "SHIELD",
+                    "SCHOOL": "UNIVERSAL",
+                    "VALUE": 55,
+                    "FAMILY": "HYDRA_SHIELD55"
+                }
+                
+            }
+        ]
+    },
+    {
+        "ID": "LOCUSTSWARM_2B",
+        "SPELL": "LOCUST SWARM",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 3,
+        "ACCURACY": 85,
+        "TYPE": ["DAMAGE", "GAMBIT"],
+        "DESCRIPTION":
+            "DEALS 210 BALANCE DAMAGE TO TARGET AND APPLIES A +50% DAMAGE TRAP TO TARGET PER TRAP ON CASTER",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "BALANCE",
+                "VALUE": 210
+            },
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": {
+                    "ACTION": "ECHO",
+                    "TARGET": "SELF",
+                    "TYPE": "TRAP",
+                    "MAX": 2
+                },
+                "PER_EFFECT": {
+                    "TARGET": "ENEMY",
+                    "TYPE": "TRAP",
+                    "SCHOOL": "UNIVERSAL",
+                    "VALUE": 50,
+                    "FAMILY": "LOCUSTSWARM_50"
+                }
+            }
+        ]
+    },
+    {
         "ID": "LOREMASTER_3B",
         "SPELL": "LOREMASTER",
         "SCHOOL": "BALANCE",
@@ -245,12 +326,13 @@
             {
                 "TYPE": "STEAL_PIP",
                 "CAUSE": {
-                    "SUBTYPE": "STEAL",
-                    "TARGET": "PIP"
+                    "ACTION": "STEAL",
+                    "TYPE": "PIP",
+                    "TARGET": "ENEMY"
                 },
                 "PER_EFFECT": {
-                    "SUBTYPE": "GAIN",
-                    "TARGET": "PIP"
+                    "TYPE": "PIP",
+                    "TARGET": "SELF"
                 }
             }
         ]
@@ -270,6 +352,24 @@
                 "TARGET": "ENEMY",
                 "SCHOOL": "BALANCE",
                 "VALUE": 180
+            }
+        ]
+    },
+    {
+        "ID": "SUPERCRUSADE",
+        "SPELL": "SUPER CRUSADE",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["DAMAGE", "SINGLE_DAMAGE"],
+        "DESCRIPTION":
+            "DOES 100 BALANCE DAMAGE TO TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "BALANCE",
+                "VALUE": 100
             }
         ]
     },
@@ -338,6 +438,45 @@
                         "VALUE": 35
                     }
                 ]
+            }
+        ]
+    },
+
+    {
+        "ID": "DEATHBLADE_35",
+        "SPELL": "DEATHBLADE",
+        "SCHOOL": "DEATH",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["CHARM"],
+        "DESCRIPTION":
+            "APPLIES A +35% DEATH DAMAGE CHARM",
+        "EFFECTS": [
+            {
+                "TYPE": "BLADE",
+                "TARGET": "SELF",
+                "SCHOOL": "DEATH",
+                "VALUE": 35,
+                "FAMILY": "DEATHBLADE_35"
+            }
+        ]
+    },
+
+    {
+        "ID": "MAJORSCOURGE",
+        "SPELL": "MAJOR SCOURGE",
+        "SCHOOL": "DEATH",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["DAMAGE", "SINGLE_DAMAGE"],
+        "DESCRIPTION":
+            "DOES 100 DEATH DAMAGE TO TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "DEATH",
+                "VALUE": 100
             }
         ]
     },
