@@ -6,6 +6,8 @@ from match.effects import Blade
 from match.effects import Trap
 from match.effects import Shield
 from match.effects import Aura
+from match.effects import Weakness
+from match.effects import Minion
 from match.match import Match
 from match.dataloader import load_json
 from match.spell_instance import SpellInstance
@@ -112,19 +114,28 @@ def storm_player():
 def basic_match(balance_player, storm_player):
     return Match(balance_player, storm_player, 0, None)
 
-def cast_spell(match, spell):
+def cast_spell(basic_match, spell, caster_player, enemy_player):
     for effect in spell.spell["EFFECTS"]:
         effect_class = Effect.registry[effect["TYPE"]]
         effect_obj = effect_class.from_json(effect)
+        if hasattr(effect_obj, "school"):
+            if effect_obj.school == "ENEMY_SCHOOL":
+                effect_obj.school = enemy_player.school
+            elif effect_obj.school == "ALLY_SCHOOL":
+                effect_obj.school = caster_player.school
         print(effect_obj)
         if effect["TYPE"] == "DAMAGE":
-            match.do_damage(spell.caster, spell.enemy, effect_obj, spell)
+            is_multi = spell.get("MULTI", None)
+            if is_multi is not None:
+                # put code here to determine how many user selected
+                effect_obj.value = effect.value / 2
+            basic_match.do_damage(spell.caster, spell.enemy, effect_obj, spell)
         elif effect["TYPE"] == "GAMBIT":
-            match.play_gambit(spell.caster, spell.enemy, effect_obj, spell)
+            basic_match.play_gambit(spell.caster, spell.enemy, effect_obj, spell)
 
 def test_single_damage(basic_match, make_spell, balance_player, storm_player):
     spell = make_spell("SUPERCRUSADE", balance_player, storm_player)
-    cast_spell(basic_match, spell)
+    cast_spell(basic_match, spell, balance_player, storm_player)
 
 def test_blade(basic_match, make_spell, balance_player, storm_player):
     blade = Blade(
@@ -136,7 +147,7 @@ def test_blade(basic_match, make_spell, balance_player, storm_player):
     balance_player.add_effect(blade)
 
     spell = make_spell("SUPERCRUSADE", balance_player, storm_player)
-    cast_spell(basic_match, spell)
+    cast_spell(basic_match, spell, balance_player, storm_player)
 
 def test_blade_same_families(basic_match, make_spell, balance_player, storm_player):
     blade1 = Blade(
@@ -155,7 +166,7 @@ def test_blade_same_families(basic_match, make_spell, balance_player, storm_play
     balance_player.add_effect(blade2)
 
     spell = make_spell("SUPERCRUSADE", balance_player, storm_player)
-    cast_spell(basic_match, spell)
+    cast_spell(basic_match, spell, balance_player, storm_player)
 
 def test_blade_diff_families(basic_match, make_spell, balance_player, storm_player):
     blade1 = Blade(
@@ -174,7 +185,7 @@ def test_blade_diff_families(basic_match, make_spell, balance_player, storm_play
     balance_player.add_effect(blade2)
 
     spell = make_spell("SUPERCRUSADE", balance_player, storm_player)
-    cast_spell(basic_match, spell)
+    cast_spell(basic_match, spell, balance_player, storm_player)
 
 def test_blade_order(basic_match, make_spell, balance_player, storm_player):
     blade1 = Blade(
@@ -193,7 +204,7 @@ def test_blade_order(basic_match, make_spell, balance_player, storm_player):
     balance_player.add_effect(blade2)
 
     spell = make_spell("MAJORSCOURGE", balance_player, storm_player)
-    cast_spell(basic_match, spell)
+    cast_spell(basic_match, spell, balance_player, storm_player)
 
 def test_trap(basic_match, make_spell, balance_player, storm_player):
     trap = Trap(
@@ -205,7 +216,7 @@ def test_trap(basic_match, make_spell, balance_player, storm_player):
     storm_player.add_effect(trap)
 
     spell = make_spell("SUPERCRUSADE", balance_player, storm_player)
-    cast_spell(basic_match, spell)
+    cast_spell(basic_match, spell, balance_player, storm_player)
 
 def test_echo_shields(basic_match, make_spell, balance_player, storm_player):
     shield1 = Shield(
@@ -247,11 +258,10 @@ def test_echo_shields(basic_match, make_spell, balance_player, storm_player):
     storm_player.add_effect(shield6)
 
     spell = make_spell("HYDRA_2B", balance_player, storm_player)
-    cast_spell(basic_match, spell)
+    cast_spell(basic_match, spell, balance_player, storm_player)
 
     storm_player.print_effects()
     balance_player.print_effects()
-
 
 def test_echo_traps(basic_match, make_spell, balance_player, storm_player):
     shield1 = Trap(
@@ -293,7 +303,34 @@ def test_echo_traps(basic_match, make_spell, balance_player, storm_player):
     balance_player.add_effect(shield6)
 
     spell = make_spell("LOCUSTSWARM_2B", balance_player, storm_player)
-    cast_spell(basic_match, spell)
+    cast_spell(basic_match, spell, balance_player, storm_player)
+
+    storm_player.print_effects()
+    balance_player.print_effects()
+
+def test_clear_weakness(basic_match, make_spell, balance_player, storm_player):
+    shield1 = Weakness(
+        school = "UNIVERSAL",
+        value = 50,
+        family = "A"
+    )
+    shield2 = Weakness(
+        school = "FIRE",
+        value = 25,
+        family = "B"
+    )
+    shield3 = Weakness(
+        school = "FIRE",
+        value = 25,
+        family = "C"
+    )
+
+    balance_player.add_effect(shield1)
+    balance_player.add_effect(shield2)
+    balance_player.add_effect(shield3)
+
+    spell = make_spell("EVILSNOWMAN_2B", balance_player, storm_player)
+    cast_spell(basic_match, spell, balance_player, storm_player)
 
     storm_player.print_effects()
     balance_player.print_effects()
@@ -330,3 +367,83 @@ def test_aura_duration(storm_player):
         storm_player.aura = None
 
     assert storm_player.aura == None
+
+def test_multi_select(basic_match, make_spell, balance_player, storm_player):
+    minion1 = Minion(
+        id = "STORMELEMENTAL",
+        duration = 7
+    )
+    
+    storm_player.minion = minion1
+
+    spell = make_spell("DROPBEARFURY_5B", balance_player, storm_player)
+
+    for effect in spell.spell["EFFECTS"]:
+        effect_class = Effect.registry[effect["TYPE"]]
+        effect_obj = effect_class.from_json(effect)
+        print(effect_obj)
+        if effect["TYPE"] == "DAMAGE":
+            is_multi = spell.get("MULTI", None)
+            if is_multi is not None:
+                # put code here to determine how many user selected
+                effect_obj.value = effect.value / 2
+            basic_match.do_damage(spell.caster, spell.enemy, effect_obj, spell)
+        elif effect["TYPE"] == "GAMBIT":
+            basic_match.play_gambit(spell.caster, spell.enemy, effect_obj, spell)
+
+def test_swap_many(basic_match, make_spell, balance_player, storm_player):
+    shield1 = Shield(
+        school = "UNIVERSAL",
+        value = 50,
+        family = "A"
+    )
+    shield2 = Shield(
+        school = "FIRE",
+        value = 25,
+        family = "B"
+    )
+    shield3 = Shield(
+        school = "FIRE",
+        value = 25,
+        family = "C"
+    )
+    shield4 = Shield(
+        school = "STORM",
+        value = 40,
+        family = "D"
+    )
+    shield5 = Shield(
+        school = "STORM",
+        value = 40,
+        family = "D"
+    )
+    shield6 = Shield(
+        school = "UNIVERSAL",
+        value = 10,
+        family = "E"
+    )
+
+    storm_player.add_effect(shield1)
+    storm_player.add_effect(shield2)
+    storm_player.add_effect(shield3)
+    storm_player.add_effect(shield4)
+    storm_player.add_effect(shield5)
+    storm_player.add_effect(shield6)
+
+    shield7 = Shield(
+        school = "LIFE",
+        value = 50,
+        family = "F"
+    )
+
+    balance_player.add_effect(shield7)
+
+    balance_player.print_effects()
+    storm_player.print_effects()
+
+    spell = make_spell("HYDRA_5C", balance_player, storm_player)
+
+    cast_spell(basic_match, spell, balance_player, storm_player)
+
+    balance_player.print_effects()
+    storm_player.print_effects()

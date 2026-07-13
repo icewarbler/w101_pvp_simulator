@@ -695,3 +695,25 @@ class Minion(Effect):
     
     def add_effect(self, effect):
         self.effects.append(effect)
+
+@Effect.register("PIP")
+class Pip():
+    type = "PIP"
+
+    categories = {"PIP"}
+
+    @classmethod
+    def from_json(cls, effect):
+        return cls(effect["SCHOOL"])
+    
+    def __init__(self, school):
+        self.school = school
+
+    def __str__(self):
+        return f"{self.type}: {self.school}"
+    
+    def __repr__(self):
+        return str(self)
+    
+    def clone(self):
+        return Pip(self.school)

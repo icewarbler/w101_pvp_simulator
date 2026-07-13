@@ -26,8 +26,13 @@ a pvp sim for wiz!!!
 [✓] pips
 
 [x] archmastery
+So far, archmastery pips have been included, though no formula has been implemented
 
-[x] shadow pips
+[x] pip conserve
+TODO: pip conserve formulation
+
+[-] shadow pips
+These exist, but no formula has been implemented
 
 [x] heal blades/traps
 

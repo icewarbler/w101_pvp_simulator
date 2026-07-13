@@ -1,6 +1,7 @@
 import json
 import random
 import math
+import re
 from .effects import Effect
 from .effects import Single_Damage
 from .effects import Trap
@@ -13,7 +14,9 @@ from .effects import DOT
 from .effects import Heal_Weakness
 from .effects import Bubble
 from .player import Player
-from .pip import Pip
+from .player import Deck
+from .player import Hand
+from .effects import Pip
 from .spell_instance import SpellInstance
 
 class Match:
@@ -366,12 +369,6 @@ class Match:
                     abs_target = enemy_player
                 
                 for _ in range(effect_count):
-                    # per_effect_school = gambit_effect.get("SCHOOL")
-                    # per_effect_value = gambit_effect.get("VALUE")
-                    # per_effect_family = gambit_effect.get("FAMILY")
-
-                 #   effect_class = Effect.registry[gambit_effect["TYPE"]]
-                 #   effect_obj = effect_class.from_json(gambit_effect)
                     new_effect = effect_obj.clone()
 
                     abs_target.add_effect(new_effect)
@@ -382,36 +379,49 @@ class Match:
                   #  self.add_effect(abs_target, hiii)
 
             case "SWAP":
-                # "TYPE": "GAMBIT",
-                # "CAUSE": {
-                #     "ACTION": "SWAP",
-                #     "TYPE": "WEAKNESS",
-                #     "TARGET": "ENEMY",
-                #     "MAX": 1
-                # }
-                print(f"gambit_cause[TYPE]: {gambit_cause["TYPE"]}")
-                for t in abs_target.effects:
-                    print(f"effect: {t.type}")
-                enemy_effect = next(( effect for effect in (abs_target.effects[::-1]) if gambit_cause["TYPE"] in effect.categories), None)
+                from_caster = []
+                gambit_type = gambit_cause.get("TYPE")
+                for effect in caster_player.get_effects():
+                    if effect.type == gambit_type:
+                        from_caster.append(effect)
+                        
+                        if len(from_caster) == gambit_cause.get("MAX"):
+                            break
 
-                caster_effect = next(( effect for effect in (caster_player.effects[::-1]) if gambit_cause["TYPE"] in effect.categories), None)
+                amount = len(from_caster)
 
-                print(f"Taking effect {enemy_effect} from enemy")
-                print(f"Taking effect {caster_effect} from caster")
+                from_enemy = []
+                gambit_type = gambit_cause.get("TYPE")
+                for effect in enemy_player.get_effects():
+                    if effect.type == gambit_type:
+                        from_enemy.append(effect)
+                        
+                        if len(from_enemy) == gambit_cause.get("MAX"):
+                            break
 
-                # removes effects
-                if enemy_effect is not None:
-                    abs_target.del_effect(enemy_effect)
+                for effect in from_caster:
+                    caster_player.del_effect(effect)
+
+                    enemy_player.add_effect(effect)
+
+                for effect in from_enemy:
+                    enemy_player.del_effect(effect)
+
+                    caster_player.add_effect(effect)
+
+                # # removes effects
+                # if enemy_effect is not None:
+                #     abs_target.del_effect(enemy_effect)
                 
-                if caster_effect is not None:
-                    caster_player.del_effect(caster_effect)
+                # if caster_effect is not None:
+                #     caster_player.del_effect(caster_effect)
 
-                # adds effects
-                if caster_effect is not None:
-                    abs_target.add_effect(caster_effect)
+                # # adds effects
+                # if caster_effect is not None:
+                #     abs_target.add_effect(caster_effect)
 
-                if enemy_effect is not None:
-                    caster_player.add_effect(enemy_effect)
+                # if enemy_effect is not None:
+                #     caster_player.add_effect(enemy_effect)
 
             case "DETONATE":
                 to_explode = []
@@ -486,35 +496,42 @@ class Match:
                 gambit_effect = gambit.per_effect
 
                 per_effect_type = gambit_effect.get("TYPE")
+
+                gambit_effect = gambit.per_effect
+
+                effect_class = Effect.registry[gambit_effect["TYPE"]]
+                effect_obj = effect_class.from_json(gambit_effect)
+
+                if hasattr(effect_obj, "school"):
+                    if effect_obj.school == "ENEMY_SCHOOL":
+                        effect_obj.school = enemy_player.school
+                    elif effect_obj.school == "ALLY_SCHOOL":
+                        effect_obj.school = caster_player.school
+
+                gambit_effect_target = gambit_effect["TARGET"]
+
+
+                if gambit_effect_target == "SELF":
+                    abs_target = caster_player
+                elif gambit_effect_target == "ENEMY":
+                    abs_target = enemy_player
                 
                 for _ in range(amount):
                     if per_effect_type == "PIP":
                         print(f"Adding a pip???")
+                        new_effect = effect_obj.clone()
                         reg_idx = caster_player.last_pip_index("REG")
 
                         if reg_idx is None:
-                            caster_player.pips.insert(0, Pip("POWER"))
+                            caster_player.pips.insert(0, new_effect)
                         else:        
-                            caster_player.pips.insert(reg_idx + 1, Pip("POWER"))
+                            caster_player.pips.insert(reg_idx + 1, new_effect)
 
-                    if per_effect_type == "TRAP":
-                        gambit_effect_target = gambit_effect["TARGET"]
+                        continue
+                    else:
+                        new_effect = effect_obj.clone()
 
-                        if gambit_effect_target == "SELF":
-                            abs_target = caster_player
-                        elif gambit_effect_target == "ENEMY":
-                            abs_target = enemy_player
-
-                        per_effect_school = gambit_effect.get("SCHOOL")
-                        per_effect_value = gambit_effect.get("VALUE")
-                        per_effect_family = gambit_effect.get("FAMILY")
-
-                        if per_effect_school == "TARGET_SCHOOL":
-                            per_effect_school = abs_target.school
-
-                        jel = Trap(per_effect_school, per_effect_value, per_effect_family)
-
-                        self.add_effect(abs_target, jel)
+                        abs_target.add_effect(new_effect)
 
     def insert_starting_conditions(self):
         print(f"start name: {self.p1.name}")
@@ -696,7 +713,128 @@ class Match:
         except json.JSONDecodeError:
             print("ERROR! FAILED TO DECODE JSON!")
 
+    def init_match(self):
+        self.p1.pips.append(Pip("REG"))
+        self.p1.pips.append(Pip("POWER"))
+        self.p1.pips.append(Pip("POWER"))
+
+        self.p1.shadpips = 1
+        self.p2.shadpips = 2
+
+        self.p2.pips.append(Pip("REG"))
+        self.p2.pips.append(Pip("POWER"))
+        self.p2.pips.append(Pip("POWER"))
+
     def start_match(self):
+        if not self.match_file:
+            turn = 0
+
+            self.p1.deck = Deck(self.p1.deck)
+            print(f"{self.p1.name} DECK:")
+            print(self.p1.deck)
+            print("----")
+
+
+            for _ in range(Hand.max_cards):
+                self.p1.draw_card()
+
+            self.p2.deck = Deck(self.p2.deck)
+            print(f"{self.p2.name} DECK:")
+            print(self.p2.deck)
+            print("----")
+
+            for _ in range(Hand.max_cards):
+                self.p2.draw_card()
+
+            spells = self.load_json("json_data/spells.json")
+
+            spell_lookup = { spell["ID"]: spell for spell in spells }
+
+            while True:
+                if turn % 2 == 0:
+                    caster_player = self.p1
+                    enemy_player = self.p2
+                else:
+                    caster_player = self.p2
+                    enemy_player = self.p1
+
+                self.init_match()
+
+                while len(caster_player.hand.cards) < Hand.max_cards:
+                    caster_player.draw_card()
+                
+                print(f"{caster_player.name} HAND:")
+                print(caster_player.hand)
+
+                # for i, card in enumerate(caster_player.hand.cards):
+                #     print(f"{i + 1}. {card}")
+
+                while True:
+                    for i, card in enumerate(caster_player.hand.cards):
+                        print(f"{i + 1}. {card}")
+                    selection = input("> ").strip().lower()
+
+                    if selection in ("p", "pass"):
+                        spell_id = None
+                        break
+
+                    if re.match(r'^d[1-7]$', selection):
+                        print(f"selection: {selection}")
+                        if 1 <= int(selection[1:]) <= len(caster_player.hand.cards):
+                            spell_id = caster_player.hand.cards[int(selection[1:]) - 1]
+                            print(spell_id)
+                            caster_player.delete_card(spell_id)
+                            continue
+                    #    caster_player.delete_card()
+                 #   if selection.startswith("d"):
+
+
+                    try:
+                        selection = int(selection)
+                    except ValueError:
+                        print("Enter a card number or pass.")
+                        continue
+
+                    if 1 <= selection <= len(caster_player.hand.cards):
+                        spell_id = caster_player.hand.cards[selection - 1]
+                        break
+
+                # if a player passes that turn, skip
+                if spell_id in (None, "NONE"):
+                    print(f"**PASS")
+                    print(f"Round {turn}: {caster_player.name} PASSES")
+
+                if spell_id not in (None, "NONE"):
+                    print(f"**SPELL: {spell_id}")
+                    # get data from that spell to add to match
+                    spell_data = spell_lookup.get(spell_id)
+
+                    print(f"Round {turn}: {caster_player.name} casts {spell_id}")
+
+                    self.cast_spell(caster_player, enemy_player, spell_data)
+
+                schools = [
+                    "Fire",
+                    "Ice",
+                    "Storm",
+                    "Life",
+                    "Death",
+                    "Myth",
+                    "Balance"
+                ]
+
+                # print("Generate which archmastery pip?")
+
+                # self.end_turn()
+
+                turn += 1
+                break
+
+                if caster_player.curr_health <= 0 or enemy_player.curr_health <= 0:
+                    self.end_match(caster_player, enemy_player)
+                    break
+            return
+
         if self.match_file:
             match_dat = self.load_json(self.match_file)
         spells = self.load_json("json_data/spells.json")
@@ -710,8 +848,8 @@ class Match:
 
         for turn in match_dat:
             round = turn["ROUND"]
-            # if round > 13:
-            #     break
+            if round > 18:
+                break
             caster = turn["CASTER"]
 
             if caster == "PLAYER1":

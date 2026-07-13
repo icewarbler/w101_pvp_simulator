@@ -113,6 +113,48 @@
         ]
     },
     {
+        "ID": "HYDRA_5C",
+        "SPELL": "HYDRA",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 6,
+        "ACCURACY": 85,
+        "TYPE": ["DAMAGE", "GAMBIT", "WARD", "SHIELD"],
+        "DESCRIPTION":
+            "SWAPS  UP TO FIVE SHIELDS WITH TARGET THEN DEALS 175 FIRE, ICE, AND STORM DAMAGE",
+        "EFFECTS": [
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": {
+                    "ACTION": "SWAP",
+                    "TYPE": "SHIELD",
+                    "TARGET": "ENEMY",
+                    "MAX": 5
+                },
+                "PER_EFFECT": {
+                    "TYPE": "SHIELD"
+                }
+            },
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "FIRE",
+                "VALUE": 150
+            },
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "ICE",
+                "VALUE": 150
+            },
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "STORM",
+                "VALUE": 150
+            }
+        ]
+    },
+    {
         "ID": "LOCUSTSWARM_2B",
         "SPELL": "LOCUST SWARM",
         "SCHOOL": "BALANCE",
@@ -324,7 +366,7 @@
             "STEALS A PIP FROM TARGET AND GIVES IT TO CASTER",
         "EFFECTS": [
             {
-                "TYPE": "STEAL_PIP",
+                "TYPE": "GAMBIT",
                 "CAUSE": {
                     "ACTION": "STEAL",
                     "TYPE": "PIP",
@@ -848,6 +890,41 @@
     },
 
     {
+        "ID": "EVILSNOWMAN_2B",
+        "SPELL": "EVIL SNOWMAN",
+        "SCHOOL": "ICE",
+        "PIPCOST": 3,
+        "ACCURACY": 80,
+        "TYPE": ["DAMAGE", "GAMBIT"],
+        "DESCRIPTION":
+            "REMOVES UP TO 2 WEAKNESSES FROM CASTER TO APPLY A -60% SHIELD OF TARGET'S SCHOOL OR -50% SHIELD IF TARGET IS BALANCE PER CHARM REMOVED THEN DEALS 215 ICE DAMAGE",
+        "EFFECTS": [
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": {
+                    "ACTION": "CLEAR",
+                    "TYPE": "WEAKNESS",
+                    "TARGET": "SELF",
+                    "MAX": 2
+                },
+                "PER_EFFECT": {
+                    "TYPE": "SHIELD",
+                    "TARGET": "SELF",
+                    "SCHOOL": "ENEMY_SCHOOL",
+                    "VALUE": 60,
+                    "FAMILY": "EVILSNOWMAN_SHIELD60"
+                }
+            },
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "ICE",
+                "VALUE": 215
+            }
+        ]
+    },
+
+    {
         "ID": "FROSTFEATHER_T2",
         "SPELL": "FROSTFEATHER",
         "SCHOOL": "ICE",
@@ -973,8 +1050,49 @@
                 },
                 "PER_EFFECT": {
                     "ACTION": "GAIN",
-                    "TYPE": "PIP"
+                    "TYPE": "PIP",
+                    "TARGET": "SELF",
+                    "SCHOOL": "POWER"
                 }
+            }
+        ]
+    },
+
+    {
+        "ID": "DROPBEARFURY_5B",
+        "SPELL": "DROP BEAR FURY",
+        "SCHOOL": "MYTH",
+        "PIPCOST": 3,
+        "SCHOOLPIPS": {"FIRE": 1},
+        "ACCURACY": 80,
+        "TYPE": ["DAMAGE", "SINGLE_DAMAGE", "GAMBIT"],
+        "DESCRIPTION":
+            "REMOVES UP TO 4 SHIELDS FROM SELECTED ENEMIES TO DEAL 115 FIRE DAMAGE OVER 3 ROUNDS TO SELECTED ENEMIES PER TRAP REMOVED, THEN DEALS 415 SPLIT MYTH DAMAGE AMONG SELECTED ENEMIES",
+        "EFFECTS": [
+            {
+                "TYPE": "GAMBIT",
+                "MULTI": true,
+                "CAUSE": {
+                    "ACTION": "CLEAR",
+                    "TARGET": "ENEMY",
+                    "TYPE": "SHIELD",
+                    "MAX": 4
+                },
+                "PER_EFFECT": {
+                    "TYPE": "DOT",
+                    "TARGET": "ENEMY",
+                    "SCHOOL": "FIRE",
+                    "AMOUNT": "X",
+                    "DURATION": 3,
+                    "VALUE_PER_STACK": 115
+                }
+            },
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "MULTI": true,
+                "TARGET": "ENEMY",
+                "SCHOOL": "MYTH",
+                "VALUE": 415
             }
         ]
     },

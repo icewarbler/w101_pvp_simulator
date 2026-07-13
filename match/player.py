@@ -1,6 +1,7 @@
 from .effects import Effect
 from .effects import DOT
 from .effects import Bomb_DOT
+import random
 import pandas as pd
 import json
 import math
@@ -15,7 +16,8 @@ class Player:
             max_health,
             outgoing_damage,
             incoming_resist,
-            pierce
+            pierce,
+            deck=None
         ):
         self.name = name
         self.school = school
@@ -30,6 +32,8 @@ class Player:
         self.outgoing_damage = outgoing_damage
         self.incoming_resist = incoming_resist
         self.pierce = pierce
+
+        self.deck = deck
 
         # Balance
         # Death
@@ -53,6 +57,8 @@ class Player:
 
         self.minion = None
 
+        self.hand = Hand()
+
     
     def add_effect(self, effect):
         self.effects.append(effect)
@@ -68,7 +74,11 @@ class Player:
 
     def get_incoming_resist(self, school):
         return self.incoming_resist.get(school)
-    
+
+    def init_human_player(self):
+        random.shuffle(self.deck)
+        print(self.deck)
+
     def explode_dot(self, dot, multiplier):
         res = self.incoming_resist[dot.school]
         res -= dot.pierce_val
@@ -237,30 +247,62 @@ class Player:
 
         print(f"{self.name} has {self.pips} pips and {self.shadpips} shad pips after casting")
 
+    def draw_card(self):
+        card = self.deck.draw()
 
-    # def add_blade(self):
+        if card is not None:
+            self.hand.add(card)
 
-    #     blade = Effect(
-    #         effect_type = "CHARM",
-    #         value = getCurrentSpell().effects.charm.value
+    def delete_card(self, card):
+        self.hand.delete(card)
+        self.deck.delete(card)
 
-    #     )
+class Deck:
+    def __init__(self, deck):
+        self.cards = []
+        max_cards = 7
+        hand = []
 
-        # self.outgoing_damage = {
-        #     "FIRE": 0,
-        #     "ICE": 0,
-        #     "STORM": 0,
-        #     "LIFE": 0,
-        #     "DEATH": 0,
-        #     "MYTH": 0,
-        #     "BALANCE": 0
-        # }
-        # self.incoming_resist = {
-        #     "FIRE": 0,
-        #     "ICE": 0,
-        #     "STORM": 0,
-        #     "LIFE": 0,
-        #     "DEATH": 0,
-        #     "MYTH": 0,
-        #     "BALANCE": 0
-        # }
+        for spell, count in deck.items():
+            self.cards.extend([spell] * count)
+        
+        random.shuffle(self.cards)
+
+    def __str__(self):
+        return "\n".join(self.cards)
+    
+    def draw(self):
+        if not self.cards:
+            return None
+        
+        return self.cards.pop()
+    
+    def delete(self, card):
+        if card is None:
+            return
+        
+        self.cards.remove(card)
+
+class Hand:
+    max_cards = 7
+
+    def __init__(self):
+        self.cards = []
+
+    def __str__(self):
+        return "\n".join(self.cards)
+
+    def add(self, card):
+        if card is None:
+            return
+        
+        if len(self.cards) >= self.max_cards:
+            raise ValueError("Hand is full!")
+        
+        self.cards.append(card)
+    
+    def delete(self, card):
+        if card is None:
+            return
+        
+        self.cards.remove(card)
