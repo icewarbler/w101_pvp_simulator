@@ -14,7 +14,7 @@ from match.spell_instance import SpellInstance
 
 @pytest.fixture
 def make_spell():
-    def _make_spell(spell_name, caster=None, target=None):
+    def _make_spell(spell_name, caster=None, target=None, multi=False):
         spells = load_json("json_data/spells.json")
 
         spell_data = next(spell for spell in spells if spell["ID"] == spell_name)
@@ -25,7 +25,8 @@ def make_spell():
             target,
             spell_data.get("PIPCOST", 0),
             spell_data.get("SCHOOLPIPS", {}),
-            spell_data.get("SHADCOST", 0)
+            spell_data.get("SHADCOST", 0),
+            multi
         )
 
     return _make_spell
@@ -124,11 +125,10 @@ def cast_spell(basic_match, spell, caster_player, enemy_player):
             elif effect_obj.school == "ALLY_SCHOOL":
                 effect_obj.school = caster_player.school
         print(effect_obj)
-        if effect["TYPE"] == "DAMAGE":
-            is_multi = spell.get("MULTI", None)
-            if is_multi is not None:
+        if effect["TYPE"] == "SINGLE_DAMAGE":
+            if spell.multi:
                 # put code here to determine how many user selected
-                effect_obj.value = effect.value / 2
+                effect_obj.value = effect_obj.value / 2
             basic_match.do_damage(spell.caster, spell.enemy, effect_obj, spell)
         elif effect["TYPE"] == "GAMBIT":
             basic_match.play_gambit(spell.caster, spell.enemy, effect_obj, spell)
@@ -376,20 +376,65 @@ def test_multi_select(basic_match, make_spell, balance_player, storm_player):
     
     storm_player.minion = minion1
 
+    shield1 = Shield(
+        school = "UNIVERSAL",
+        value = 50,
+        family = "A"
+    )
+    shield2 = Shield(
+        school = "FIRE",
+        value = 25,
+        family = "B"
+    )
+    shield3 = Shield(
+        school = "FIRE",
+        value = 25,
+        family = "C"
+    )
+    shield4 = Shield(
+        school = "STORM",
+        value = 40,
+        family = "D"
+    )
+    shield5 = Shield(
+        school = "STORM",
+        value = 40,
+        family = "D"
+    )
+    shield6 = Shield(
+        school = "UNIVERSAL",
+        value = 10,
+        family = "E"
+    )
+
+    storm_player.add_effect(shield1)
+    storm_player.add_effect(shield2)
+    storm_player.add_effect(shield3)
+    storm_player.add_effect(shield4)
+    storm_player.add_effect(shield5)
+    storm_player.add_effect(shield6)
+
     spell = make_spell("DROPBEARFURY_5B", balance_player, storm_player)
 
-    for effect in spell.spell["EFFECTS"]:
-        effect_class = Effect.registry[effect["TYPE"]]
-        effect_obj = effect_class.from_json(effect)
-        print(effect_obj)
-        if effect["TYPE"] == "DAMAGE":
-            is_multi = spell.get("MULTI", None)
-            if is_multi is not None:
-                # put code here to determine how many user selected
-                effect_obj.value = effect.value / 2
-            basic_match.do_damage(spell.caster, spell.enemy, effect_obj, spell)
-        elif effect["TYPE"] == "GAMBIT":
-            basic_match.play_gambit(spell.caster, spell.enemy, effect_obj, spell)
+    storm_player.print_effects()
+
+    cast_spell(basic_match, spell, balance_player, storm_player)
+    # for effect in spell.spell["EFFECTS"]:
+    #     effect_class = Effect.registry[effect["TYPE"]]
+    #     effect_obj = effect_class.from_json(effect)
+    #     print(effect_obj)
+    #     if effect["TYPE"] == "DAMAGE":
+    #         is_multi = spell.get("MULTI", None)
+    #         if is_multi is not None:
+    #             # put code here to determine how many user selected
+    #             effect_obj.value = effect.value / 2
+    #         basic_match.do_damage(spell.caster, spell.enemy, effect_obj, spell)
+    #     elif effect["TYPE"] == "GAMBIT":
+    #         basic_match.play_gambit(spell.caster, spell.enemy, effect_obj, spell)
+    
+    storm_player.print_effects()
+
+
 
 def test_swap_many(basic_match, make_spell, balance_player, storm_player):
     shield1 = Shield(
@@ -446,4 +491,112 @@ def test_swap_many(basic_match, make_spell, balance_player, storm_player):
     cast_spell(basic_match, spell, balance_player, storm_player)
 
     balance_player.print_effects()
+    storm_player.print_effects()
+
+def test_multi_select_pip(basic_match, make_spell, balance_player, storm_player):
+    minion1 = Minion(
+        id = "STORMELEMENTAL",
+        duration = 7
+    )
+    
+    storm_player.minion = minion1
+
+    shield1 = Shield(
+        school = "UNIVERSAL",
+        value = 50,
+        family = "A"
+    )
+    shield2 = Shield(
+        school = "FIRE",
+        value = 25,
+        family = "B"
+    )
+    shield3 = Shield(
+        school = "FIRE",
+        value = 25,
+        family = "C"
+    )
+    shield4 = Shield(
+        school = "STORM",
+        value = 40,
+        family = "D"
+    )
+    shield5 = Shield(
+        school = "STORM",
+        value = 40,
+        family = "D"
+    )
+    shield6 = Shield(
+        school = "UNIVERSAL",
+        value = 10,
+        family = "E"
+    )
+
+    storm_player.add_effect(shield1)
+    storm_player.add_effect(shield2)
+    storm_player.add_effect(shield3)
+    storm_player.add_effect(shield4)
+    storm_player.add_effect(shield5)
+    storm_player.add_effect(shield6)
+
+    spell = make_spell("POWERNOVA_5B", balance_player, storm_player, True)
+
+    storm_player.print_effects()
+    print(f"caster pips: {balance_player.pips}")
+
+    cast_spell(basic_match, spell, balance_player, storm_player)
+
+    storm_player.print_effects()
+    print(f"caster pips: {balance_player.pips}")
+
+def test_double_hit(basic_match, make_spell, balance_player, storm_player):
+    shield1 = Shield(
+        school = "UNIVERSAL",
+        value = 50,
+        family = "A"
+    )
+    shield2 = Shield(
+        school = "FIRE",
+        value = 25,
+        family = "B"
+    )
+    shield3 = Shield(
+        school = "FIRE",
+        value = 25,
+        family = "C"
+    )
+    shield4 = Shield(
+        school = "STORM",
+        value = 40,
+        family = "D"
+    )
+    shield5 = Shield(
+        school = "STORM",
+        value = 40,
+        family = "D"
+    )
+    shield6 = Shield(
+        school = "UNIVERSAL",
+        value = 10,
+        family = "E"
+    )
+    shield7 = Shield(
+        school = "MYTH",
+        value = 10,
+        family = "F"
+    )
+
+    storm_player.add_effect(shield1)
+    storm_player.add_effect(shield2)
+    storm_player.add_effect(shield3)
+    storm_player.add_effect(shield4)
+    storm_player.add_effect(shield5)
+    storm_player.add_effect(shield6)
+
+    spell = make_spell("MINOTAUR_2C", balance_player, storm_player, True)
+
+    storm_player.print_effects()
+
+    cast_spell(basic_match, spell, balance_player, storm_player)
+
     storm_player.print_effects()

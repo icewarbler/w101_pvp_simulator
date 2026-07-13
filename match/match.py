@@ -180,6 +180,7 @@ class Match:
 
 
     def do_damage(self, caster_player, enemy_player, effect, context):
+        print("doing damage...")
         if effect.target == "SELF":
             abs_target = caster_player
         elif effect.target == "ENEMY":
@@ -298,6 +299,7 @@ class Match:
 
         used_families = set()
 
+
         for ward in enemy_wards:
             if ward.school in (effect_school, "UNIVERSAL"):
                 if ward.family in used_families:
@@ -342,6 +344,39 @@ class Match:
             abs_target = enemy_player
 
         match gambit_cause.get("ACTION"):
+            case "STEAL":
+                effect_count = 0
+                gambit_type = gambit_cause.get("TYPE")
+                if gambit_type == "PIP":
+                    reg_pip = next((pip for pip in enemy_player.pips if pip.school == "REG"), None)
+                    if reg_pip:
+                        enemy_player.remove_pip(reg_pip)
+                    else:
+                        to_rem = self.pips[0]
+                    #   print(f"To remove pip: {to_rem}")
+                        enemy_player.remove_pip(to_rem)
+                        enemy_player.pips.insert(0, Pip("REG"))
+                    effect_count += 1
+
+                gambit_effect = gambit.per_effect
+
+                per_effect_type = gambit_effect.get("TYPE")
+
+                effect_class = Effect.registry[gambit_effect["TYPE"]]
+                effect_obj = effect_class.from_json(gambit_effect)
+                
+                for _ in range(effect_count):
+                    if per_effect_type == "PIP":
+                        print(f"Adding a pip???")
+                        new_effect = effect_obj.clone()
+                        reg_idx = caster_player.last_pip_index("REG")
+
+                        if reg_idx is None:
+                            caster_player.pips.insert(0, new_effect)
+                        else:        
+                            caster_player.pips.insert(reg_idx + 1, new_effect)
+
+                        continue
             case "ECHO":
                 effect_count = 0
                # gambit_type = gambit_cause.get("TYPE")
@@ -370,6 +405,16 @@ class Match:
                 
                 for _ in range(effect_count):
                     new_effect = effect_obj.clone()
+
+                    if gambit_effect.get("TYPE") == "PIP":
+                        reg_idx = caster_player.last_pip_index("REG")
+
+                        if reg_idx is None:
+                            caster_player.pips.insert(0, new_effect)
+                        else:        
+                            caster_player.pips.insert(reg_idx + 1, new_effect)
+
+                        continue
 
                     abs_target.add_effect(new_effect)
                  #   hiii = Shield(per_effect_school, per_effect_value, per_effect_family)
@@ -445,6 +490,14 @@ class Match:
             case "GAMBIT":
                 to_remove = []
                 gambit_type = gambit_cause.get("TYPE")
+
+                gambit_target = gambit_cause.get("TARGET")
+
+                if gambit_effect_target == "SELF":
+                    abs_target = caster_player
+                elif gambit_effect_target == "ENEMY":
+                    abs_target = enemy_player
+
                 for effect in caster_player.get_effects():
                     if effect.type == gambit_type:
                         to_remove.append(effect)
@@ -480,7 +533,7 @@ class Match:
             case "CLEAR":
                 to_remove = []
                 gambit_type = gambit_cause.get("TYPE")
-                for effect in caster_player.get_effects():
+                for effect in abs_target.get_effects():
                     if effect.type == gambit_type:
                         to_remove.append(effect)
                         
@@ -489,6 +542,7 @@ class Match:
 
                 amount = len(to_remove)
 
+                print(f"amount: {amount}")
 
                 for effect in to_remove:
                     abs_target.del_effect(effect)
@@ -725,6 +779,58 @@ class Match:
         self.p2.pips.append(Pip("POWER"))
         self.p2.pips.append(Pip("POWER"))
 
+    def parse_input(self, spell_lookup, caster_player, enemy_player):
+        selection = input("> ").strip().lower()
+
+        if selection == "info":
+            print("OPTIONS:")
+            print(f"[1-7] - Choose a spell to cast")
+            print(f"d[1-7] - Delete a spell from your hand")
+            print(f"i[1-7] - Print out the info for a spell")
+            print(f"health - Print the current health of both you and the enemy")
+            print(f"pips - Print out your current pips")
+            return 0
+
+        if selection in ("p", "pass"):
+            spell_id = None
+            return spell_id
+
+        if re.match(r'^d[1-7]$', selection):
+            print(f"selection: {selection}")
+            if 1 <= int(selection[1:]) <= len(caster_player.hand.cards):
+                spell_id = caster_player.hand.cards[int(selection[1:]) - 1]
+                print(spell_id)
+                caster_player.delete_card(spell_id)
+                return 0
+
+        if re.match(r'^i[1-7]$', selection):
+            print(f"selection: {selection}")
+            if 1 <= int(selection[1:]) <= len(caster_player.hand.cards):
+                spell_id = caster_player.hand.cards[int(selection[1:]) - 1]
+                print(spell_id)
+                spell_data = spell_lookup.get(spell_id)
+                print(f"{spell_data.get("DESCRIPTION")}")
+                return 0
+
+        if selection == "health":
+            print(f"Your Health: {caster_player.curr_health}")
+            print(f"Enemy Health: {enemy_player.curr_health}")
+            return 0
+
+        if selection == "pips":
+            print(f"Your pips: {caster_player.pips}")
+            return 0
+        
+        try:
+            selection = int(selection)
+        except ValueError:
+            print("Enter a card number or pass.")
+            return 0
+
+        if 1 <= selection <= len(caster_player.hand.cards):
+            spell_id = caster_player.hand.cards[selection - 1]
+            return spell_id
+
     def start_match(self):
         if not self.match_file:
             turn = 0
@@ -750,6 +856,8 @@ class Match:
 
             spell_lookup = { spell["ID"]: spell for spell in spells }
 
+            self.init_match()
+
             while True:
                 if turn % 2 == 0:
                     caster_player = self.p1
@@ -758,9 +866,8 @@ class Match:
                     caster_player = self.p2
                     enemy_player = self.p1
 
-                self.init_match()
-
-                while len(caster_player.hand.cards) < Hand.max_cards:
+                while len(caster_player.hand.cards) < Hand.max_cards and len(caster_player.deck.cards):
+                    print(f"{caster_player.name} has {len(caster_player.hand.cards)} cards in hand!")
                     caster_player.draw_card()
                 
                 print(f"{caster_player.name} HAND:")
@@ -772,32 +879,65 @@ class Match:
                 while True:
                     for i, card in enumerate(caster_player.hand.cards):
                         print(f"{i + 1}. {card}")
-                    selection = input("> ").strip().lower()
 
-                    if selection in ("p", "pass"):
-                        spell_id = None
+                    spell_id = self.parse_input(spell_lookup, caster_player, enemy_player)
+
+                    if spell_id != 0:
                         break
+                  #  selection = input("> ").strip().lower()
 
-                    if re.match(r'^d[1-7]$', selection):
-                        print(f"selection: {selection}")
-                        if 1 <= int(selection[1:]) <= len(caster_player.hand.cards):
-                            spell_id = caster_player.hand.cards[int(selection[1:]) - 1]
-                            print(spell_id)
-                            caster_player.delete_card(spell_id)
-                            continue
+                    # if selection == "info":
+                    #     print("OPTIONS:")
+                    #     print(f"[1-7] - Choose a spell to cast")
+                    #     print(f"d[1-7] - Delete a spell from your hand")
+                    #     print(f"i[1-7] - Print out the info for a spell")
+                    #     print(f"health - Print the current health of both you and the enemy")
+                    #     print(f"pips - Print out your current pips")
+                    #     continue
+
+                    # if selection in ("p", "pass"):
+                    #     spell_id = None
+                    #     break
+
+                    # if re.match(r'^d[1-7]$', selection):
+                    #     print(f"selection: {selection}")
+                    #     if 1 <= int(selection[1:]) <= len(caster_player.hand.cards):
+                    #         spell_id = caster_player.hand.cards[int(selection[1:]) - 1]
+                    #         print(spell_id)
+                    #         caster_player.delete_card(spell_id)
+                    #         continue
+
+                    # if re.match(r'^i[1-7]$', selection):
+                    #     print(f"selection: {selection}")
+                    #     if 1 <= int(selection[1:]) <= len(caster_player.hand.cards):
+                    #         spell_id = caster_player.hand.cards[int(selection[1:]) - 1]
+                    #         print(spell_id)
+                    #         spell_data = spell_lookup.get(spell_id)
+                    #         print(f"{spell_data.get("DESCRIPTION")}")
+                    #         continue
+
+                    # if selection == "health":
+                    #     print(f"Your Health: {caster_player.curr_health}")
+                    #     print(f"Enemy Health: {enemy_player.curr_health}")
+                    #     continue
+
+                    # if selection == "pips":
+                    #     print(f"Your pips: {caster_player.pips}")
+                    #     continue
+
                     #    caster_player.delete_card()
                  #   if selection.startswith("d"):
 
 
-                    try:
-                        selection = int(selection)
-                    except ValueError:
-                        print("Enter a card number or pass.")
-                        continue
+                    # try:
+                    #     selection = int(selection)
+                    # except ValueError:
+                    #     print("Enter a card number or pass.")
+                    #     continue
 
-                    if 1 <= selection <= len(caster_player.hand.cards):
-                        spell_id = caster_player.hand.cards[selection - 1]
-                        break
+                    # if 1 <= selection <= len(caster_player.hand.cards):
+                    #     spell_id = caster_player.hand.cards[selection - 1]
+                    #     break
 
                 # if a player passes that turn, skip
                 if spell_id in (None, "NONE"):
@@ -814,25 +954,57 @@ class Match:
                     self.cast_spell(caster_player, enemy_player, spell_data)
 
                 schools = [
-                    "Fire",
-                    "Ice",
-                    "Storm",
-                    "Life",
-                    "Death",
-                    "Myth",
-                    "Balance"
+                    "FIRE",
+                    "ICE",
+                    "STORM",
+                    "LIFE",
+                    "DEATH",
+                    "MYTH",
+                    "BALANCE"
                 ]
 
-                # print("Generate which archmastery pip?")
+                print("Generate which archmastery pip?")
+
+                for i, school in enumerate(schools):
+                    print(f"{i + 1}. {school}")
+
+                while True:
+                    try:
+                        selection = int(input("> "))
+                    except ValueError:
+                        continue
+
+                    if 1 <= selection <= len(schools):
+                        break
+
+                caster_player.selected_school = schools[selection - 1]
 
                 # self.end_turn()
 
-                turn += 1
-                break
+                for effect in caster_player.effects:
+                    effect.end_round()
 
                 if caster_player.curr_health <= 0 or enemy_player.curr_health <= 0:
                     self.end_match(caster_player, enemy_player)
                     break
+
+                # pip conservation stuff
+                # pip conservation means that for a spell that requires odd pips
+                # using up a power pip leaves behind a regular pip
+                conserved = True
+                
+                if conserved:
+                    caster_player.pips.insert(0, Pip("REG"))
+
+                # places the pip after all the regular pips
+                reg_idx = caster_player.last_pip_index("REG")
+
+                if reg_idx is None:
+                    caster_player.pips.insert(0, Pip(caster_player.selected_school))
+                else:        
+                    caster_player.pips.insert(reg_idx + 1, Pip(caster_player.selected_school))
+
+                turn += 1
             return
 
         if self.match_file:

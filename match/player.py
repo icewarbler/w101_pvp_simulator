@@ -255,7 +255,6 @@ class Player:
 
     def delete_card(self, card):
         self.hand.delete(card)
-        self.deck.delete(card)
 
 class Deck:
     def __init__(self, deck):

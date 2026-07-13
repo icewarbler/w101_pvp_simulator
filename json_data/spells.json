@@ -247,6 +247,40 @@
         ]
     },
     {
+        "ID": "POWERNOVA_5B",
+        "SPELL": "POWER NOVA",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 7,
+        "ACCURACY": 85,
+        "TYPE": ["MULTI", "DAMAGE", "SINGLE_DAMAGE", "GAMBIT"],
+        "DESCRIPTION":
+            "DEALS 560 BALANCE DAMAGE SPLIT AMONG SELECTED ENEMIES AND GIVES 1 PIP TO CASTER PER HELPFUL WARD ON SELECTED ENEMIES (MAX 6)",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "MULTI": true,
+                "TARGET": "ENEMY",
+                "SCHOOL": "BALANCE",
+                "VALUE": 560
+            },
+            {
+                "TYPE": "GAMBIT",
+                "MULTI": true,
+                "CAUSE": {
+                    "ACTION": "ECHO",
+                    "TARGET": "ENEMY",
+                    "TYPE": "SHIELD",
+                    "MAX": 6
+                },
+                "PER_EFFECT": {
+                    "TARGET": "SELF",
+                    "TYPE": "PIP",
+                    "SCHOOL": "REG"
+                }
+            }
+        ]
+    },
+    {
         "ID": "SAMOORAI_2B",
         "SPELL": "SAMOORAI",
         "SCHOOL": "BALANCE",
@@ -361,7 +395,7 @@
         "SCHOOL": "BALANCE",
         "PIPCOST": 0,
         "ACCURACY": 100,
-        "TYPE": ["STEAL_PIP", "MANIPULATION"],
+        "TYPE": ["GAMBIT", "MANIPULATION"],
         "DESCRIPTION":
             "STEALS A PIP FROM TARGET AND GIVES IT TO CASTER",
         "EFFECTS": [
@@ -370,11 +404,13 @@
                 "CAUSE": {
                     "ACTION": "STEAL",
                     "TYPE": "PIP",
-                    "TARGET": "ENEMY"
+                    "TARGET": "ENEMY",
+                    "SCHOOL": "REG"
                 },
                 "PER_EFFECT": {
                     "TYPE": "PIP",
-                    "TARGET": "SELF"
+                    "TARGET": "SELF",
+                    "SCHOOL": "REG"
                 }
             }
         ]
@@ -1093,6 +1129,47 @@
                 "TARGET": "ENEMY",
                 "SCHOOL": "MYTH",
                 "VALUE": 415
+            }
+        ]
+    },
+
+    {
+        "ID": "MINOTAUR_2C",
+        "SPELL": "MINOTAUR",
+        "SCHOOL": "MYTH",
+        "PIPCOST": 5,
+        "ACCURACY": 80,
+        "TYPE": ["GAMBIT", "DAMAGE", "DOUBLE_DAMAGE"],
+        "DESCRIPTION":
+            "REMOVES UP TO 4 SHIELDS FROM TARGET TO APPLY A -50% SHIELD ON CASTER PER SHIELD REMOVED, THEN DEALS 55 MYTH DAMAGE AND 340 MYTH DAMAGE TO TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": {
+                    "ACTION": "CLEAR",
+                    "TARGET": "ENEMY",
+                    "TYPE": "SHIELD",
+                    "MAX": 4
+                },
+                "PER_EFFECT": {
+                    "TYPE": "SHIELD",
+                    "TARGET": "SELF",
+                    "SCHOOL": "UNIVERSAL",
+                    "VALUE": 50,
+                    "FAMILY": "MINOTAUR_50"
+                }
+            },
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "MYTH",
+                "VALUE": 55
+            },
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "MYTH",
+                "VALUE": 340
             }
         ]
     },
