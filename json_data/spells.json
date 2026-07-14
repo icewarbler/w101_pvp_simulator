@@ -1,5 +1,24 @@
 [
     {
+        "ID": "BALANCEBLADE_25",
+        "SPELL": "BALANCE BLADE",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["CHARM", "BLADE"],
+        "DESCRIPTION":
+            "APPLIES A +25% DAMAGE BLADE",
+        "EFFECTS": [
+            {
+                "TYPE": "BLADE",
+                "TARGET": "SELF",
+                "SCHOOL": "UNIVERSAL",
+                "VALUE": 25,
+                "FAMILY": "BALANCEBLADE_25"
+            }
+        ]
+    },
+    {
         "ID": "ELEMENTALSHIELD_50",
         "SPELL": "ELEMENTAL SHIELD",
         "SCHOOL": "BALANCE",
@@ -276,6 +295,40 @@
                     "TARGET": "SELF",
                     "TYPE": "PIP",
                     "SCHOOL": "REG"
+                }
+            }
+        ]
+    },
+    {
+        "ID": "RA_5B",
+        "SPELL": "RA",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 8,
+        "ACCURACY": 85,
+        "TYPE": ["MULTI", "GAMBIT", "SINGLE_DAMAGE", "DAMAGE"],
+        "DESCRIPTION":
+            "DEALS 545 BALANCE DAMAGE SPLIT AMONG SELECTED ENEMIES AND GIVES 1 POWER PIP TO CASTER PER BLADE ON SELECTED ENEMIES (MAX 5)",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "BALANCE",
+                "VALUE": 545,
+                "MULTI": true
+            },
+            {
+                "TYPE": "GAMBIT",
+                "MULTI": true,
+                "CAUSE": {
+                    "ACTION": "ECHO",
+                    "TARGET": "ENEMY",
+                    "TYPE": "BLADE",
+                    "MAX": 5
+                },
+                "PER_EFFECT": {
+                    "TARGET": "SELF",
+                    "TYPE": "PIP",
+                    "SCHOOL": "POWER"
                 }
             }
         ]
@@ -1054,6 +1107,46 @@
                 "TARGET": "ENEMY",
                 "SCHOOL": "ICE",
                 "VALUE": 180
+            }
+        ]
+    },
+
+    {
+        "ID": "TOWERSHIELD_50",
+        "NAME": "TOWER SHIELD",
+        "SCHOOL": "ICE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["WARD", "SHIELD"],
+        "DESCRIPTION":
+            "APPLIES A -50% DAMAGE SHIELD",
+        "EFFECTS": [
+            {
+                "TYPE": "SHIELD",
+                "TARGET": "SELF",
+                "SCHOOL": "UNIVERSAL",
+                "VALUE": 50,
+                "FAMILY": "TOWERSHIELD_50"
+            }
+        ]
+    },
+
+    {
+        "ID": "TOWERSHIELD_55",
+        "NAME": "TOWER SHIELD",
+        "SCHOOL": "ICE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["WARD", "SHIELD"],
+        "DESCRIPTION":
+            "APPLIES A -55% DAMAGE SHIELD",
+        "EFFECTS": [
+            {
+                "TYPE": "SHIELD",
+                "TARGET": "SELF",
+                "SCHOOL": "UNIVERSAL",
+                "VALUE": 55,
+                "FAMILY": "TOWERSHIELD_55"
             }
         ]
     },

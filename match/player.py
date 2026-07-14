@@ -191,7 +191,9 @@ class Player:
             print(f"Found a school pip: {school}")
             to_rem = next((pip for pip in self.pips if pip.school == school), None)
             if to_rem is None:
-                raise AssertionError("Impossible to cast spell without required school pip(s)!")
+                print(f"Insufficient school pips!")
+                return
+             #   raise AssertionError("Impossible to cast spell without required school pip(s)!")
             self.remove_pip(to_rem)
 
         while context.pips > 0:
@@ -246,6 +248,38 @@ class Player:
         self.shadpips -= context.shadpips
 
         print(f"{self.name} has {self.pips} pips and {self.shadpips} shad pips after casting")
+
+    def can_cast(self, spell):
+        if spell == None:
+            return True
+        
+        school_pips = spell.get("SCHOOLPIPS", None)
+
+
+        pip_count = 0
+
+        # have to edit this to make sure only spells of same school consume the pips
+        for pip in self.pips:
+            if pip.school == "REG":
+                pip_count += 1
+            else:
+                pip_count += 2
+
+        if school_pips != None:
+            for key, val in school_pips.items():
+                caster_pip = next((pip for pip in self.pips if pip.school == key), None)
+
+                if caster_pip == None:
+                    return False
+                else:
+                    pip_count -= 2
+
+        if spell["PIPCOST"] > pip_count:
+            return False
+        
+        return True
+        
+
 
     def draw_card(self):
         card = self.deck.draw()

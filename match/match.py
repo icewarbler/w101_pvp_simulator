@@ -787,6 +787,10 @@ class Match:
             print(f"[1-7] - Choose a spell to cast")
             print(f"d[1-7] - Delete a spell from your hand")
             print(f"i[1-7] - Print out the info for a spell")
+            print(f"cs - Change the selected archmastery pip")
+            print(f"ss - Print the currently selected archmastery pip")
+            print(f"ee - Print the enemy's current effects")
+            print(f"me - Print your current effects")
             print(f"health - Print the current health of both you and the enemy")
             print(f"pips - Print out your current pips")
             return 0
@@ -820,6 +824,50 @@ class Match:
         if selection == "pips":
             print(f"Your pips: {caster_player.pips}")
             return 0
+        
+        if selection == "ee":
+            if enemy_player.aura:
+                print(enemy_player.aura)
+            if enemy_player.backlash:
+                print(enemy_player.backlash)
+            print(enemy_player.print_effects())
+
+        if selection == "me":
+            if caster_player.aura:
+                print(caster_player.aura)
+            if caster_player.backlash:
+                print(caster_player.backlash)
+            print(caster_player.print_effects())
+        
+        if selection == "cs":
+            schools = [
+                "FIRE",
+                "ICE",
+                "STORM",
+                "LIFE",
+                "DEATH",
+                "MYTH",
+                "BALANCE"
+            ]
+
+            print("Generate which archmastery pip?")
+
+            for i, school in enumerate(schools):
+                print(f"{i + 1}. {school}")
+
+            while True:
+                try:
+                    school_selection = int(input("> "))
+                except ValueError:
+                    continue
+
+                if 1 <= school_selection <= len(schools):
+                    break
+
+            caster_player.selected_school = schools[school_selection - 1]
+
+        if selection == "ss":
+            print(f"Currently generating a {caster_player.selected_school} pip")
         
         try:
             selection = int(selection)
@@ -877,12 +925,19 @@ class Match:
                 #     print(f"{i + 1}. {card}")
 
                 while True:
+                    red = "\033[91m"
+                    reset = "\033[0m"
                     for i, card in enumerate(caster_player.hand.cards):
-                        print(f"{i + 1}. {card}")
+                        spell = spell_lookup[card]
+
+                        if caster_player.can_cast(spell):
+                            print(f"{i + 1}. {card}")
+                        else:
+                            print(f"{i + 1}. {red}{card}{reset}")
 
                     spell_id = self.parse_input(spell_lookup, caster_player, enemy_player)
-
-                    if spell_id != 0:
+                    spell_data = spell_lookup.get(spell_id)
+                    if spell_id != 0 and caster_player.can_cast(spell_data):
                         break
                   #  selection = input("> ").strip().lower()
 
@@ -953,31 +1008,33 @@ class Match:
 
                     self.cast_spell(caster_player, enemy_player, spell_data)
 
-                schools = [
-                    "FIRE",
-                    "ICE",
-                    "STORM",
-                    "LIFE",
-                    "DEATH",
-                    "MYTH",
-                    "BALANCE"
-                ]
+                    caster_player.delete_card(spell_id)
 
-                print("Generate which archmastery pip?")
+                # schools = [
+                #     "FIRE",
+                #     "ICE",
+                #     "STORM",
+                #     "LIFE",
+                #     "DEATH",
+                #     "MYTH",
+                #     "BALANCE"
+                # ]
 
-                for i, school in enumerate(schools):
-                    print(f"{i + 1}. {school}")
+                # print("Generate which archmastery pip?")
 
-                while True:
-                    try:
-                        selection = int(input("> "))
-                    except ValueError:
-                        continue
+                # for i, school in enumerate(schools):
+                #     print(f"{i + 1}. {school}")
 
-                    if 1 <= selection <= len(schools):
-                        break
+                # while True:
+                #     try:
+                #         selection = int(input("> "))
+                #     except ValueError:
+                #         continue
 
-                caster_player.selected_school = schools[selection - 1]
+                #     if 1 <= selection <= len(schools):
+                #         break
+
+                # caster_player.selected_school = schools[selection - 1]
 
                 # self.end_turn()
 

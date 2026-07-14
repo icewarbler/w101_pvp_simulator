@@ -532,8 +532,8 @@
         "POWERPIPS": 103,
         "SHAD_RATING": 107,
         "DECK": {
-            "TOWERSHIELD": 1,
-            "BALANCEBLADE": 3
+            "TOWERSHIELD_50": 1,
+            "BALANCEBLADE_25": 3
         }
     }
 ]

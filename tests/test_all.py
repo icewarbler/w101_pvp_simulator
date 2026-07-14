@@ -549,6 +549,62 @@ def test_multi_select_pip(basic_match, make_spell, balance_player, storm_player)
     storm_player.print_effects()
     print(f"caster pips: {balance_player.pips}")
 
+def test_multi_select_powerpip(basic_match, make_spell, balance_player, storm_player):
+    minion1 = Minion(
+        id = "STORMELEMENTAL",
+        duration = 7
+    )
+    
+    storm_player.minion = minion1
+
+    shield1 = Blade(
+        school = "UNIVERSAL",
+        value = 50,
+        family = "A"
+    )
+    shield2 = Blade(
+        school = "FIRE",
+        value = 25,
+        family = "B"
+    )
+    shield3 = Blade(
+        school = "FIRE",
+        value = 25,
+        family = "C"
+    )
+    shield4 = Blade(
+        school = "STORM",
+        value = 40,
+        family = "D"
+    )
+    shield5 = Blade(
+        school = "STORM",
+        value = 40,
+        family = "D"
+    )
+    shield6 = Blade(
+        school = "UNIVERSAL",
+        value = 10,
+        family = "E"
+    )
+
+    storm_player.add_effect(shield1)
+    storm_player.add_effect(shield2)
+    storm_player.add_effect(shield3)
+    storm_player.add_effect(shield4)
+    storm_player.add_effect(shield5)
+    storm_player.add_effect(shield6)
+
+    spell = make_spell("RA_5B", balance_player, storm_player, True)
+
+    storm_player.print_effects()
+    print(f"caster pips: {balance_player.pips}")
+
+    cast_spell(basic_match, spell, balance_player, storm_player)
+
+    storm_player.print_effects()
+    print(f"caster pips: {balance_player.pips}")
+
 def test_double_hit(basic_match, make_spell, balance_player, storm_player):
     shield1 = Shield(
         school = "UNIVERSAL",
