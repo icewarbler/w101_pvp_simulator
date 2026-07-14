@@ -329,7 +329,7 @@ class Match:
         print(f"{abs_target.name} HEALTH: {abs_target.curr_health}")
 
     def play_gambit(self, caster_player, enemy_player, gambit, context):
-        gambit_cause = gambit.cause
+        gambit_cause = gambit.cause[0]
         print(gambit_cause)
         # gambit_effect = gambit.per_effect
 
@@ -477,11 +477,11 @@ class Match:
                 to_remove = []
                 gambit_type = gambit_cause.get("TYPE")
 
-                gambit_target = gambit_cause.get("TARGET")
+                cause_target = gambit_cause.get("TARGET")
 
-                if gambit_effect_target == "SELF":
+                if cause_target == "SELF":
                     abs_target = caster_player
-                elif gambit_effect_target == "ENEMY":
+                elif cause_target == "ENEMY":
                     abs_target = enemy_player
 
                 for effect in caster_player.get_effects():
@@ -989,8 +989,8 @@ class Match:
 
         for turn in match_dat:
             round = turn["ROUND"]
-            if round > 18:
-                break
+            # if round > 18:
+            #     break
             caster = turn["CASTER"]
 
             if caster == "PLAYER1":

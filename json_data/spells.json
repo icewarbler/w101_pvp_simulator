@@ -24,7 +24,7 @@
         "SCHOOL": "BALANCE",
         "PIPCOST": 9,
         "ACCURACY": 85,
-        "TYPE": ["DAMAGE", "GAMBIT"],
+        "TYPE": ["DAMAGE"],
         "DESCRIPTION":
             "DEALS 310 MYTH DAMAGE, LIFE DAMAGE, AND DEATH DAMAGE",
         "EFFECTS": [
@@ -66,12 +66,14 @@
             },
             {
                 "TYPE": "GAMBIT",
-                "CAUSE": {
-                    "ACTION": "ECHO",
-                    "TARGET": "SELF",
-                    "TYPE": "DOT",
-                    "MAX": 4
-                },
+                "CAUSE": [
+                    {
+                        "ACTION": "ECHO",
+                        "TARGET": "SELF",
+                        "TYPE": "DOT",
+                        "MAX": 4
+                    }
+                ],
                 "PER_EFFECT": {
                     "TYPE": "DOT",
                     "SCHOOL": "BALANCE",
@@ -184,11 +186,13 @@
             },
             {
                 "TYPE": "GAMBIT",
-                "CAUSE": {
-                    "ACTION": "SWAP",
-                    "TARGET": "ENEMY",
-                    "TYPE": "HOT"
-                },
+                "CAUSE": [
+                    {
+                        "ACTION": "SWAP",
+                        "TARGET": "ENEMY",
+                        "TYPE": "HOT"
+                    }
+                ],
                 "PER_EFFECT": {
                     "TYPE": "HOT"
                 }
@@ -213,11 +217,13 @@
             },
             {
                 "TYPE": "GAMBIT",
-                "CAUSE": {
-                    "ACTION": "SWAP",
-                    "TARGET": "ENEMY",
-                    "TYPE": "DOT"
-                },
+                "CAUSE": [
+                    {
+                        "ACTION": "SWAP",
+                        "TARGET": "ENEMY",
+                        "TYPE": "DOT"
+                    }
+                ],
                 "PER_EFFECT": {
                     "TYPE": "DOT"
                 }
@@ -254,12 +260,14 @@
             },
             {
                 "TYPE": "GAMBIT",
-                "CAUSE": {
-                    "ACTION": "ECHO",
-                    "TARGET": "ENEMY",
-                    "TYPE": "SHIELD",
-                    "MAX": 5
-                },
+                "CAUSE": [
+                    {
+                        "ACTION": "ECHO",
+                        "TARGET": "ENEMY",
+                        "TYPE": "SHIELD",
+                        "MAX": 5
+                    }
+                ],
                 "PER_EFFECT": {
                     "TARGET": "SELF",
                     "TYPE": "SHIELD",
@@ -283,12 +291,14 @@
         "EFFECTS": [
             {
                 "TYPE": "GAMBIT",
-                "CAUSE": {
-                    "ACTION": "SWAP",
-                    "TYPE": "SHIELD",
-                    "TARGET": "ENEMY",
-                    "MAX": 5
-                },
+                "CAUSE": [
+                    {
+                        "ACTION": "SWAP",
+                        "TYPE": "SHIELD",
+                        "TARGET": "ENEMY",
+                        "MAX": 5
+                    }
+                ],
                 "PER_EFFECT": {
                     "TYPE": "SHIELD"
                 }
@@ -331,12 +341,14 @@
             },
             {
                 "TYPE": "GAMBIT",
-                "CAUSE": {
-                    "ACTION": "ECHO",
-                    "TARGET": "SELF",
-                    "TYPE": "TRAP",
-                    "MAX": 2
-                },
+                "CAUSE": [
+                    {
+                        "ACTION": "ECHO",
+                        "TARGET": "SELF",
+                        "TYPE": "TRAP",
+                        "MAX": 2
+                    }
+                ],
                 "PER_EFFECT": {
                     "TARGET": "ENEMY",
                     "TYPE": "TRAP",
@@ -495,12 +507,14 @@
             {
                 "TYPE": "GAMBIT",
                 "MULTI": true,
-                "CAUSE": {
-                    "ACTION": "ECHO",
-                    "TARGET": "ENEMY",
-                    "TYPE": "SHIELD",
-                    "MAX": 6
-                },
+                "CAUSE": [
+                    {
+                        "ACTION": "ECHO",
+                        "TARGET": "ENEMY",
+                        "TYPE": "SHIELD",
+                        "MAX": 6
+                    }
+                ],
                 "PER_EFFECT": {
                     "TARGET": "SELF",
                     "TYPE": "PIP",
@@ -529,12 +543,14 @@
             {
                 "TYPE": "GAMBIT",
                 "MULTI": true,
-                "CAUSE": {
-                    "ACTION": "ECHO",
-                    "TARGET": "ENEMY",
-                    "TYPE": "BLADE",
-                    "MAX": 5
-                },
+                "CAUSE": [
+                    {
+                        "ACTION": "ECHO",
+                        "TARGET": "ENEMY",
+                        "TYPE": "BLADE",
+                        "MAX": 5
+                    }
+                ],
                 "PER_EFFECT": {
                     "TARGET": "SELF",
                     "TYPE": "PIP",
@@ -607,12 +623,14 @@
         "EFFECTS": [
             {
                 "TYPE": "GAMBIT",
-                "CAUSE": {
-                    "ACTION": "SWAP",
-                    "TYPE": "WEAKNESS",
-                    "TARGET": "ENEMY",
-                    "MAX": 1
-                },
+                "CAUSE": [
+                    {
+                        "ACTION": "SWAP",
+                        "TYPE": "WEAKNESS",
+                        "TARGET": "ENEMY",
+                        "MAX": 1
+                    }
+                ],
                 "PER_EFFECT": {
                     "TYPE": "WEAKNESS"
                 }
@@ -664,12 +682,14 @@
         "EFFECTS": [
             {
                 "TYPE": "GAMBIT",
-                "CAUSE": {
-                    "ACTION": "STEAL",
-                    "TYPE": "PIP",
-                    "TARGET": "ENEMY",
-                    "SCHOOL": "REG"
-                },
+                "CAUSE": [
+                    {
+                        "ACTION": "STEAL",
+                        "TYPE": "PIP",
+                        "TARGET": "ENEMY",
+                        "SCHOOL": "REG"
+                    }
+                ],
                 "PER_EFFECT": {
                     "TYPE": "PIP",
                     "TARGET": "SELF",
@@ -791,12 +811,14 @@
             },
             {
                 "TYPE": "GAMBIT",
-                "CAUSE": {
-                    "ACTION": "CLEAR",
-                    "TARGET": "ENEMY",
-                    "TYPE": "BLADE",
-                    "MAX": 2
-                },
+                "CAUSE": [
+                    {
+                        "ACTION": "CLEAR",
+                        "TARGET": "ENEMY",
+                        "TYPE": "BLADE",
+                        "MAX": 2
+                    }
+                ],
                 "PER_EFFECT": {
                     "TARGET": "ENEMY",
                     "TYPE": "WEAKNESS",
@@ -939,12 +961,14 @@
             },
             {
                 "TYPE": "GAMBIT",
-                "CAUSE": {
-                    "ACTION": "GAMBIT",
-                    "TARGET": "SELF",
-                    "TYPE": "SHIELD",
-                    "MAX": 3
-                },
+                "CAUSE": [
+                    {
+                        "ACTION": "GAMBIT",
+                        "TARGET": "SELF",
+                        "TYPE": "SHIELD",
+                        "MAX": 3
+                    }
+                ],
                 "PER_EFFECT": {
                     "TYPE": "WEAKNESS",
                     "TARGET": "ENEMY",
@@ -980,13 +1004,17 @@
         "SCHOOL": "DEATH",
         "PIPCOST:": 2,
         "TYPE": ["GAMBIT", "MANIPULATION"],
+        "DESCRIPTION":
+            "ENTER DESCRIPTION HERE",
         "EFFECTS": [
             {
                 "TYPE": "GAMBIT",
-                "CAUSE": {
-                        "SUBTYPE": "CLEAR",
+                "CAUSE": [
+                    {
+                        "ACTION": "CLEAR",
                         "TYPE": "BLADE"
-                },
+                    }
+                ],
                 "EFFECT": {
                     "SUBTYPE": "WEAKNESS",
                     "VALUE": 20
@@ -1014,12 +1042,14 @@
             },
             {
                 "TYPE": "GAMBIT",
-                "CAUSE": {
-                    "ACTION": "DETONATE",
-                    "TYPE": "DOT",
-                    "TARGET": "ENEMY",
-                    "MAX": 2
-                },
+                "CAUSE": [
+                    {
+                        "ACTION": "DETONATE",
+                        "TYPE": "DOT",
+                        "TARGET": "ENEMY",
+                        "MAX": 2
+                    }
+                ],
                 "PER_EFFECT": {
                     "SUBTYPE": "SINGLE_DAMAGE",
                     "VALUE": 145
@@ -1046,12 +1076,14 @@
             },
             {
                 "TYPE": "GAMBIT",
-                "CAUSE": {
-                    "ACTION": "CLEAR",
-                    "TYPE": "TRAP",
-                    "TARGET": "SELF",
-                    "MAX": 5
-                },
+                "CAUSE": [
+                    {
+                        "ACTION": "CLEAR",
+                        "TYPE": "TRAP",
+                        "TARGET": "SELF",
+                        "MAX": 5
+                    }
+                ],
                 "PER_EFFECT": {
                     "TYPE": "TRAP",
                     "TARGET": "ENEMY",
@@ -1165,11 +1197,13 @@
         "EFFECT": [
             {
                 "TYPE": "GAMBIT",
-                "CAUSE": {
-                    "TYPE": "CLEAR",
-                    "TARGET": "SHIELD",
-                    "MAX": 7
-                },
+                "CAUSE": [
+                    {
+                        "TYPE": "CLEAR",
+                        "TARGET": "SHIELD",
+                        "MAX": 7
+                    }
+                ],
                 "PER_EFFECT": {
                     "TYPE": "HOT",
                     "DURATION": 5,
@@ -1198,12 +1232,14 @@
         "EFFECTS": [
             {
                 "TYPE": "GAMBIT",
-                "CAUSE": {
-                    "ACTION": "CLEAR",
-                    "TARGET": "ENEMY",
-                    "TYPE": "SHIELD",
-                    "MAX": 3
-                },
+                "CAUSE": [
+                    {
+                        "ACTION": "CLEAR",
+                        "TARGET": "ENEMY",
+                        "TYPE": "SHIELD",
+                        "MAX": 3
+                    }
+                ],
                 "PER_EFFECT": {
                     "TYPE": "BLADE",
                     "TARGET": "SELF",
@@ -1387,12 +1423,14 @@
         "EFFECTS": [
             {
                 "TYPE": "GAMBIT",
-                "CAUSE": {
-                    "ACTION": "CLEAR",
-                    "TYPE": "WEAKNESS",
-                    "TARGET": "SELF",
-                    "MAX": 2
-                },
+                "CAUSE": [
+                    {
+                        "ACTION": "CLEAR",
+                        "TYPE": "WEAKNESS",
+                        "TARGET": "SELF",
+                        "MAX": 2
+                    }
+                ],
                 "PER_EFFECT": {
                     "TYPE": "SHIELD",
                     "TARGET": "SELF",
@@ -1467,12 +1505,14 @@
         "EFFECTS": [
             {
                 "TYPE": "GAMBIT",
-                "CAUSE": {
-                    "ACTION": "GAMBIT",
-                    "TYPE": "TRAP",
-                    "TARGET": "ENEMY",
-                    "MAX": 1
-                },
+                "CAUSE": [
+                    {
+                        "ACTION": "GAMBIT",
+                        "TYPE": "TRAP",
+                        "TARGET": "ENEMY",
+                        "MAX": 1
+                    }
+                ],
                 "PER_EFFECT": {
                     "TYPE": "HEAL_WEAKNESS",
                     "TARGET": "ENEMY",
@@ -1568,12 +1608,14 @@
             },
             {
                 "TYPE": "GAMBIT",
-                "CAUSE": {
-                    "ACTION": "CLEAR",
-                    "TYPE": "DOT",
-                    "TARGET": "SELF",
-                    "MAX": 4
-                },
+                "CAUSE": [
+                    {
+                        "ACTION": "CLEAR",
+                        "TYPE": "DOT",
+                        "TARGET": "SELF",
+                        "MAX": 4
+                    }
+                ],
                 "PER_EFFECT": {
                     "ACTION": "GAIN",
                     "TYPE": "PIP",
@@ -1635,12 +1677,14 @@
             {
                 "TYPE": "GAMBIT",
                 "MULTI": true,
-                "CAUSE": {
-                    "ACTION": "CLEAR",
-                    "TARGET": "ENEMY",
-                    "TYPE": "SHIELD",
-                    "MAX": 4
-                },
+                "CAUSE": [
+                    {
+                        "ACTION": "CLEAR",
+                        "TARGET": "ENEMY",
+                        "TYPE": "SHIELD",
+                        "MAX": 4
+                    }
+                ],
                 "PER_EFFECT": {
                     "TYPE": "DOT",
                     "TARGET": "ENEMY",
@@ -1672,12 +1716,14 @@
         "EFFECTS": [
             {
                 "TYPE": "GAMBIT",
-                "CAUSE": {
-                    "ACTION": "CLEAR",
-                    "TARGET": "ENEMY",
-                    "TYPE": "SHIELD",
-                    "MAX": 4
-                },
+                "CAUSE": [
+                    {
+                        "ACTION": "CLEAR",
+                        "TARGET": "ENEMY",
+                        "TYPE": "SHIELD",
+                        "MAX": 4
+                    }
+                ],
                 "PER_EFFECT": {
                     "TYPE": "SHIELD",
                     "TARGET": "SELF",
@@ -1713,11 +1759,13 @@
         "EFFECTS": [
             {   
                 "TYPE": "GAMBIT",
-                "CAUSE": {
-                    "TYPE": "TRAP",
-                    "TARGET": "ENEMY",
-                    "AMOUNT": 4
-                },
+                "CAUSE": [
+                    {
+                        "TYPE": "TRAP",
+                        "TARGET": "ENEMY",
+                        "AMOUNT": 4
+                    }
+                ],
                 "THEN": {
                     "TYPE": "SINGLE_DAMAGE",
                     "TARGET": "ENEMY",
@@ -1747,12 +1795,14 @@
             {
                 "TYPE": "GAMBIT",
                 "MULTI": true,
-                "CAUSE": {
-                    "ACTION": "CLEAR",
-                    "TARGET": "SELF",
-                    "TYPE": "WEAKNESS",
-                    "MAX": 3
-                },
+                "CAUSE": [
+                    {
+                        "ACTION": "CLEAR",
+                        "TARGET": "SELF",
+                        "TYPE": "WEAKNESS",
+                        "MAX": 3
+                    }
+                ],
                 "PER_EFFECT": {
                     "TARGET": "ENEMY",
                     "TYPE": "DOT",
@@ -1803,12 +1853,14 @@
         "EFFECTS": [
             {
                 "TYPE": "GAMBIT",
-                "CAUSE": {
-                    "ACTION": "CLEAR",
-                    "TARGET": "SELF",
-                    "TYPE": "WEAKNESS",
-                    "MAX": 5
-                },
+                "CAUSE": [
+                    {
+                        "ACTION": "CLEAR",
+                        "TARGET": "SELF",
+                        "TYPE": "WEAKNESS",
+                        "MAX": 5
+                    }
+                ],
                 "PER_EFFECT": {
                     "TYPE": "BOMB_DOT",
                     "TARGET": "ENEMY",
