@@ -19,6 +19,70 @@
         ]
     },
     {
+        "ID": "CHIMERA_5A",
+        "SPELL": "CHIMERA",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 9,
+        "ACCURACY": 85,
+        "TYPE": ["DAMAGE", "GAMBIT"],
+        "DESCRIPTION":
+            "DEALS 310 MYTH DAMAGE, LIFE DAMAGE, AND DEATH DAMAGE",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "MYTH",
+                "VALUE": 310
+            },
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "LIFE",
+                "VALUE": 310
+            },
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "DEATH",
+                "VALUE": 310
+            }
+        ]
+    },
+    {
+        "ID": "CHIMERA_5B",
+        "SPELL": "CHIMERA",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 9,
+        "ACCURACY": 85,
+        "TYPE": ["DAMAGE", "GAMBIT"],
+        "DESCRIPTION":
+            "DEALS 790 BALANCE DAMAGE TO TARGET THEN APPLIES UP TO 4 DOTS THAT DEAL 390 BALANCE DAMAGE OVER 6 ROUNDS ON TARGET FOR EACH DOT EFFECT ON CASTER",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "BALANCE",
+                "VALUE": 790
+            },
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": {
+                    "ACTION": "ECHO",
+                    "TARGET": "SELF",
+                    "TYPE": "DOT",
+                    "MAX": 4
+                },
+                "PER_EFFECT": {
+                    "TYPE": "DOT",
+                    "SCHOOL": "BALANCE",
+                    "DURATION": 6,
+                    "AMOUNT": "X",
+                    "VALUE_PER_STACK": 390
+                }
+            }
+        ]
+    },
+    {
         "ID": "ELEMENTALSHIELD_50",
         "SPELL": "ELEMENTAL SHIELD",
         "SCHOOL": "BALANCE",
@@ -81,6 +145,82 @@
                 "SCHOOL": "STORM",
                 "VALUE": 55,
                 "FAMILY": "ELEMENTALSHIELD_STORMSHIELD55"
+            }
+        ]
+    },
+    {
+        "ID": "GEARHEADDESTROYER_5A",
+        "SPELL": "GEARHEAD DESTROYER",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 4,
+        "ACCURACY": 95,
+        "TYPE": ["DAMAGE"],
+        "DESCRIPTION":
+            "DEALS 415 BALANCE DAMAGE TO TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "BALANCE",
+                "VALUE": 415
+            }
+        ]
+    },
+    {
+        "ID": "GEARHEADDESTROYER_5B",
+        "SPELL": "GEARHEAD DESTROYER",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 4,
+        "ACCURACY": 85,
+        "TYPE": ["DAMAGE", "SINGLE_DAMAGE", "GAMBIT"],
+        "DESCRIPTION":
+            "DEALS 345 BALANCE DAMAGE AND SWAPS 1 HOT WITH TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "BALANCE",
+                "VALUE": 345
+            },
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": {
+                    "ACTION": "SWAP",
+                    "TARGET": "ENEMY",
+                    "TYPE": "HOT"
+                },
+                "PER_EFFECT": {
+                    "TYPE": "HOT"
+                }
+            }
+        ]
+    },
+    {
+        "ID": "GEARHEADDESTROYER_5C",
+        "SPELL": "GEARHEAD DESTROYER",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 4,
+        "ACCURACY": 85,
+        "TYPE": ["DAMAGE", "SINGLE_DAMAGE", "GAMBIT"],
+        "DESCRIPTION":
+            "DEALS 345 BALANCE DAMAGE AND SWAPS 1 DOT WITH TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "BALANCE",
+                "VALUE": 345
+            },
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": {
+                    "ACTION": "SWAP",
+                    "TARGET": "ENEMY",
+                    "TYPE": "DOT"
+                },
+                "PER_EFFECT": {
+                    "TYPE": "DOT"
+                }
             }
         ]
     },
@@ -230,6 +370,76 @@
                 "SCHOOL": "UNIVERSAL",
                 "VALUE": 35,
                 "FAMILY": "LOREMASTER_UNI35"
+            }
+        ]
+    },
+
+    {
+        "ID": "TRIBUNALONI",
+        "SPELL": "TRIBUNAL ONI",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 9,
+        "ACCURACY": 85,
+        "TYPE": ["DAMAGE", "GAMBIT", "AURA", "WARD"],
+        "DESCRIPTION":
+            "DEALS 245 BALANCE DAMAGE, 245 STORM DAMAGE, AND 245 MYTH DAMAGE OR REMOVES A HELPFUL AURA FROM CASTER AND 3 HARMFUL WARDS FROM TARGET TO DEAL 545 BALANCE DAMAGE, 545 STORM DAMAGE, AND 545 MYTH DAMAGE",
+        "EFFECTS": [
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": [
+                    {
+                        "ACTION": "CLEAR",
+                        "TARGET": "SELF",
+                        "TYPE": "AURA",
+                        "MAX": 1
+                    },
+                    {
+                        "ACTION": "CLEAR",
+                        "TARGET": "ENEMY",
+                        "TYPE": "TRAP",
+                        "AMOUNT": 3
+                    }
+                ],
+                "THEN": [
+                    {
+                        "TYPE": "SINGLE_DAMAGE",
+                        "TARGET": "ENEMY",
+                        "SCHOOL": "BALANCE",
+                        "VALUE": 545
+                    },
+                    {
+                        "TYPE": "SINGLE_DAMAGE",
+                        "TARGET": "ENEMY",
+                        "SCHOOL": "STORM",
+                        "VALUE": 545
+                    },
+                    {
+                        "TYPE": "SINGLE_DAMAGE",
+                        "TARGET": "ENEMY",
+                        "SCHOOL": "MYTH",
+                        "VALUE": 545
+                    }
+                ],
+                "ELSE": [
+                    {
+                        "TYPE": "SINGLE_DAMAGE",
+                        "TARGET": "ENEMY",
+                        "SCHOOL": "BALANCE",
+                        "VALUE": 245
+                    },
+                    {
+                        "TYPE": "SINGLE_DAMAGE",
+                        "TARGET": "ENEMY",
+                        "SCHOOL": "STORM",
+                        "VALUE": 245
+                    },
+                    {
+                        "TYPE": "SINGLE_DAMAGE",
+                        "TARGET": "ENEMY",
+                        "SCHOOL": "MYTH",
+                        "VALUE": 245
+                    }
+                ]
             }
         ]
     },
@@ -544,6 +754,61 @@
     },
 
     {
+        "ID": "BANSHEE",
+        "SPELL": "BANSHEE",
+        "SCHOOL": "DEATH",
+        "PIPCOST": 3,
+        "ACCURACY": 85,
+        "TYPE": ["DAMAGE"],
+        "DESCRIPTION":
+            "DEALS 245-305 DEATH DAMAGE TO TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "RANGE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "DEATH",
+                "MIN": 245,
+                "MAX": 305
+            }
+        ]
+    },
+
+    {
+        "ID": "BANSHEE_2C",
+        "SPELL": "BANSHEE",
+        "SCHOOL": "DEATH",
+        "PIPCOST": 3,
+        "ACCURACY": 85,
+        "TYPE": ["DAMAGE"],
+        "DESCRIPTION":
+            "DEALS 220 DEATH DAMAGE TO TARGET AND REMOVES UP TO 2 BLADES FROM TARGET TO APPLY A -25% DAMAGE CHARM ON TARGET PER CHARM REMOVED",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "DEATH",
+                "VALUE": 220
+            },
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": {
+                    "ACTION": "CLEAR",
+                    "TARGET": "ENEMY",
+                    "TYPE": "BLADE",
+                    "MAX": 2
+                },
+                "PER_EFFECT": {
+                    "TARGET": "ENEMY",
+                    "TYPE": "WEAKNESS",
+                    "SCHOOL": "UNIVERSAL",
+                    "VALUE": 25,
+                    "FAMILY": "BANSHEE_25"
+                }
+            }
+        ]
+    },
+
+    {
         "ID": "BLIGHTATTENUATE",
         "SPELL": "BLIGHT ATTENUATE",
         "SCHOOL": "DEATH",
@@ -589,6 +854,103 @@
                 "SCHOOL": "DEATH",
                 "VALUE": 35,
                 "FAMILY": "DEATHBLADE_35"
+            }
+        ]
+    },
+
+    {
+        "ID": "GRIMIRREDEEMER_T3B",
+        "SPELL": "GRIM IRREDEEMER",
+        "SCHOOL": "DEATH",
+        "PIPCOST": 6,
+        "SHADCOST": 1,
+        "ACCURACY": 85,
+        "TYPE": ["DAMAGE", "SHADOW", "CHARM", "WEAKNESS", "BACKLASH"],
+        "DESCRIPTION":
+            "DEALS 880 DEATH DAMAGE TO TARGET AND APPLIES THREE -45% DAMAGE CHARMS OF TARGET'S SCHOOL ON TARGET. REMOVES A HELPFUL WARD FROM CASTER OR STORES +5% MAX HEALTH DAMAGE EACH ROUND FOR THREE ROUNDS. DEALS STORED DAMAGE TO CASTER AFTER THREE ROUNDS",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "DEATH",
+                "VALUE": 880
+            },
+            {
+                "TYPE": "WEAKNESS",
+                "TARGET": "ENEMY",
+                "SCHOOL": "TARGET",
+                "VALUE": 45,
+                "AMOUNT": 3,
+                "FAMILY": "GRIMIRREDEEMER_WEAKNESS45"
+            },
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 3,
+                "VALUE_PER_TURN": 5,
+                "CONDITION": {
+                    "EFFECT": "SHIELD",
+                    "TARGET": "SELF"
+                }
+            }
+        ]
+    },
+
+    {
+        "ID": "GRIMREADER",
+        "SPELL": "GRIM READER",
+        "SCHOOL": "DEATH",
+        "PIPCOST": 6,
+        "ACCURACY": 85,
+        "TYPE": ["DAMAGE", "WEAKNESS"],
+        "DESCRIPTION":
+            "DEALS 405 DEATH DAMAGE TO TARGET AND ADDS 2 -25% WEAKNESSES TO TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "DEATH",
+                "VALUE": 405
+            },
+            {
+                "TYPE": "WEAKNESS",
+                "TARGET": "ENEMY",
+                "SCHOOL": "UNIVERSAL",
+                "VALUE": 25,
+                "AMOUNT": 2
+            }
+        ]
+    },
+
+    {
+        "ID": "GRIMREADER_5B",
+        "SPELL": "GRIM READER",
+        "SCHOOL": "DEATH",
+        "PIPCOST": 6,
+        "ACCURACY": 85,
+        "TYPE": ["DAMAGE", "GAMBIT"],
+        "DESCRIPTION":
+            "DEALS 480 DEATH DAMAGE TO TARGET AND REMOVES UP TO 3 SHIELDS FROM CASTER TO APPLY A -45% WEAKNESS OF TARGET'S SCHOOL ON TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "DEATH",
+                "VALUE": 480
+            },
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": {
+                    "ACTION": "GAMBIT",
+                    "TARGET": "SELF",
+                    "TYPE": "SHIELD",
+                    "MAX": 3
+                },
+                "PER_EFFECT": {
+                    "TYPE": "WEAKNESS",
+                    "TARGET": "ENEMY",
+                    "SCHOOL": "ENEMY_SCHOOL",
+                    "VALUE": 45
+                }
             }
         ]
     },
@@ -820,6 +1182,41 @@
                 "TYPE": "DAMAGE",
                 "VALUE": 755,
                 "SCHOOL": "FIRE"
+            }
+        ]
+    },
+
+    {
+        "ID": "PYREDRAGON",
+        "SPELL": "PYRE DRAGON",
+        "SCHOOL": "FIRE",
+        "PIPCOST": 5,
+        "ACCURACY": 75,
+        "TYPE": ["DAMAGE", "GAMBIT", "CHARM", "BLADE"],
+        "DESCRIPTION":
+            "REMOVES UP TO THREE HELPFUL WARDS FROM TARGET TO APPLY A +30% DEATH DAMAGE CHARM ON CASTER PER WARD REMOVED THEN DEALS 540 FIRE DAMAGE",
+        "EFFECTS": [
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": {
+                    "ACTION": "CLEAR",
+                    "TARGET": "ENEMY",
+                    "TYPE": "SHIELD",
+                    "MAX": 3
+                },
+                "PER_EFFECT": {
+                    "TYPE": "BLADE",
+                    "TARGET": "SELF",
+                    "SCHOOL": "DEATH",
+                    "VALUE": 30,
+                    "FAMILY": "PYREDRAGON_BLADE30"
+                }
+            },
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "FIRE",
+                "VALUE": 540
             }
         ]
     },
@@ -1188,6 +1585,43 @@
     },
 
     {
+        "ID": "BALEBARBARIAN_T3B",
+        "SPELL": "BALE BARBARIAN",
+        "SCHOOL": "MYTH",
+        "PIPCOST": 6,
+        "SHADCOST": 1,
+        "ACCURACY": 80,
+        "TYPE": ["DAMAGE", "BOMB_DOT", "SHADOW", "BACKLASH"],
+        "DESCRIPTION":
+            "DEALS 920 MYTH DAMAGE AND APPLIES TWO DAMAGE OVER TIME EFFECTS THAT EACH DEAL 385 MYTH DAMAGE AFTER 5 ROUNDS. REMOVES A HELPFUL WARD FROM CASTER OR STORES +5% MAX HEALTH DAMAGE EACH ROUND FOR THREE ROUNDS. DEALS STORED DAMAGE TO CASTER AFTER THREE ROUNDS",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "MYTH",
+                "VALUE": 920
+            },
+            {
+                "TYPE": "BOMB_DOT",
+                "TARGET": "ENEMY",
+                "SCHOOL": "MYTH",
+                "DURATION": 5,
+                "AMOUNT": 2,
+                "VALUE_PER_STACK": 385
+            },
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 3,
+                "VALUE_PER_TURN": 5,
+                "CONDITION": {
+                    "EFFECT": "SHIELD",
+                    "TARGET": "SELF"
+                }
+            }
+        ]
+    },
+
+    {
         "ID": "DROPBEARFURY_5B",
         "SPELL": "DROP BEAR FURY",
         "SCHOOL": "MYTH",
@@ -1268,13 +1702,12 @@
     },
 
     {
-        "ID": "SCIONOFMYTH",
+        "ID": "SCIONOFMYTH_5B",
         "SPELL": "SCION OF MYTH",
-        "TIER": "5B",
         "SCHOOL": "MYTH",
         "PIPCOST": 9,
         "ACCURACY": 80,
-        "TYPE": ["DAMAGE", "GAMBIT", "MANIPULATION"],
+        "TYPE": ["DAMAGE", "GAMBIT"],
         "DESCRIPTION":
             "DEALS 835 MYTH DAMAGE TO TARGET, OR REMOVES FOUR HARMFUL WARDS TO DEAL 1490 MYTH DAMAGE TO TARGET",
         "EFFECTS": [
@@ -1282,18 +1715,114 @@
                 "TYPE": "GAMBIT",
                 "CAUSE": {
                     "TYPE": "TRAP",
+                    "TARGET": "ENEMY",
                     "AMOUNT": 4
                 },
-                "EFFECT": {
+                "THEN": {
                     "TYPE": "SINGLE_DAMAGE",
+                    "TARGET": "ENEMY",
                     "SCHOOL": "MYTH",
                     "VALUE": 1490
                 },
                 "ELSE": {
                     "TYPE": "SINGLE_DAMAGE",
+                    "TARGET": "ENEMY",
                     "SCHOOL": "MYTH",
                     "VALUE": 835
                 }
+            }
+        ]
+    },
+
+    {
+        "ID": "SNAKECHARMER_5B",
+        "SPELL": "SNAKE CHARMER",
+        "SCHOOL": "MYTH",
+        "PIPCOST": 4,
+        "ACCURACY": 80,
+        "TYPE": ["GAMBIT", "DAMAGE", "MULTI"],
+        "DESCRIPTION":
+            "REMOVES UP TO 3 WEAKNESSES FROM CASTER TO DEAL 75 MYTH DAMAGE OVE 3 ROUNDS SPLIT AMONG SELECTED ENEMIES THEN DEALS 330 MYTH DAMAGE SPLIT AMONG SELECTED ENEMIES",
+        "EFFECTS": [
+            {
+                "TYPE": "GAMBIT",
+                "MULTI": true,
+                "CAUSE": {
+                    "ACTION": "CLEAR",
+                    "TARGET": "SELF",
+                    "TYPE": "WEAKNESS",
+                    "MAX": 3
+                },
+                "PER_EFFECT": {
+                    "TARGET": "ENEMY",
+                    "TYPE": "DOT",
+                    "DURATION": 3,
+                    "AMOUNT": "X",
+                    "VALUE_PER_STACK": 75
+                }
+            },
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "MULTI": true,
+                "SCHOOL": "MYTH",
+                "VALUE": 330
+            }
+        ]
+    },
+
+    {
+        "ID": "STONECOLOSSUS_2A",
+        "SPELL": "STONE COLOSSUS",
+        "SCHOOL": "MYTH",
+        "PIPCOST": 6,
+        "ACCURACY": 80,
+        "TYPE": ["DAMAGE", "RANGE_DAMAGE"],
+        "DESCRIPTION":
+            "DEALS 585-645 MYTH DAMAGE TO TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "RANGE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "MYTH",
+                "MIN": 585,
+                "MAX": 645
+            }
+        ]
+    },
+
+    {
+        "ID": "STONECOLOSSUS_5B",
+        "SPELL": "STONE COLOSSUS",
+        "SCHOOL": "MYTH",
+        "PIPCOST": 6,
+        "ACCURACY": 80,
+        "TYPE": ["DAMAGE", "SINGLE_DAMAGE", "BOMB_DOT", "GAMBIT"],
+        "DESCRIPTION":
+            "REMOVES UP TO FIVE HARMFUL CHARMS FROM CASTER TO DEAL 100 MYTH DAMAGE AFTER 4 ROUNDS TO TARGET PER CHARM REMOVED THEN DEALS 545 MYTH DAMAGE",
+        "EFFECTS": [
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": {
+                    "ACTION": "CLEAR",
+                    "TARGET": "SELF",
+                    "TYPE": "WEAKNESS",
+                    "MAX": 5
+                },
+                "PER_EFFECT": {
+                    "TYPE": "BOMB_DOT",
+                    "TARGET": "ENEMY",
+                    "SCHOOL": "MYTH",
+                    "DURATION": 4,
+                    "AMOUNT": "X",
+                    "VALUE_PER_STACK": 100
+                }
+            },
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "MYTH",
+                "VALUE": 545
             }
         ]
     },
@@ -1311,20 +1840,21 @@
         "EFFECTS": [
             {
                 "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
                 "SCHOOL": "SHADOW",
                 "VALUE": 75
             },
             {
                 "TYPE": "TRAP",
                 "TARGET": "ENEMY",
-                "SUBTYPE": "DAMAGE",
                 "SCHOOL": "UNIVERSAL",
                 "VALUE": 30,
-                "QUANTITY": 3
+                "AMOUNT": 3,
+                "FAMILY": "DARKNOVA_SHIELD35"
             },
             {
                 "TYPE": "BACKLASH",
-                "DURATION": 4,
+                "DURATION": 3,
                 "VALUE_PER_TURN": 5,
                 "CONDITION": {
                     "EFFECT": "BLADE",
@@ -1368,6 +1898,35 @@
                     "EFFECT": "SHIELD",
                     "TARGET": "ENEMY"
                 }
+            }
+        ]
+    },
+
+    {
+        "ID": "DARKSURGE",
+        "SPELL": "DARK SURGE",
+        "SCHOOL": "SHADOW",
+        "PIPCOST": 0,
+        "SHADCOST": 1,
+        "ACCURACY": 100,
+        "TYPE": ["PIP", "SHADOW", "PERCENT_DAMAGE"],
+        "DESCRIPTION":
+            "GIVES A SCHOOL PIP OF TARGET'S SCHOOL AND A WEAVING SCHOOL PIP TO TARGET AND DEALS 5% MAX HEALTH DAMAGE TO CASTER",
+        "EFFECTS": [
+            {
+                "TYPE": "PIP",
+                "TARGET": "SELF",
+                "SCHOOL": "ALLY_SCHOOL"
+            },
+            {
+                "TYPE": "PIP",
+                "TARGET": "SELF",
+                "SCHOOL": "WEAVING_SCHOOL"
+            },
+            {
+                "TYPE": "PERCENT_DAMAGE",
+                "TARGET": "SELF",
+                "VALUE": 5
             }
         ]
     },
@@ -1510,6 +2069,43 @@
             }
         ]
     },
+
+    {
+        "ID": "FEAROFTHEDARK_T2B",
+        "SPELL": "FEAR OF THE DARK",
+        "SCHOOL": "STORM",
+        "PIPCOST": 6,
+        "SHADCOST": 1,
+        "ACCURACY": 70,
+        "TYPE": ["DAMAGE", "HOT", "SHADOW", "BACKLASH"],
+        "DESCRIPTION":
+            "DEALS 1260 STORM DAMAGE TO TARGET AND APPLIES TWO HEAL OVER TIME EFFECTS THAT EACH RESTORE 960 HEALTH OVER 5 ROUNDS ON CASTER. REMOVES A HARMFUL CHARM FROM TARGET OR STORES +5% MAX HEALTH DAMAGE EACH ROUND FOR THREE ROUNDS. DEALS STORED DAMAGE TO CASTER AFTER THREE ROUNDS",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "STORM",
+                "VALUE": 1260
+            },
+            {
+                "TYPE": "HOT",
+                "TARGET": "SELF",
+                "DURATION": 5,
+                "AMOUNT": 2,
+                "VALUE_PER_STACK": 960
+            },
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 3,
+                "VALUE_PER_TURN": 5,
+                "CONDITION": {
+                    "EFFECT": "WEAKNESS",
+                    "TARGET": "ENEMY"
+                }
+            }
+        ]
+    },
+
     {
         "ID": "WATERELEMENTAL",
         "SPELL": "WATER ELEMENTAL",

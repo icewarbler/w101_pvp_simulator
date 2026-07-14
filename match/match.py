@@ -454,20 +454,6 @@ class Match:
 
                     caster_player.add_effect(effect)
 
-                # # removes effects
-                # if enemy_effect is not None:
-                #     abs_target.del_effect(enemy_effect)
-                
-                # if caster_effect is not None:
-                #     caster_player.del_effect(caster_effect)
-
-                # # adds effects
-                # if caster_effect is not None:
-                #     abs_target.add_effect(caster_effect)
-
-                # if enemy_effect is not None:
-                #     caster_player.add_effect(enemy_effect)
-
             case "DETONATE":
                 to_explode = []
                 gambit_type = gambit_cause.get("TYPE")
@@ -903,9 +889,11 @@ class Match:
             spells = self.load_json("json_data/spells.json")
 
             spell_lookup = { spell["ID"]: spell for spell in spells }
+            print(len(spell_lookup))
 
             self.init_match()
 
+            # loop to do turn
             while True:
                 if turn % 2 == 0:
                     caster_player = self.p1
@@ -915,15 +903,21 @@ class Match:
                     enemy_player = self.p1
 
                 while len(caster_player.hand.cards) < Hand.max_cards and len(caster_player.deck.cards):
-                    print(f"{caster_player.name} has {len(caster_player.hand.cards)} cards in hand!")
+                 #   print(f"{caster_player.name} has {len(caster_player.hand.cards)} cards in hand!")
                     caster_player.draw_card()
                 
-                print(f"{caster_player.name} HAND:")
-                print(caster_player.hand)
+                # print(f"{caster_player.name} HAND:")
+                # print(caster_player.hand)
 
                 # for i, card in enumerate(caster_player.hand.cards):
                 #     print(f"{i + 1}. {card}")
 
+                print(f"{caster_player.name} HEALTH: {caster_player.curr_health} / {caster_player.max_health}")
+                print(f"{enemy_player.name} HEALTH: {enemy_player.curr_health} / {enemy_player.max_health}")
+
+                print(f"Your pips: {caster_player.pips}")
+
+                # loop to select a spell
                 while True:
                     red = "\033[91m"
                     reset = "\033[0m"
@@ -939,60 +933,6 @@ class Match:
                     spell_data = spell_lookup.get(spell_id)
                     if spell_id != 0 and caster_player.can_cast(spell_data):
                         break
-                  #  selection = input("> ").strip().lower()
-
-                    # if selection == "info":
-                    #     print("OPTIONS:")
-                    #     print(f"[1-7] - Choose a spell to cast")
-                    #     print(f"d[1-7] - Delete a spell from your hand")
-                    #     print(f"i[1-7] - Print out the info for a spell")
-                    #     print(f"health - Print the current health of both you and the enemy")
-                    #     print(f"pips - Print out your current pips")
-                    #     continue
-
-                    # if selection in ("p", "pass"):
-                    #     spell_id = None
-                    #     break
-
-                    # if re.match(r'^d[1-7]$', selection):
-                    #     print(f"selection: {selection}")
-                    #     if 1 <= int(selection[1:]) <= len(caster_player.hand.cards):
-                    #         spell_id = caster_player.hand.cards[int(selection[1:]) - 1]
-                    #         print(spell_id)
-                    #         caster_player.delete_card(spell_id)
-                    #         continue
-
-                    # if re.match(r'^i[1-7]$', selection):
-                    #     print(f"selection: {selection}")
-                    #     if 1 <= int(selection[1:]) <= len(caster_player.hand.cards):
-                    #         spell_id = caster_player.hand.cards[int(selection[1:]) - 1]
-                    #         print(spell_id)
-                    #         spell_data = spell_lookup.get(spell_id)
-                    #         print(f"{spell_data.get("DESCRIPTION")}")
-                    #         continue
-
-                    # if selection == "health":
-                    #     print(f"Your Health: {caster_player.curr_health}")
-                    #     print(f"Enemy Health: {enemy_player.curr_health}")
-                    #     continue
-
-                    # if selection == "pips":
-                    #     print(f"Your pips: {caster_player.pips}")
-                    #     continue
-
-                    #    caster_player.delete_card()
-                 #   if selection.startswith("d"):
-
-
-                    # try:
-                    #     selection = int(selection)
-                    # except ValueError:
-                    #     print("Enter a card number or pass.")
-                    #     continue
-
-                    # if 1 <= selection <= len(caster_player.hand.cards):
-                    #     spell_id = caster_player.hand.cards[selection - 1]
-                    #     break
 
                 # if a player passes that turn, skip
                 if spell_id in (None, "NONE"):
@@ -1009,34 +949,6 @@ class Match:
                     self.cast_spell(caster_player, enemy_player, spell_data)
 
                     caster_player.delete_card(spell_id)
-
-                # schools = [
-                #     "FIRE",
-                #     "ICE",
-                #     "STORM",
-                #     "LIFE",
-                #     "DEATH",
-                #     "MYTH",
-                #     "BALANCE"
-                # ]
-
-                # print("Generate which archmastery pip?")
-
-                # for i, school in enumerate(schools):
-                #     print(f"{i + 1}. {school}")
-
-                # while True:
-                #     try:
-                #         selection = int(input("> "))
-                #     except ValueError:
-                #         continue
-
-                #     if 1 <= selection <= len(schools):
-                #         break
-
-                # caster_player.selected_school = schools[selection - 1]
-
-                # self.end_turn()
 
                 for effect in caster_player.effects:
                     effect.end_round()
