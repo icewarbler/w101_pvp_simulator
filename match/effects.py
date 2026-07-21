@@ -117,6 +117,33 @@ class Range_Damage:
     def apply(self, match, caster, enemy, context):
         match.do_damage(caster, enemy, self, context)
 
+@Effect.register("PERCENT_DAMAGE")
+class Percent_Damage:
+    type = "PERCENT_DAMAGE"
+
+    categories = {"DAMAGE", "PERCENT_DAMAGE"}
+
+    @classmethod
+    def from_json(cls, effect):
+        return cls(effect["TARGET"], effect["VALUE"])
+    
+    def __init__(
+            self,
+            target,
+            value
+    ):
+        self.target = target
+        self.value = value
+
+    def __str__(self):
+        return f"{self.type}: {self.value}"
+    
+    def store_at(self):
+        return None
+    
+    def apply(self, match, caster, enemy, context):
+        match.do_damage(caster, enemy, self, context)
+
 
 class Heal:
     def __init__(
@@ -656,14 +683,47 @@ class Minion(Effect):
 
     @classmethod
     def from_json(cls, effect):
-        return cls(effect["ID"], effect["DURATION"])
+        return cls(effect["ID"], 
+                   effect["NAME"], 
+                   effect["RANK"], 
+                   effect["HEALTH"], 
+                   effect["SCHOOL"],
+                   effect["DURATION"],
+                   effect["OUTGOING_DAMAGE"],
+                   effect["INCOMING_RESIST"],
+                   effect["PIERCE"],
+                   effect["DECK"]
+                   )
     
-    def __init__(self, id, duration):
+    def __init__(self, id, name, rank, max_health, school, duration, damage, resist, pierce, deck):
         self.id = id
         self.duration = duration
 
-        self.deck = []
+        self.name = name
+        self.school = school
+
+        self.rank = rank
+
+        self.max_health = max_health
+
+        self.curr_health = max_health
+
+        self.outgoing_damage = damage
+        self.incoming_resist = resist
+        self.pierce = pierce
+
+        self.deck = deck
+
+        self.pips = []
+        self.shadpips = 0
+
+        self.selected_school = school
+
         self.effects = []
+
+        self.aura = None
+
+        self.backlash = None
 
     def __str__(self):
         return self.type
@@ -696,6 +756,15 @@ class Minion(Effect):
     def add_effect(self, effect):
         self.effects.append(effect)
 
+    def get_outgoing_damage(self, school):
+        return self.outgoing_damage.get(school)
+
+    def get_incoming_resist(self, school):
+        return self.incoming_resist.get(school)
+    
+    def dec_health(self, value):
+        self.curr_health -= value
+
 @Effect.register("PIP")
 class Pip():
     type = "PIP"
@@ -717,3 +786,6 @@ class Pip():
     
     def clone(self):
         return Pip(self.school)
+    
+    def store_at(self):
+        return "PLAYER"

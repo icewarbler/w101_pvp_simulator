@@ -1670,6 +1670,7 @@
         "PIPCOST": 3,
         "SCHOOLPIPS": {"FIRE": 1},
         "ACCURACY": 80,
+        "MULTI": true,
         "TYPE": ["DAMAGE", "SINGLE_DAMAGE", "GAMBIT"],
         "DESCRIPTION":
             "REMOVES UP TO 4 SHIELDS FROM SELECTED ENEMIES TO DEAL 115 FIRE DAMAGE OVER 3 ROUNDS TO SELECTED ENEMIES PER TRAP REMOVED, THEN DEALS 415 SPLIT MYTH DAMAGE AMONG SELECTED ENEMIES",
@@ -1973,7 +1974,7 @@
             {
                 "TYPE": "PIP",
                 "TARGET": "SELF",
-                "SCHOOL": "WEAVING_SCHOOL"
+                "SCHOOL": "SECONDARY_SCHOOL"
             },
             {
                 "TYPE": "PERCENT_DAMAGE",
@@ -2172,7 +2173,7 @@
                 "TYPE": "MINION",
                 "TARGET": "SELF",
                 "DURATION": 7,
-                "ID": "WATER_ELEMENTAL"
+                "ID": "WATERELEMENTAL"
             }
         ]
     }

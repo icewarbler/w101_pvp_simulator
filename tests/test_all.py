@@ -9,6 +9,7 @@ from match.effects import Aura
 from match.effects import Weakness
 from match.effects import Minion
 from match.match import Match
+import match.match
 from match.dataloader import load_json
 from match.spell_instance import SpellInstance
 
@@ -30,6 +31,17 @@ def make_spell():
         )
 
     return _make_spell
+
+@pytest.fixture
+def make_spell_data():
+    def _make_spell_data(spell_name):
+        spells = load_json("json_data/spells.json")
+
+        spell_data = next(spell for spell in spells if spell["ID"] == spell_name)
+
+        return spell_data
+
+    return _make_spell_data
 
 @pytest.fixture
 def balance_player():
@@ -368,7 +380,7 @@ def test_aura_duration(storm_player):
 
     assert storm_player.aura == None
 
-def test_multi_select(basic_match, make_spell, balance_player, storm_player):
+def test_multi_select(basic_match, make_spell_data, balance_player, storm_player):
     minion1 = Minion(
         id = "STORMELEMENTAL",
         duration = 7
@@ -414,11 +426,14 @@ def test_multi_select(basic_match, make_spell, balance_player, storm_player):
     storm_player.add_effect(shield5)
     storm_player.add_effect(shield6)
 
-    spell = make_spell("DROPBEARFURY_5B", balance_player, storm_player)
+ #   spell = make_spell("DROPBEARFURY_5B", balance_player, storm_player)
+    spell = make_spell_data("DROPBEARFURY_5B")
 
     storm_player.print_effects()
 
-    cast_spell(basic_match, spell, balance_player, storm_player)
+ #   cast_spell(basic_match, spell, balance_player, storm_player)
+
+    basic_match.cast_spell(balance_player, storm_player, spell)
     # for effect in spell.spell["EFFECTS"]:
     #     effect_class = Effect.registry[effect["TYPE"]]
     #     effect_obj = effect_class.from_json(effect)
@@ -656,3 +671,13 @@ def test_double_hit(basic_match, make_spell, balance_player, storm_player):
     cast_spell(basic_match, spell, balance_player, storm_player)
 
     storm_player.print_effects()
+
+def test_darksurge(basic_match, make_spell_data, balance_player, storm_player):
+    balance_player.shadpips = 1
+
+    print(balance_player.pips)
+
+    spell = make_spell_data("DARKSURGE")
+    basic_match.cast_spell(balance_player, balance_player, spell)
+
+    print(balance_player.pips)

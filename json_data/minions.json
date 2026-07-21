@@ -1,11 +1,41 @@
 [
     {
-        "ID": "WATER_ELEMENTAL",
+        "ID": "WATERELEMENTAL",
         "NAME": "WATER ELEMENTAL",
         "RANK": 4,
         "HEALTH": 1771,
         "SCHOOL": "STORM",
-        "STARTINGPIPS": 1,
+        "DURATION": 7,
+        "OUTGOING_DAMAGE": {
+            "FIRE": 0,
+            "ICE": 0,
+            "STORM": 0,
+            "MYTH": 0,
+            "LIFE": 0,
+            "DEATH": 0,
+            "BALANCE": 0,
+            "SHADOW": 0
+        },
+        "INCOMING_RESIST": {
+            "FIRE": 0,
+            "ICE": 0,
+            "STORM": 0,
+            "MYTH": 0,
+            "LIFE": 0,
+            "DEATH": 0,
+            "BALANCE": 0,
+            "SHADOW": 0
+        },
+        "PIERCE": {
+            "FIRE": 0,
+            "ICE": 0,
+            "STORM": 0,
+            "MYTH": 0,
+            "LIFE": 0,
+            "DEATH": 0,
+            "BALANCE": 0,
+            "SHADOW": 0
+        },
         "DECK": [
             "DOUBLE_WEAKNESS",
             "GREATER_WEAKNESS",

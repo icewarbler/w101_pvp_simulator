@@ -186,16 +186,20 @@ class Match:
         elif effect.target == "ENEMY":
             abs_target = enemy_player
 
-        effect_school = effect.school
-
         if effect.type == "SINGLE_DAMAGE":
             effect_value = effect.value
         elif effect.type == "RANGE_DAMAGE":
             effect_value = random.randrange(effect.min, effect.max, 5)
+        elif effect.type == "PERCENT_DAMAGE":
+            effect_value = effect.value*0.01*abs_target.max_health
+            abs_target.dec_health(effect_value)
+            print(f"Does {effect_value} damage!")
+            print(f"{abs_target.name} HEALTH: {abs_target.curr_health}")
+            return
         
         print(f"Base effect val: {effect_value}")
 
-
+        effect_school = effect.school
         # the order for activating damage is:
         # caster gear (% then flat) -> 
         # caster aura -> 
@@ -644,7 +648,12 @@ class Match:
         schoolpipcost = spell_data.get("SCHOOLPIPS", {})
         shadcost = spell_data.get("SHADCOST", 0)
 
-        context = SpellInstance(spell_data, caster_player, enemy_player, pipcost, schoolpipcost, shadcost)
+        if spell_data.get("MULTI") in (None, "NONE"):
+            multi = False
+        else:
+            multi = spell_data["MULTI"]
+
+        context = SpellInstance(spell_data, caster_player, enemy_player, pipcost, schoolpipcost, shadcost, multi)
 
         print(f"{caster_player.name} pays {pipcost} pips, {schoolpipcost} school pips, and {shadcost} shad pips")
 
@@ -653,9 +662,24 @@ class Match:
         # loop through the effects of the spell
         # then apply them to the right player in match_obj
         for effect in context.spell["EFFECTS"]:
-            effect_class = Effect.registry[effect["TYPE"]]
-            effect_obj = effect_class.from_json(effect)
+            if effect["TYPE"] == "MINION":
+                minions = self.load_json("json_data/minions.json")
+                minion_lookup = { minion["ID"]: minion for minion in minions }
+                minion_data = minion_lookup.get(effect["ID"])
+                effect_class = Effect.registry[effect["TYPE"]]
+                effect_obj = effect_class.from_json(minion_data)
+            else: 
+                effect_class = Effect.registry[effect["TYPE"]]
+                effect_obj = effect_class.from_json(effect)
             print(f"Adding effect: {effect_obj}")
+
+            if hasattr(effect_obj, "school"):
+                if effect_obj.school == "ENEMY_SCHOOL":
+                    effect_obj.school = enemy_player.school
+                elif effect_obj.school == "ALLY_SCHOOL":
+                    effect_obj.school = caster_player.school
+                elif effect_obj.school == "SECONDARY_SCHOOL":
+                    effect_obj.school = abs_target.secondary_school
 
             match effect_obj.store_at():
                 case "PLAYER":
@@ -666,14 +690,17 @@ class Match:
                     elif effect_target == "ENEMY":
                         abs_target = enemy_player
 
-                    if hasattr(effect_obj, "school"):
-                        if effect_obj.school == "ENEMY_SCHOOL":
-                            effect_obj.school = enemy_player.school
-                        elif effect_obj.school == "ALLY_SCHOOL":
-                            effect_obj.school = caster_player.school
+                    # if hasattr(effect_obj, "school"):
+                    #     if effect_obj.school == "ENEMY_SCHOOL":
+                    #         effect_obj.school = enemy_player.school
+                    #     elif effect_obj.school == "ALLY_SCHOOL":
+                    #         effect_obj.school = caster_player.school
+                    #     elif effect_obj.school == "SECONDARY_SCHOOL":
+                    #         effect_obj.school = abs_target.secondary_school
 
                     if effect_obj.type == "MINION":
                         abs_target.minion = effect_obj
+                        abs_target.minion.pips.append(Pip("REG"))
                         continue
 
                     if effect_obj.type == "AURA":
@@ -690,6 +717,11 @@ class Match:
                         abs_target.backlash = effect_obj
                         continue
 
+                    if effect_obj.type == "PIP":
+                        print(f"Adding effect: {effect_obj}")
+                        abs_target.pips.append(Pip(effect_obj.school))
+                        continue
+
                     amount = effect.get("AMOUNT", 1)
 
                     for _ in range(amount):
@@ -704,6 +736,10 @@ class Match:
                     self.global_effect = effect_obj
 
                 case None:
+                    if "DAMAGE" in effect_obj.categories and context.multi:
+                        # put code here to determine how many user selected
+                        effect_obj.value = effect_obj.value / 2
+                        effect_obj.apply(self, caster_player, enemy_player.minion, context)
                     effect_obj.apply(self, caster_player, enemy_player, context)
 
         for charm, player in context.charms_used.items():

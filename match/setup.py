@@ -27,8 +27,8 @@ def create_human_match(players_file):
 
     player_lookup = { player["NAME"]: player for player in players }
     
-    player1_name = input("Player 1 name: ")
-    player2_name = input("Player 2 name: ")
+    player1_name = input("Player 1 name: ").upper()
+    player2_name = input("Player 2 name: ").upper()
     p1_dat = player_lookup[player1_name]
     p2_dat = player_lookup[player2_name]
 

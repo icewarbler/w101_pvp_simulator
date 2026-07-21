@@ -2,7 +2,6 @@ from .effects import Effect
 from .effects import DOT
 from .effects import Bomb_DOT
 import random
-import pandas as pd
 import json
 import math
 
