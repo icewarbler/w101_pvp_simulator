@@ -37,13 +37,61 @@
             "SHADOW": 0
         },
         "DECK": [
-            "DOUBLE_WEAKNESS",
-            "GREATER_WEAKNESS",
-            "WEAKNESS",
-            "DUO_CHROMA_BLADE",
-            "GREATER_SWORD",
-            "BALANCEBLADE",
-            "EXIT_COMBAT"
+            "DOUBLEWEAKNESS_25",
+            "GREATERWEAKNESS_35",
+            "WEAKNESS_25",
+            "DUOCHROMABLADE_30",
+            "GREATERSWORD_40",
+            "BALANCEBLADE_25",
+            "EXITCOMBAT"
+        ]
+    },
+    {
+        "ID": "HELPFULMANDER",
+        "NAME": "HELPFUL MANDER",
+        "RANK": 4,
+        "HEALTH": 2351,
+        "SCHOOL": "BALANCE",
+        "DURATION": 6,
+        "OUTGOING_DAMAGE": {
+            "FIRE": 0,
+            "ICE": 0,
+            "STORM": 0,
+            "MYTH": 0,
+            "LIFE": 0,
+            "DEATH": 0,
+            "BALANCE": 0,
+            "SHADOW": 0
+        },
+        "INCOMING_RESIST": {
+            "FIRE": 0,
+            "ICE": 0,
+            "STORM": 0,
+            "MYTH": 0,
+            "LIFE": 0,
+            "DEATH": 0,
+            "BALANCE": 0,
+            "SHADOW": 0
+        },
+        "PIERCE": {
+            "FIRE": 0,
+            "ICE": 0,
+            "STORM": 0,
+            "MYTH": 0,
+            "LIFE": 0,
+            "DEATH": 0,
+            "BALANCE": 0,
+            "SHADOW": 0
+        },
+        "DECK": [
+            "TOWERSHIELD_50",
+            "ELEMENTALSHIELD_50",
+            "SPIRITSHIELD_50",
+            "WEAKNESS_25",
+            "HEX",
+            "BALANCEBLADE_25",
+            "DONATEPOWER",
+            "EXITCOMBAT"
         ]
     }
 ]

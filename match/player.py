@@ -1,6 +1,8 @@
 from .effects import Effect
 from .effects import DOT
 from .effects import Bomb_DOT
+from .effects import Charm
+from .effects import Ward
 import random
 import json
 import math
@@ -129,7 +131,7 @@ class Player:
             print(f"{self.name} takes {dmg_taken} damage!")
             self.dec_health(dmg_taken)
             print(f"{self.name} HEALTH: {math.floor(self.curr_health)}")
-            self.backlash = None
+            self.backlash = None 
 
     def backlash_eat(self, enemy_player):
         eat_effect = self.backlash.condition["EFFECT"]
@@ -247,6 +249,98 @@ class Player:
         self.shadpips -= context.shadpips
 
         print(f"{self.name} has {self.pips} pips and {self.shadpips} shad pips after casting")
+
+    # this function modifies the casting damage
+    # it is called in dot_damage and do_damage
+    def mod_casting_damage(self, damage_val, damage_school, context):
+        # gets caster's outgoing damage
+        print(self.get_outgoing_damage(damage_school))
+    # print(f"value: {effect_value}")
+        damage_val += (damage_val * self.get_outgoing_damage(damage_school) * 0.01)
+
+        if self.aura is not None:
+            adj = self.aura.adj
+
+            # ignore if not correct school
+            for modifier in adj:
+                if modifier["SCHOOL"] in (damage_school, "UNIVERSAL"):
+                    # ignore if not blade/weakness type aura
+                    if modifier["TYPE"] == "WEAKNESS":
+                        damage_val -= damage_val * modifier["VALUE"] * 0.01
+                    elif modifier["TYPE"] == "BLADE":
+                        damage_val += damage_val * modifier["VALUE"] * 0.01
+
+        caster_charms = [ effect for effect in self.effects if isinstance(effect, Charm) ]
+        
+        used_charm_families = set()
+
+        for charm in caster_charms:
+            if charm.type == "HEAL_WEAKNESS":
+                continue
+            if charm.school in (damage_school, "UNIVERSAL"):
+                if charm.family in used_charm_families:
+                    continue
+                used_charm_families.add(charm.family)
+                print(f"Charm used: {charm.school} of val {charm.value}")
+                damage_val = charm.mod_damage(damage_val)
+                if charm not in context.charms_used:
+                    context.add_used_charm(self, charm)
+
+        return damage_val
+
+    # this function modifies the incoming damage
+    # it is called in do_tick and do_damage
+    def mod_incoming_damage(self, damage_val, damage_school, pierce_val, is_dot=False):
+        print(f"pierce_val: {pierce_val}")
+        if self.aura is not None:
+            adj = self.aura.adj
+
+            # ignore if not correct school
+            for modifier in adj:
+                if modifier["SCHOOL"] in (damage_school, "UNIVERSAL"):
+                    print(json.dumps(modifier, indent=4))
+                    # ignore if not shield/trap type aura
+                    if modifier["TYPE"] == "SHIELD":
+                        mod_val = modifier["VALUE"]
+                        print(f"mod_val: {mod_val}; pierce_val: {pierce_val}")
+                        mod_val -= pierce_val
+                        if mod_val < 0:
+                            pierce_val = -(mod_val)
+                            print(f"pierce_val: {pierce_val}; mod_val: {mod_val}")
+                            mod_val = 0
+                        damage_val -= damage_val * mod_val * 0.01
+                    elif modifier["TYPE"] == "TRAP":
+                        damage_val += damage_val * modifier["VALUE"] * 0.01
+
+        # gets enemy shields/traps
+        enemy_wards = [ effect for effect in self.effects if isinstance(effect, Ward) ]
+
+        used_families = set()
+
+
+        for ward in enemy_wards:
+            if ward.school in (damage_school, "UNIVERSAL"):
+                if ward.family in used_families:
+                    continue
+                if ward.type == "DOT_TRAP" and not is_dot:
+                    continue
+                used_families.add(ward.family)
+                print(f"{ward.type} used: {ward.school} of val {ward.value}")
+                pierce_val, damage_val = ward.mod_damage(damage_val, pierce_val)
+                print(f"post-ward effect_value: {damage_val}; pierce_val: {pierce_val}")
+                #   context.add_used_ward(abs_target, ward)
+                self.del_effect(ward)
+
+        # gets enemy resist
+        enemy_res = self.get_incoming_resist(damage_school)
+        print(f"init enemy res: {enemy_res}")
+        enemy_res -= pierce_val
+        print(f"enemy res: {enemy_res}; pierce_val: {pierce_val}")
+        enemy_res = 0 if enemy_res < 0 else enemy_res
+        damage_val -= damage_val * enemy_res * 0.01
+
+        return damage_val
+
 
     def can_cast(self, spell):
         if spell == None:

@@ -76,6 +76,7 @@
                 ],
                 "PER_EFFECT": {
                     "TYPE": "DOT",
+                    "TARGET": "ENEMY",
                     "SCHOOL": "BALANCE",
                     "DURATION": 6,
                     "AMOUNT": "X",
@@ -392,21 +393,21 @@
         "SCHOOL": "BALANCE",
         "PIPCOST": 9,
         "ACCURACY": 85,
-        "TYPE": ["DAMAGE", "GAMBIT", "AURA", "WARD"],
+        "TYPE": ["DAMAGE", "IF_GAMBIT", "AURA", "WARD"],
         "DESCRIPTION":
             "DEALS 245 BALANCE DAMAGE, 245 STORM DAMAGE, AND 245 MYTH DAMAGE OR REMOVES A HELPFUL AURA FROM CASTER AND 3 HARMFUL WARDS FROM TARGET TO DEAL 545 BALANCE DAMAGE, 545 STORM DAMAGE, AND 545 MYTH DAMAGE",
         "EFFECTS": [
             {
-                "TYPE": "GAMBIT",
+                "TYPE": "IF_GAMBIT",
                 "CAUSE": [
                     {
-                        "ACTION": "CLEAR",
+                        "ACTION": "GAMBIT",
                         "TARGET": "SELF",
                         "TYPE": "AURA",
-                        "MAX": 1
+                        "AMOUNT": 1
                     },
                     {
-                        "ACTION": "CLEAR",
+                        "ACTION": "GAMBIT",
                         "TARGET": "ENEMY",
                         "TYPE": "TRAP",
                         "AMOUNT": 3
@@ -881,7 +882,7 @@
     },
 
     {
-        "ID": "GRIMIRREDEEMER_T3B",
+        "ID": "GRIMIRREDEEMER_3B",
         "SPELL": "GRIM IRREDEEMER",
         "SCHOOL": "DEATH",
         "PIPCOST": 6,

@@ -675,6 +675,30 @@ class Gambit(Effect):
     def apply(self, match, caster, enemy, context):
         match.play_gambit(caster, enemy, self, context)
 
+@Effect.register("IF_GAMBIT")
+class Gambit(Effect):
+    type = "IF_GAMBIT"
+
+    categories = {"GAMBIT", "IF_GAMBIT"}
+
+    @classmethod
+    def from_json(cls, effect):
+        return cls(effect["CAUSE"], effect["THEN"], effect["ELSE"])
+    
+    def __init__(self, cause, then, else_clause):
+        self.cause = cause
+        self.then = then
+        self.else_clause = else_clause
+
+    def __str__(self):
+        return f"{self.type}"
+    
+    def store_at(self):
+        return None
+
+    def apply(self, match, caster, enemy, context):
+        match.play_if_gambit(caster, enemy, self, context)
+
 @Effect.register("MINION")
 class Minion(Effect):
     type = "MINION"
@@ -713,6 +737,7 @@ class Minion(Effect):
         self.pierce = pierce
 
         self.deck = deck
+        self.hand = Hand()
 
         self.pips = []
         self.shadpips = 0
@@ -746,12 +771,30 @@ class Minion(Effect):
     def cast_spell(self, spell_id):
         spells = load_json("json_data/minion_spells.json")
 
-        # puts every entry read from w101_spells.json into a dict
+        # puts every entry read from minion_spells.json into a dict
         spell_lookup = { spell["ID"]: spell for spell in spells }
 
         spell = spell_lookup[spell_id]
         
         return spell
+
+    def select_spell(self):
+        pass
+
+    def gen_hand(self):
+        if self.id == "WATERELEMENTAL":
+            if self.duration == 6:
+                self.hand.add("BALANCEBLADE_25")
+                self.hand.add("WEAKNESS_25")
+            if self.duration == 4:
+                self.hand.delete("BALANCEBLADE_25")
+                self.hand.delete("WEAKNESS_25")
+                self.hand.add("DOUBLEWEAKNESS_25")
+                self.hand.add("GREATERWEAKNESS_35")
+                self.hand.add("DUOCHROMABLADE_30")
+                self.hand.add("GREATERSWORD_40")
+        if self.id == "HELPFULMANDER":
+            pass
     
     def add_effect(self, effect):
         self.effects.append(effect)
@@ -764,6 +807,97 @@ class Minion(Effect):
     
     def dec_health(self, value):
         self.curr_health -= value
+
+        # this function modifies the casting damage
+    # it is called in dot_damage and do_damage
+    def mod_casting_damage(self, damage_val, damage_school, context):
+        # gets caster's outgoing damage
+        print(self.get_outgoing_damage(damage_school))
+    # print(f"value: {effect_value}")
+        damage_val += (damage_val * self.get_outgoing_damage(damage_school) * 0.01)
+
+        if self.aura is not None:
+            adj = self.aura.adj
+
+            # ignore if not correct school
+            for modifier in adj:
+                if modifier["SCHOOL"] in (damage_school, "UNIVERSAL"):
+                    # ignore if not blade/weakness type aura
+                    if modifier["TYPE"] == "WEAKNESS":
+                        damage_val -= damage_val * modifier["VALUE"] * 0.01
+                    elif modifier["TYPE"] == "BLADE":
+                        damage_val += damage_val * modifier["VALUE"] * 0.01
+
+        caster_charms = [ effect for effect in self.effects if isinstance(effect, Charm) ]
+        
+        used_charm_families = set()
+
+        for charm in caster_charms:
+            if charm.type == "HEAL_WEAKNESS":
+                continue
+            if charm.school in (damage_school, "UNIVERSAL"):
+                if charm.family in used_charm_families:
+                    continue
+                used_charm_families.add(charm.family)
+                print(f"Charm used: {charm.school} of val {charm.value}")
+                damage_val = charm.mod_damage(damage_val)
+                if charm not in context.charms_used:
+                    context.add_used_charm(self, charm)
+
+        return damage_val
+
+    # this function modifies the incoming damage
+    # it is called in do_tick and do_damage
+    def mod_incoming_damage(self, damage_val, damage_school, pierce_val, is_dot=False):
+        print(f"pierce_val: {pierce_val}")
+        if self.aura is not None:
+            adj = self.aura.adj
+
+            # ignore if not correct school
+            for modifier in adj:
+                if modifier["SCHOOL"] in (damage_school, "UNIVERSAL"):
+                    print(json.dumps(modifier, indent=4))
+                    # ignore if not shield/trap type aura
+                    if modifier["TYPE"] == "SHIELD":
+                        mod_val = modifier["VALUE"]
+                        print(f"mod_val: {mod_val}; pierce_val: {pierce_val}")
+                        mod_val -= pierce_val
+                        if mod_val < 0:
+                            pierce_val = -(mod_val)
+                            print(f"pierce_val: {pierce_val}; mod_val: {mod_val}")
+                            mod_val = 0
+                        damage_val -= damage_val * mod_val * 0.01
+                    elif modifier["TYPE"] == "TRAP":
+                        damage_val += damage_val * modifier["VALUE"] * 0.01
+
+        # gets enemy shields/traps
+        enemy_wards = [ effect for effect in self.effects if isinstance(effect, Ward) ]
+
+        used_families = set()
+
+
+        for ward in enemy_wards:
+            if ward.school in (damage_school, "UNIVERSAL"):
+                if ward.family in used_families:
+                    continue
+                if ward.type == "DOT_TRAP" and not is_dot:
+                    continue
+                used_families.add(ward.family)
+                print(f"{ward.type} used: {ward.school} of val {ward.value}")
+                pierce_val, damage_val = ward.mod_damage(damage_val, pierce_val)
+                print(f"post-ward effect_value: {damage_val}; pierce_val: {pierce_val}")
+                #   context.add_used_ward(abs_target, ward)
+                self.del_effect(ward)
+
+        # gets enemy resist
+        enemy_res = self.get_incoming_resist(damage_school)
+        print(f"init enemy res: {enemy_res}")
+        enemy_res -= pierce_val
+        print(f"enemy res: {enemy_res}; pierce_val: {pierce_val}")
+        enemy_res = 0 if enemy_res < 0 else enemy_res
+        damage_val -= damage_val * enemy_res * 0.01
+
+        return damage_val
 
 @Effect.register("PIP")
 class Pip():
@@ -789,3 +923,24 @@ class Pip():
     
     def store_at(self):
         return "PLAYER"
+
+class Hand:
+    max_cards = 7
+
+    def __init__(self):
+        self.cards = []
+
+    def __str__(self):
+        return "\n".join(self.cards)
+
+    def add(self, card):
+        if card is None:
+            return
+        
+        self.cards.append(card)
+    
+    def delete(self, card):
+        if card is None:
+            return
+        
+        self.cards.remove(card)

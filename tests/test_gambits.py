@@ -9,6 +9,7 @@ from match.effects import Aura
 from match.effects import Weakness
 from match.effects import Minion
 from match.effects import Pip
+from match.effects import DOT
 from match.match import Match
 import match.match
 from match.dataloader import load_json
@@ -212,7 +213,6 @@ def test_dropbear_b(basic_match, make_spell_data, balance_player, storm_player):
 
     basic_match.cast_spell(storm_player, storm_player, minionn)
     
- #   storm_player.minion = minion1
 
     shield1 = Shield(
         school = "UNIVERSAL",
@@ -263,4 +263,145 @@ def test_dropbear_b(basic_match, make_spell_data, balance_player, storm_player):
 
     basic_match.cast_spell(balance_player, storm_player, spell)
     
+    storm_player.print_effects()
+
+def test_stonecolossus(basic_match, make_spell_data, balance_player, storm_player):
+    balance_player.pips.append(Pip("REG"))
+    balance_player.pips.append(Pip("REG"))
+    balance_player.pips.append(Pip("REG"))
+    balance_player.pips.append(Pip("REG"))
+    balance_player.pips.append(Pip("REG"))
+    balance_player.pips.append(Pip("REG"))
+
+    shield1 = Weakness(
+        school = "UNIVERSAL",
+        value = 50,
+        family = "A"
+    )
+    shield2 = Weakness(
+        school = "FIRE",
+        value = 25,
+        family = "B"
+    )
+    shield3 = Weakness(
+        school = "FIRE",
+        value = 25,
+        family = "C"
+    )
+
+    balance_player.add_effect(shield1)
+    balance_player.add_effect(shield2)
+    balance_player.add_effect(shield3)
+
+    balance_player.print_effects()
+    
+    spell = make_spell_data("STONECOLOSSUS_5B")
+
+    basic_match.cast_spell(balance_player, storm_player, spell)
+
+    balance_player.print_effects()
+    storm_player.print_effects()
+
+def test_chimera_b(basic_match, make_spell_data, balance_player, storm_player):
+    balance_player.pips.append(Pip("REG"))
+    balance_player.pips.append(Pip("REG"))
+    balance_player.pips.append(Pip("POWER"))
+    balance_player.pips.append(Pip("POWER"))
+    balance_player.pips.append(Pip("POWER"))
+    balance_player.pips.append(Pip("POWER"))
+
+    dot1 = DOT(
+        school = "FIRE",
+        duration = 3,
+        stacks = 3,
+        value = 150
+    )
+
+    dot2 = DOT(
+        school = "FIRE",
+        duration = 3,
+        stacks = 3,
+        value = 150
+    )
+
+    balance_player.add_effect(dot1)
+    balance_player.add_effect(dot2)
+
+    balance_player.print_effects()
+    
+    spell = make_spell_data("CHIMERA_5B")
+
+    basic_match.cast_spell(balance_player, storm_player, spell)
+
+    balance_player.print_effects()
+    storm_player.print_effects()
+
+def test_tribunaloni(basic_match, make_spell_data, balance_player, storm_player):
+    balance_player.pips.append(Pip("REG"))
+    balance_player.pips.append(Pip("REG"))
+    balance_player.pips.append(Pip("POWER"))
+    balance_player.pips.append(Pip("POWER"))
+    balance_player.pips.append(Pip("POWER"))
+    balance_player.pips.append(Pip("POWER"))
+
+    adj = [{
+        "TYPE": "SHIELD",
+        "SCHOOL": "UNIVERSAL",
+        "VALUE": 20
+    }]
+    balance_player.aura = Aura(2, adj)
+
+    shield1 = Trap(
+        school = "UNIVERSAL",
+        value = 50,
+        family = "A"
+    )
+    shield2 = Trap(
+        school = "FIRE",
+        value = 25,
+        family = "B"
+    )
+    shield3 = Trap(
+        school = "FIRE",
+        value = 25,
+        family = "C"
+    )
+    shield4 = Trap(
+        school = "STORM",
+        value = 40,
+        family = "D"
+    )
+
+    shield5 = Trap(
+        school = "LIFE",
+        value = 40,
+        family = "E"
+    )
+
+
+    storm_player.add_effect(shield1)
+    storm_player.add_effect(shield2)
+    storm_player.add_effect(shield3)
+    storm_player.add_effect(shield4)
+    storm_player.add_effect(shield5)
+
+    storm_player.print_effects()
+    
+    spell = make_spell_data("TRIBUNALONI")
+
+    basic_match.cast_spell(balance_player, storm_player, spell)
+
+    balance_player.print_effects()
+    storm_player.print_effects()
+
+    balance_player.pips.append(Pip("POWER"))
+    balance_player.pips.append(Pip("POWER"))
+    balance_player.pips.append(Pip("POWER"))
+    balance_player.pips.append(Pip("POWER"))
+
+    spell = make_spell_data("TRIBUNALONI")
+
+    basic_match.cast_spell(balance_player, storm_player, spell)
+
+    balance_player.print_effects()
     storm_player.print_effects()

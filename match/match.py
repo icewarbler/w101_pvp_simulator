@@ -60,12 +60,6 @@ class Match:
 
         print(f"Base effect val: {effect_value}")
 
-        # gets caster's outgoing damage
-        print(caster_player.get_outgoing_damage(effect_school))
-    # print(f"value: {effect_value}")
-        effect_value += (effect_value * caster_player.get_outgoing_damage(effect_school) * 0.01)
-    #  print(f"a1: {effect_value}")
-
         print(f"with damage: {effect_value}")
 
         caster_pierce = caster_player.pierce[effect_school]
@@ -73,36 +67,7 @@ class Match:
 
         print(f"pierce_val: {effect.pierce_val} {effect_school}") 
 
-        # gets caster's aura
-        if caster_player.aura is not None:
-            adj = caster_player.aura.adj
-
-         #   print(json.dumps(adj, indent=4))
-
-            # ignore if not correct school
-            for modifier in adj:
-                if modifier["SCHOOL"] in (effect_school, "UNIVERSAL"):
-                    # ignore if not blade/weakness type aura
-                    if modifier["TYPE"] == "WEAKNESS":
-                        effect_value -= effect_value * modifier["VALUE"] * 0.01
-                    elif modifier["TYPE"] == "BLADE":
-                        effect_value += effect_value * modifier["VALUE"] * 0.01
-
-        # gets any blades/weaknesses caster may have
-        caster_charms = [ effect for effect in caster_player.effects if isinstance(effect, Charm) ]
-
-        used_charm_families = set()
-
-        for charm in caster_charms:
-            if charm.school in (effect_school, "UNIVERSAL"):
-                if charm.family in used_charm_families:
-                    continue
-                used_charm_families.add(charm.family)
-                print(f"Charm used: {charm.school} of val {charm.value}")
-                effect_value = charm.mod_damage(effect_value)
-                if charm not in context.charms_used:
-                    context.add_used_charm(caster_player, charm)
-            #    caster_player.del_effect(charm)
+        effect_value = caster_player.mod_casting_damage(effect_value, effect_school, context)
 
         # gets the global
         b = self.global_effect
@@ -120,59 +85,10 @@ class Match:
 
     def do_tick(self, caster, dot):
         effect_value = dot.value_per_tick
+        effect_school = dot.school
         pierce_val = dot.pierce_val
-        # gets any auras the enemy may have
-       # enemy_aura = next( (effect for effect in abs_target.effects if isinstance(effect, Aura)), None )
-        if caster.aura is not None:
-            adj = caster.aura.adj
 
-        #    print(json.dumps(adj, indent=4))
-
-            # ignore if not correct school
-            for modifier in adj:
-                if modifier["SCHOOL"] in (dot.school, "UNIVERSAL"):
-                    print(json.dumps(modifier, indent=4))
-                    # ignore if not shield/trap type aura
-                    if modifier["TYPE"] == "SHIELD":
-                        mod_val = modifier["VALUE"]
-                        print(f"mod_val: {mod_val}; pierce_val: {pierce_val}")
-                        mod_val -= pierce_val
-                        if mod_val < 0:
-                            pierce_val = -(mod_val)
-                            print(f"pierce_val: {pierce_val}; mod_val: {mod_val}")
-                            mod_val = 0
-                        effect_value -= effect_value * mod_val * 0.01
-                    elif modifier["TYPE"] == "TRAP":
-                        effect_value += effect_value * modifier["VALUE"] * 0.01
-
-    #  print(f"post-aura effect_value: {effect_value}")
-
-
-        # gets enemy shields/traps
-        enemy_wards = [ effect for effect in caster.effects if isinstance(effect, Ward) ]
-
-        used_families = set()
-
-        for ward in enemy_wards:
-            if ward.school in (dot.school, "UNIVERSAL"):
-                if ward.family in used_families:
-                    continue
-                used_families.add(ward.family)
-                print(f"Ward used: {ward.school} of val {ward.value}")
-                pierce_val, effect_value = ward.mod_damage(effect_value, pierce_val)
-                print(f"post-ward effect_value: {effect_value}; pierce_val: {pierce_val}")
-                caster.del_effect(ward)
-        
-    #  print(f"Post-ward effect_value: {effect_value}")
-
-        # gets enemy resist
-        enemy_res = caster.get_incoming_resist(dot.school)
-        print(f"init enemy res: {enemy_res}")
-        enemy_res -= pierce_val
-        print(f"enemy res: {enemy_res}; pierce_val: {pierce_val}")
-        enemy_res = 0 if enemy_res < 0 else enemy_res
-        effect_value -= effect_value * enemy_res * 0.01
-    #  print(f"Post-resist effect_value: {effect_value}")
+        effect_value = caster.mod_incoming_damage(effect_value, effect_school, pierce_val, True)
 
         caster.dec_health(effect_value)
         print(f"DOT tick does {effect_value} damage!")
@@ -217,49 +133,7 @@ class Match:
 
         print(f"caster pierce: {pierce_val} {effect_school}") 
 
-        # gets caster's outgoing damage
-        print(caster_player.get_outgoing_damage(effect_school))
-    # print(f"value: {effect_value}")
-        effect_value += (effect_value * caster_player.get_outgoing_damage(effect_school) * 0.01)
-    #  print(f"a1: {effect_value}")
-
-        # gets caster's aura
-        # gets caster's aura
-        if caster_player.aura is not None:
-            adj = caster_player.aura.adj
-
-           # print(json.dumps(adj, indent=4))
-
-            # ignore if not correct school
-            for modifier in adj:
-                if modifier["SCHOOL"] in (effect_school, "UNIVERSAL"):
-                    print(json.dumps(modifier, indent=4))
-                    # ignore if not blade/weakness type aura
-                    if modifier["TYPE"] == "WEAKNESS":
-                        effect_value -= effect_value * modifier["VALUE"] * 0.01
-                    elif modifier["TYPE"] == "BLADE":
-                        effect_value += effect_value * modifier["VALUE"] * 0.01
-
-        # gets any blades/weaknesses caster may have
-        caster_charms = [ effect for effect in caster_player.effects if isinstance(effect, Charm) ]
-
-        used_charm_families = set()
-
-        for charm in caster_charms:
-            if charm.type == "HEAL_WEAKNESS":
-                continue
-            if charm.school in (effect_school, "UNIVERSAL"):
-                if charm.family in used_charm_families:
-                    continue
-                used_charm_families.add(charm.family)
-                print(f"Charm used: {charm.school} of val {charm.value}")
-                effect_value = charm.mod_damage(effect_value)
-                context.add_used_charm(caster_player, charm)
-            #    caster_player.del_effect(charm)
-
-        # if Charm in caster_player.get_effects():
-        #     print("blade")
-        #     # do stuff
+        effect_value = caster_player.mod_casting_damage(effect_value, effect_school, context)
 
         # gets the global
         b = self.getBubble()
@@ -268,77 +142,72 @@ class Match:
             if b.school == effect_school:
             #  print(f"Found bubble with value {b.value}")
                 effect_value += effect_value * b.value * 0.01
-        
-    #  print(f"post-bubble effect_value: {effect_value}")
 
-        # gets any auras the enemy may have
-       # enemy_aura = next( (effect for effect in abs_target.effects if isinstance(effect, Aura)), None )
-        if abs_target.aura is not None:
-            adj = abs_target.aura.adj
-
-        #    print(json.dumps(adj, indent=4))
-
-            # ignore if not correct school
-            for modifier in adj:
-                if modifier["SCHOOL"] in (effect_school, "UNIVERSAL"):
-                    print(json.dumps(modifier, indent=4))
-                    # ignore if not shield/trap type aura
-                    if modifier["TYPE"] == "SHIELD":
-                        mod_val = modifier["VALUE"]
-                        print(f"mod_val: {mod_val}; pierce_val: {pierce_val}")
-                        mod_val -= pierce_val
-                        if mod_val < 0:
-                            pierce_val = -(mod_val)
-                            print(f"pierce_val: {pierce_val}; mod_val: {mod_val}")
-                            mod_val = 0
-                        effect_value -= effect_value * mod_val * 0.01
-                    elif modifier["TYPE"] == "TRAP":
-                        effect_value += effect_value * modifier["VALUE"] * 0.01
-
-    #  print(f"post-aura effect_value: {effect_value}")
-
-
-        # gets enemy shields/traps
-        enemy_wards = [ effect for effect in abs_target.effects if isinstance(effect, Ward) ]
-
-        used_families = set()
-
-
-        for ward in enemy_wards:
-            if ward.school in (effect_school, "UNIVERSAL"):
-                if ward.family in used_families:
-                    continue
-                if ward.type == "DOT_TRAP":
-                    continue
-                used_families.add(ward.family)
-                print(f"{ward.type} used: {ward.school} of val {ward.value}")
-                pierce_val, effect_value = ward.mod_damage(effect_value, pierce_val)
-                print(f"post-ward effect_value: {effect_value}; pierce_val: {pierce_val}")
-             #   context.add_used_ward(abs_target, ward)
-                abs_target.del_effect(ward)
-        
-    #  print(f"Post-ward effect_value: {effect_value}")
-
-        # gets enemy resist
-        enemy_res = abs_target.get_incoming_resist(effect_school)
-        print(f"init enemy res: {enemy_res}")
-        enemy_res -= pierce_val
-        print(f"enemy res: {enemy_res}; pierce_val: {pierce_val}")
-        enemy_res = 0 if enemy_res < 0 else enemy_res
-        effect_value -= effect_value * enemy_res * 0.01
-    #  print(f"Post-resist effect_value: {effect_value}")
+        effect_value = abs_target.mod_incoming_damage(effect_value, effect_school, pierce_val)
 
         abs_target.dec_health(effect_value)
         print(f"Does {effect_value} damage!")
         print(f"{abs_target.name} HEALTH: {abs_target.curr_health}")
 
+    
+    def play_if_gambit(self, caster_player, enemy_player, gambit, context):
+        met_cond = True
+
+        for condition in gambit.cause:
+            if condition.get("TARGET") == "SELF":
+                abs_target = caster_player
+            else:
+                abs_target = enemy_player
+
+            match condition.get("ACTION"):
+                case "GAMBIT":
+                    if condition.get("TYPE") == "AURA":
+                        if not abs_target.aura:
+                            met_cond = False
+                        else:
+                            abs_target.aura = None
+                    else:
+                        to_remove = []
+                        gambit_type = condition.get("TYPE")
+                        
+                        for effect in enemy_player.get_effects():
+                            print(f"effect.type: {effect.type}, gambit_type: {gambit_type}")
+                            if effect.type == gambit_type:
+                                to_remove.append(effect)
+                                
+                                if len(to_remove) == condition.get("AMOUNT"):
+                                    break
+
+                        amount = len(to_remove)
+
+                        print(f"amount: {amount}; max: {condition.get("AMOUNT")}")
+
+                        if amount != condition.get("AMOUNT"):
+                            met_cond = False
+
+                        if met_cond:
+                            for effect in to_remove:
+                                abs_target.del_effect(effect)
+        
+
+        if met_cond:
+            for todo in gambit.then:
+                effect_class = Effect.registry[todo["TYPE"]]
+                effect_obj = effect_class.from_json(todo)
+                effect_obj.apply(self, caster_player, enemy_player, context)
+        else:
+            for todo in gambit.else_clause:
+                effect_class = Effect.registry[todo["TYPE"]]
+                effect_obj = effect_class.from_json(todo)
+                effect_obj.apply(self, caster_player, enemy_player, context)
+
     def play_gambit(self, caster_player, enemy_player, gambit, context):
         gambit_cause = gambit.cause[0]
         print(gambit_cause)
-        # gambit_effect = gambit.per_effect
+        gambit_effect = gambit.per_effect
 
     #  print(json.dumps(gambit_cause, indent=4))
-    #  print(json.dumps(gambit_effect, indent=4))
+    #  print(json.dumps(gambit_effect, indent=4)) 
 
         effect_target = gambit_cause.get("TARGET")
 
@@ -346,6 +215,7 @@ class Match:
             abs_target = caster_player
         elif effect_target == "ENEMY":
             abs_target = enemy_player
+                
 
         match gambit_cause.get("ACTION"):
             case "STEAL":
@@ -500,7 +370,6 @@ class Match:
                 for effect in to_remove:
                     abs_target.del_effect(effect)
 
-                gambit_effect = gambit.per_effect
 
                 per_effect_type = gambit_effect.get("TYPE")
                 
@@ -574,6 +443,8 @@ class Match:
                         continue
                     else:
                         new_effect = effect_obj.clone()
+
+                        print(f"Adding effect: {new_effect}")
 
                         abs_target.add_effect(new_effect)
 
@@ -743,14 +614,14 @@ class Match:
                     effect_obj.apply(self, caster_player, enemy_player, context)
 
         for charm, player in context.charms_used.items():
-            print(f"Used charm: {charm}")
+            print(f"Removing charm: {charm}")
             player.del_effect(charm)
 
     def minion_turn(self, caster_player, enemy_player, minion, minion_spell):
         print(f"min dur: {minion.duration}")
         if minion.duration == 7: 
             return
-        
+
         minion_spell = minion.cast_spell(minion_spell)
         print(f"**Minion casts spell {minion_spell.get("SPELL")}")
 

@@ -15,6 +15,146 @@
             }
         ]
     },
+
+    {
+        "ID": "DONATEPOWER",
+        "SPELL": "DONATE POWER",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 1,
+        "ACCURACY": 100,
+        "EFFECTS": [
+            {
+                "TYPE": "PIP",
+                "TARGET": "ALLY",
+                "SCHOOL": "REG",
+                "AMOUNT": 2
+            }
+        ]
+    },
+
+    {
+        "ID": "ELEMENTALSHIELD_50",
+        "SPELL": "ELEMENTAL SHIELD",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["WARD", "SHIELD"],
+        "DESCRIPTION":
+            "APPLIES A -50% FIRE, -50% ICE, AND -50% STORM SHIELD TO TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "SHIELD",
+                "TARGET": "SELF",
+                "SCHOOL": "FIRE",
+                "VALUE": 50,
+                "FAMILY": "ELEMENTALSHIELD_FIRESHIELD50"
+            },
+            {
+                "TYPE": "SHIELD",
+                "TARGET": "SELF",
+                "SCHOOL": "ICE",
+                "VALUE": 50,
+                "FAMILY": "ELEMENTALSHIELD_ICESHIELD50"
+            },
+            {
+                "TYPE": "SHIELD",
+                "TARGET": "SELF",
+                "SCHOOL": "STORM",
+                "VALUE": 50,
+                "FAMILY": "ELEMENTALSHIELD_STORMSHIELD50"
+            }
+        ]
+    },
+    {
+        "ID": "HEX",
+        "SPELL": "HEX",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["TRAP"],
+        "DESCRIPTION":
+            "APPLIES A +30% DAMAGE TRAP TO TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "TRAP",
+                "TARGET": "ENEMY",
+                "SCHOOL": "UNIVERSAL",
+                "VALUE": 30,
+                "FAMILY": "HEX_UNI30"
+            }
+        ]
+    },
+    {
+        "ID": "SPIRITSHIELD_50",
+        "SPELL": "SPIRIT SHIELD",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["WARD", "SHIELD"],
+        "DESCRIPTION":
+            "APPLIES A -50% DEATH, -50% MYTH, AND -50% LIFE SHIELD TO TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "SHIELD",
+                "TARGET": "SELF",
+                "SCHOOL": "DEATH",
+                "VALUE": 50,
+                "FAMILY": "SPIRITSHIELD_DEATHSHIELD50"
+            },
+            {
+                "TYPE": "SHIELD",
+                "TARGET": "SELF",
+                "SCHOOL": "MYTH",
+                "VALUE": 50,
+                "FAMILY": "SPIRITSHIELD_MYTHSHIELD50"
+            },
+            {
+                "TYPE": "SHIELD",
+                "TARGET": "SELF",
+                "SCHOOL": "LIFE",
+                "VALUE": 50,
+                "FAMILY": "SPIRITSHIELD_LIFESHIELD50"
+            }
+        ]
+    },
+    {
+        "ID": "WEAKNESS_25",
+        "SPELL": "WEAKNESS",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["CHARM"],
+        "DESCRIPTION":
+            "APPLIES A -25% DAMAGE CHARM",
+        "EFFECTS": [
+            {
+                "TYPE": "WEAKNESS",
+                "TARGET": "ENEMY",
+                "SCHOOL": "UNIVERSAL",
+                "VALUE": 25,
+                "FAMILY": "WEAKNESS_UNI25"
+            }
+        ]
+    },
+    {
+        "ID": "TOWERSHIELD_50",
+        "NAME": "TOWER SHIELD",
+        "SCHOOL": "ICE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["WARD", "SHIELD"],
+        "DESCRIPTION":
+            "APPLIES A -50% DAMAGE SHIELD",
+        "EFFECTS": [
+            {
+                "TYPE": "SHIELD",
+                "TARGET": "SELF",
+                "SCHOOL": "UNIVERSAL",
+                "VALUE": 50,
+                "FAMILY": "TOWERSHIELD_50"
+            }
+        ]
+    },
     {
         "ID": "DOUBLEWEAKNESS_25",
         "SPELL": "DOUBLE WEAKNESS",
