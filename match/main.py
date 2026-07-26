@@ -4,6 +4,8 @@ from .setup import create_human_match
 def main():
     chooser = input("Play your own match? Y/N: ").upper()
 
+    print("\n")
+
     if chooser == "Y":
         human_match = create_human_match("json_data/players.json")
         human_match.start_match()
@@ -13,6 +15,7 @@ def main():
         spec_match = input("Play match 0 or match 1? ")
         matches[int(spec_match)].start_match()
 
+    print("\n")
   #  human_match = create_human_match("json_data/players.json")
 
   #  human_match.start_match()

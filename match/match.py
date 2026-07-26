@@ -241,7 +241,7 @@ class Match:
                 
                 for _ in range(effect_count):
                     if per_effect_type == "PIP":
-                        print(f"Adding a pip???")
+                    #    print(f"Adding a pip???")
                         new_effect = effect_obj.clone()
                         reg_idx = caster_player.last_pip_index("REG")
 
@@ -431,7 +431,7 @@ class Match:
                 
                 for _ in range(amount):
                     if per_effect_type == "PIP":
-                        print(f"Adding a pip???")
+                    #    print(f"Adding a pip???")
                         new_effect = effect_obj.clone()
                         reg_idx = caster_player.last_pip_index("REG")
 
@@ -693,7 +693,7 @@ class Match:
             return spell_id
 
         if re.match(r'^d[1-7]$', selection):
-            print(f"selection: {selection}")
+          #  print(f"selection: {selection}")
             if 1 <= int(selection[1:]) <= len(caster_player.hand.cards):
                 spell_id = caster_player.hand.cards[int(selection[1:]) - 1]
                 print(spell_id)
@@ -701,7 +701,7 @@ class Match:
                 return 0
 
         if re.match(r'^i[1-7]$', selection):
-            print(f"selection: {selection}")
+         #   print(f"selection: {selection}")
             if 1 <= int(selection[1:]) <= len(caster_player.hand.cards):
                 spell_id = caster_player.hand.cards[int(selection[1:]) - 1]
                 print(spell_id)
@@ -765,7 +765,6 @@ class Match:
         try:
             selection = int(selection)
         except ValueError:
-            print("Enter a card number or pass.")
             return 0
 
         if 1 <= selection <= len(caster_player.hand.cards):
@@ -777,18 +776,18 @@ class Match:
             turn = 0
 
             self.p1.deck = Deck(self.p1.deck)
-            print(f"{self.p1.name} DECK:")
-            print(self.p1.deck)
-            print("----")
+            # print(f"{self.p1.name} DECK:")
+            # print(self.p1.deck)
+          #  print("----")
 
 
             for _ in range(Hand.max_cards):
                 self.p1.draw_card()
 
             self.p2.deck = Deck(self.p2.deck)
-            print(f"{self.p2.name} DECK:")
-            print(self.p2.deck)
-            print("----")
+            # print(f"{self.p2.name} DECK:")
+            # print(self.p2.deck)
+           # print("----")
 
             for _ in range(Hand.max_cards):
                 self.p2.draw_card()
@@ -796,7 +795,6 @@ class Match:
             spells = self.load_json("json_data/spells.json")
 
             spell_lookup = { spell["ID"]: spell for spell in spells }
-            print(len(spell_lookup))
 
             self.init_match()
 
@@ -819,15 +817,21 @@ class Match:
                 # for i, card in enumerate(caster_player.hand.cards):
                 #     print(f"{i + 1}. {card}")
 
+                print("\n")
                 print(f"{caster_player.name} HEALTH: {caster_player.curr_health} / {caster_player.max_health}")
+                print("\n")
                 print(f"{enemy_player.name} HEALTH: {enemy_player.curr_health} / {enemy_player.max_health}")
+                print("\n")
 
                 print(f"Your pips: {caster_player.pips}")
+
+                print("\n")
 
                 # loop to select a spell
                 while True:
                     red = "\033[91m"
                     reset = "\033[0m"
+                    print("SELECT A SPELL")
                     for i, card in enumerate(caster_player.hand.cards):
                         spell = spell_lookup[card]
 

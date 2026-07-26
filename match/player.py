@@ -181,7 +181,7 @@ class Player:
 
         priority_school = context.spell.get("SCHOOL")
         caster_school = self.school
-        print(f"spell school: {priority_school}; caster school: {caster_school}")
+   #     print(f"spell school: {priority_school}; caster school: {caster_school}")
         if caster_school == priority_school:
             use_power = True
         else:
