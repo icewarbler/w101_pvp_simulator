@@ -61,6 +61,13 @@ These exist, but no formula has been implemented
 [x] deck-building interface
 
 
+## How to run:
+
+`python -m match.main` from project root
+
+You will be asked if you would like to play a match (`y`) or watch a match (`n`). If watching a match, select either `0` or `1`; if playing a match, you MUST play as `bo` and `bambi`, as these are the only players I currently have implemented.
+
+
 ## Progress
 
 ### Start of a custom battle:
