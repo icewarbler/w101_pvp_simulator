@@ -862,6 +862,42 @@
     },
 
     {
+        "ID": "DEADZONE_25",
+        "SPELL": "DEADZONE",
+        "SCHOOL": "DEATH",
+        "PIPCOST": 2,
+        "ACCURACY": 100,
+        "TYPE": ["BUBBLE"],
+        "DESCRIPTION":
+            "APPLIES A +25% DEATH DAMAGE GLOBAL",
+        "EFFECTS": [
+            {
+                "TYPE": "BUBBLE",
+                "SCHOOL": "DEATH",
+                "VALUE": 25
+            }
+        ]
+    },
+
+    {
+        "ID": "DEADZONE_35",
+        "SPELL": "DEADZONE",
+        "SCHOOL": "DEATH",
+        "PIPCOST": 2,
+        "ACCURACY": 100,
+        "TYPE": ["BUBBLE"],
+        "DESCRIPTION":
+            "APPLIES A +35% DEATH DAMAGE GLOBAL",
+        "EFFECTS": [
+            {
+                "TYPE": "BUBBLE",
+                "SCHOOL": "DEATH",
+                "VALUE": 35
+            }
+        ]
+    },
+
+    {
         "ID": "DEATHBLADE_35",
         "SPELL": "DEATHBLADE",
         "SCHOOL": "DEATH",
@@ -877,6 +913,29 @@
                 "SCHOOL": "DEATH",
                 "VALUE": 35,
                 "FAMILY": "DEATHBLADE_35"
+            }
+        ]
+    },
+
+    {
+        "ID": "EMPOWER",
+        "SPELL": "EMPOWER",
+        "SCHOOL": "DEATH",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": [ "DAMAGE", "PIP", "PERCENT_DAMAGE"],
+        "DESCRIPTION":
+            "DEALS 5% MAX HEALTH DAMAGE TO CASTER TO GIVE 3 PIPS TO CASTER",
+        "EFFECTS": [
+            {
+                "TYPE": "PERCENT_DAMAGE",
+                "TARGET": "SELF",
+                "VALUE": 5
+            },
+            {
+                "TYPE": "PIP",
+                "TARGET": "SELF",
+                "SCHOOL": "REG"
             }
         ]
     },
@@ -981,6 +1040,45 @@
     },
 
     {
+        "ID": "MACABREJINN",
+        "SPELL": "MACABRE JINN",
+        "SCHOOL": "DEATH",
+        "PIPCOST": 9,
+        "ACCURACY": 85,
+        "TYPE": ["DAMAGE", "IF_GAMBIT"],
+        "DESCRIPTION":
+            "DEALS 730 DEATH DAMAGE OR REMOVES 4 BLADES FROM CASTER TO DEAL 1335 DEATH DAMAGE",
+        "EFFECTS": [
+            {
+                "TYPE": "IF_GAMBIT",
+                "CAUSE": [
+                    {
+                        "ACTION": "GAMBIT",
+                        "TYPE": "BLADE",
+                        "AMOUNT": 4
+                    }
+                ],
+                "THEN": [
+                    {
+                        "TYPE": "SINGLE_DAMAGE",
+                        "TARGET": "ENEMY",
+                        "SCHOOL": "DEATH",
+                        "VALUE": 1335
+                    }
+                ],
+                "ELSE": [
+                    {
+                        "TYPE": "SINGLE_DAMAGE",
+                        "TARGET": "ENEMY",
+                        "SCHOOL": "DEATH",
+                        "VALUE": 730
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
         "ID": "MAJORSCOURGE",
         "SPELL": "MAJOR SCOURGE",
         "SCHOOL": "DEATH",
@@ -1025,7 +1123,7 @@
     },
 
     {
-        "ID": "A-BAAHH-CALYPSE_T2",
+        "ID": "A-BAAHH-CALYPSE_2",
         "SPELL": "A-BAAHH-CALYPSE",
         "SCHOOL": "FIRE",
         "PIPCOST": 3,
@@ -1140,7 +1238,95 @@
             }
         ]
     },
-    
+
+    {
+        "ID": "FIRECAT",
+        "SPELL": "FIRECAT",
+        "SCHOOL": "FIRE",
+        "PIPCOST": 1,
+        "ACCURACY": 75,
+        "TYPE": ["RANGE_DAMAGE", "DAMAGE"],
+        "DESCRIPTION":
+            "DEALS 80-120 FIRE DAMAGE",
+        "EFFECTS": [
+            {
+                "TYPE": "RANGE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "FIRE",
+                "MIN": 80,
+                "MAX": 120
+            }
+        ]
+    },
+
+    {
+        "ID": "FIRECAT_2B",
+        "SPELL": "FIRE CAT",
+        "SCHOOL": "FIRE",
+        "PIPCOST": 1,
+        "ACCURACY": 75,
+        "TYPE": ["DAMAGE", "GAMBIT", "BOMB_DOT"],
+        "DESCRIPTION":
+            "DEALS 65 FIRE DAMAGE TO AND DETONATES A DAMAGE OVER TIME EFFECT ON TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "FIRE",
+                "VALUE": 65
+            },
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": [
+                    {
+                        "ACTION": "DETONATE",
+                        "TARGET": "ENEMY",
+                        "TYPE": "BOMB_DOT",
+                        "MAX": 1
+                    }
+                ],
+                "PER_EFFECT": {
+                    "TYPE": "DETONATE",
+                    "VALUE": 100
+                }
+            }
+        ]
+    },
+
+    {
+        "ID": "FIRECAT_2C",
+        "SPELL": "FIRE CAT",
+        "SCHOOL": "FIRE",
+        "PIPCOST": 1,
+        "ACCURACY": 75,
+        "TYPE": ["DAMAGE", "GAMBIT", "BOMB_DOT"],
+        "DESCRIPTION":
+            "DEALS 55 FIRE DAMAGE TO TARGET AND EXTENDS THE DURATION OF A DAMAGE OVER TIME EFFECT BY 2 ROUNDS ON TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "FIRE",
+                "VALUE": 55
+            },
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": [
+                    {
+                        "ACTION": "EXTEND",
+                        "TARGET": "ENEMY",
+                        "TYPE": "BOMB_DOT",
+                        "MAX": 1
+                    }
+                ],
+                "PER_EFFECT": {
+                    "TYPE": "EXTEND",
+                    "VALUE": 2
+                }
+            }
+        ]
+    },
+        
     {
         "ID": "HELEPHANT",
         "SPELL": "HELEPHANT",
@@ -1150,12 +1336,50 @@
         "TYPE": ["DAMAGE"],
         "DESCRIPTION": 
             "DEALS 625-705 FIRE DAMAGE",
-        "EFFECT": [
+        "EFFECTS": [
             {
                 "TYPE": "DAMAGE",
                 "SUBTYPE": "RANGE",
                 "MIN": 625,
                 "MAX": 705
+            }
+        ]
+    },
+
+    {
+        "ID": "HELEPHANT_5B",
+        "SPELL": "HELEPHANT",
+        "SCHOOL": "FIRE",
+        "PIPCOST": 6,
+        "ACCURACY": 75,
+        "TYPE": ["DAMAGE","GAMBIT"],
+        "DESCRIPTION": 
+            "REMOVES UP TO 5 SHIELDS FROM TARGET TO DEAL 150 DAMAGE OF CASTER'S SCHOOL OVER 4 ROUNDS TO TARGET PER TRAP REMOVED THEN DEALS 490 FIRE DAMAGE",
+        "EFFECTS": [
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": [
+                    {
+                        "ACTION": "CLEAR",
+                        "TARGET": "ENEMY",
+                        "TYPE": "SHIELD",
+                        "MAX": 5
+                    }
+                ],
+                "PER_EFFECT": {
+                    "TYPE": "DOT",
+                    "TARGET": "ENEMY",
+                    "SCHOOL": "ALLY_SCHOOL",
+                    "AMOUNT": "X",
+                    "DURATION": 4,
+                    "VALUE_PER_STACK": 150
+                }
+            },
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "FIRE",
+                "VALUE": 490
             }
         ]
     },
@@ -1182,6 +1406,77 @@
                 "TYPE": "BUBBLE",
                 "SCHOOL": "FIRE",
                 "VALUE": 25
+            }
+        ]
+    },
+
+    {
+        "ID": "IMMOLATE",
+        "SPELL": "IMMOLATE",
+        "SCHOOL": "FIRE",
+        "PIPCOST": 4,
+        "ACCURACY": 75,
+        "TYPE": ["DAMAGE"],
+        "DESCRIPTION":
+            "DEALS 200 FIRE DAMAGE TO CASTER TO DEAL 600 FIRE DAMAGE TO TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "SELF",
+                "SCHOOL": "FIRE",
+                "VALUE": 200
+            },
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "FIRE",
+                "VALUE": 600
+            }
+        ]
+    },
+
+    {
+        "ID": "IMMOLATE_2B",
+        "SPELL": "IMMOLATE",
+        "SCHOOL": "FIRE",
+        "PIPCOST": 4,
+        "ACCURACY": 75,
+        "TYPE": ["DAMAGE", "BOMB_DOT", "GAMBIT"],
+        "DESCRIPTION":
+            "DEALS 180 FIRE DAMAGE TO CASTER TO APPLY TWO DAMAGE OVER TIME EFFECTS THAT EACH DEAL 395 FIRE DAMAGE OVER 5 ROUNDS ON TARGET THEN REMOVES UP TO THREE TRAPS FROM CASTER TO DEAL 90 DAMAGE OF CASTER'S SCHOOL OVER 3 ROUNDS TO TARGET PER TRAP REMOVED",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "SELF",
+                "SCHOOL": "FIRE",
+                "VALUE": 180
+            },
+            {
+                "TYPE": "BOMB_DOT",
+                "TARGET": "ENEMY",
+                "SCHOOL": "FIRE",
+                "DURATION": 5,
+                "AMOUNT": 2,
+                "VALUE_PER_STACK": 395
+            },
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": [
+                    {
+                        "ACTION": "CLEAR",
+                        "TARGET": "SELF",
+                        "TYPE": "TRAP",
+                        "MAX": 3
+                    }
+                ],
+                "PER_EFFECT": {
+                    "TYPE": "BOMB_DOT",
+                    "TARGET": "ENEMY",
+                    "SCHOOL": "CASTER_SCHOOL",
+                    "DURATION": 3,
+                    "AMOUNT": "X",
+                    "VALUE_PER_STACK": 90
+                }
             }
         ]
     },
@@ -1374,6 +1669,78 @@
     },
 
     {
+        "ID": "WYLDFIRE_25",
+        "SPELL": "WYLDFIRE",
+        "SCHOOL": "FIRE",
+        "PIPCOST": 2,
+        "ACCURACY": 100,
+        "TYPE": ["BUBBLE"],
+        "DESCRIPTION":
+            "APPLIES A +25% FIRE DAMAGE GLOBAL",
+        "EFFECTS": [
+            {
+                "TYPE": "BUBBLE",
+                "SCHOOL": "FIRE",
+                "VALUE": 25
+            }
+        ]
+    },
+
+    {
+        "ID": "WYLDFIRE_35",
+        "SPELL": "WYLDFIRE",
+        "SCHOOL": "FIRE",
+        "PIPCOST": 2,
+        "ACCURACY": 100,
+        "TYPE": ["BUBBLE"],
+        "DESCRIPTION":
+            "APPLIES A +35% FIRE DAMAGE GLOBAL",
+        "EFFECTS": [
+            {
+                "TYPE": "BUBBLE",
+                "SCHOOL": "FIRE",
+                "VALUE": 35
+            }
+        ]
+    },
+
+    {
+        "ID": "BALEFROST_25",
+        "SPELL": "BALEFROST",
+        "SCHOOL": "ICE",
+        "PIPCOST": 2,
+        "ACCURACY": 100,
+        "TYPE": ["BUBBLE"],
+        "DESCRIPTION":
+            "APPLIES A +25% ICE DAMAGE GLOBAL",
+        "EFFECTS": [
+            {
+                "TYPE": "BUBBLE",
+                "SCHOOL": "ICE",
+                "VALUE": 25
+            }
+        ]
+    },
+
+    {
+        "ID": "BALEFROST_35",
+        "SPELL": "BALEFROST",
+        "SCHOOL": "ICE",
+        "PIPCOST": 2,
+        "ACCURACY": 100,
+        "TYPE": ["BUBBLE"],
+        "DESCRIPTION":
+            "APPLIES A +35% ICE DAMAGE GLOBAL",
+        "EFFECTS": [
+            {
+                "TYPE": "BUBBLE",
+                "SCHOOL": "ICE",
+                "VALUE": 35
+            }
+        ]
+    },
+
+    {
         "ID": "DARKWEAVER_T2",
         "SPELL": "DARK WEAVER",
         "TIER": 2,
@@ -1469,6 +1836,26 @@
                 "TYPE": "BUBBLE",
                 "SCHOOL": "ICE",
                 "VALUE": 25
+            }
+        ]
+    },
+
+    {
+        "ID": "ICEBLADE_35",
+        "SPELL": "ICEBLADE",
+        "SCHOOL": "ICE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["CHARM"],
+        "DESCRIPTION":
+            "APPLIES A +35% ICE DAMAGE CHARM",
+        "EFFECTS": [
+            {
+                "TYPE": "BLADE",
+                "TARGET": "SELF",
+                "SCHOOL": "ICE",
+                "VALUE": 35,
+                "FAMILY": "ICEBLADE_35"
             }
         ]
     },
@@ -1585,6 +1972,92 @@
                 "SCHOOL": "UNIVERSAL",
                 "VALUE": 55,
                 "FAMILY": "TOWERSHIELD_55"
+            }
+        ]
+    },
+
+    {
+        "ID": "CAMPBANDIT_2B",
+        "SPELL": "CAMP BANDIT",
+        "SCHOOL": "LIFE",
+        "PIPCOST": 3,
+        "SCHOOLPIPS": {"LIFE": 1},
+        "ACCURACY": 90,
+        "TYPE": ["GAMBIT", "DAMAGE"],
+        "DESCRIPTION":
+            "DEALS 315 LIFE DAMAGE TO TARGET AND PUSHES 2 DOTS TO TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "SCHOOL": "LIFE",
+                "VALUE": 315
+            },
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": [
+                    {
+                        "ACTION": "PUSH",
+                        "TARGET": "ENEMY",
+                        "TYPE": "DOT",
+                        "MAX": 2
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "ID": "CIRCLEOFTHORNS_25",
+        "SPELL": "CIRCLE OF THORNS",
+        "SCHOOL": "LIFE",
+        "PIPCOST": 2,
+        "ACCURACY": 100,
+        "TYPE": ["BUBBLE"],
+        "DESCRIPTION":
+            "APPLIES A +25% LIFE DAMAGE GLOBAL",
+        "EFFECTS": [
+            {
+                "TYPE": "BUBBLE",
+                "SCHOOL": "LIFE",
+                "VALUE": 25
+            }
+        ]
+    },
+
+    {
+        "ID": "CIRCLEOFTHORNS_35",
+        "SPELL": "CIRCLE OF THORNS",
+        "SCHOOL": "LIFE",
+        "PIPCOST": 2,
+        "ACCURACY": 100,
+        "TYPE": ["BUBBLE"],
+        "DESCRIPTION":
+            "APPLIES A +35% LIFE DAMAGE GLOBAL",
+        "EFFECTS": [
+            {
+                "TYPE": "BUBBLE",
+                "SCHOOL": "LIFE",
+                "VALUE": 35
+            }
+        ]
+    },
+
+    {
+        "ID": "LIFEBLADE_35",
+        "SPELL": "LIFEBLADE",
+        "SCHOOL": "LIFE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["CHARM"],
+        "DESCRIPTION":
+            "APPLIES A +35% LIFE DAMAGE CHARM",
+        "EFFECTS": [
+            {
+                "TYPE": "BLADE",
+                "TARGET": "SELF",
+                "SCHOOL": "LIFE",
+                "VALUE": 35,
+                "FAMILY": "LIFEBLADE_35"
             }
         ]
     },
@@ -1750,6 +2223,26 @@
     },
 
     {
+        "ID": "MYTHBLADE_35",
+        "SPELL": "MYTHBLADE",
+        "SCHOOL": "MYTH",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["CHARM"],
+        "DESCRIPTION":
+            "APPLIES A +35% MYTH DAMAGE CHARM",
+        "EFFECTS": [
+            {
+                "TYPE": "BLADE",
+                "TARGET": "SELF",
+                "SCHOOL": "MYTH",
+                "VALUE": 35,
+                "FAMILY": "MYTHBLADE_35"
+            }
+        ]
+    },
+
+    {
         "ID": "SCIONOFMYTH_5B",
         "SPELL": "SCION OF MYTH",
         "SCHOOL": "MYTH",
@@ -1877,6 +2370,42 @@
                 "TARGET": "ENEMY",
                 "SCHOOL": "MYTH",
                 "VALUE": 545
+            }
+        ]
+    },
+
+    {
+        "ID": "TIMEOFLEGEND_25",
+        "SPELL": "TIME OF LEGEND",
+        "SCHOOL": "MYTH",
+        "PIPCOST": 2,
+        "ACCURACY": 100,
+        "TYPE": ["BUBBLE"],
+        "DESCRIPTION":
+            "APPLIES A +25% MYTH DAMAGE GLOBAL",
+        "EFFECTS": [
+            {
+                "TYPE": "BUBBLE",
+                "SCHOOL": "MYTH",
+                "VALUE": 25
+            }
+        ]
+    },
+
+    {
+        "ID": "TIMEOFLEGEND_35",
+        "SPELL": "TIME OF LEGEND",
+        "SCHOOL": "MYTH",
+        "PIPCOST": 2,
+        "ACCURACY": 100,
+        "TYPE": ["BUBBLE"],
+        "DESCRIPTION":
+            "APPLIES A +35% MYTH DAMAGE GLOBAL",
+        "EFFECTS": [
+            {
+                "TYPE": "BUBBLE",
+                "SCHOOL": "MYTH",
+                "VALUE": 35
             }
         ]
     },
@@ -2120,6 +2649,62 @@
                     "SCHOOL": "UNIVERSAL",
                     "VALUE": 15
                 }
+            }
+        ]
+    },
+
+    {
+        "ID": "DARKWIND_25",
+        "SPELL": "DARKWIND",
+        "SCHOOL": "STORM",
+        "PIPCOST": 2,
+        "ACCURACY": 100,
+        "TYPE": ["BUBBLE"],
+        "DESCRIPTION":
+            "APPLIES A +25% STORM DAMAGE GLOBAL",
+        "EFFECTS": [
+            {
+                "TYPE": "BUBBLE",
+                "SCHOOL": "STORM",
+                "VALUE": 25
+            }
+        ]
+    },
+
+    {
+        "ID": "DARKWIND_35",
+        "SPELL": "DARKWIND",
+        "SCHOOL": "STORM",
+        "PIPCOST": 2,
+        "ACCURACY": 100,
+        "TYPE": ["BUBBLE"],
+        "DESCRIPTION":
+            "APPLIES A +35% STORM DAMAGE GLOBAL",
+        "EFFECTS": [
+            {
+                "TYPE": "BUBBLE",
+                "SCHOOL": "STORM",
+                "VALUE": 35
+            }
+        ]
+    },
+
+    {
+        "ID": "STORMBLADE_35",
+        "SPELL": "STORMBLADE",
+        "SCHOOL": "STORM",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["CHARM"],
+        "DESCRIPTION":
+            "APPLIES A +35% STORM DAMAGE CHARM",
+        "EFFECTS": [
+            {
+                "TYPE": "BLADE",
+                "TARGET": "SELF",
+                "SCHOOL": "STORM",
+                "VALUE": 35,
+                "FAMILY": "STORMBLADE_35"
             }
         ]
     },
