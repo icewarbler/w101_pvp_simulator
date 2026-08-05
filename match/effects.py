@@ -1,4 +1,5 @@
 import json
+from .deck import Hand
 from .dataloader import load_json
 
 class Effect():
@@ -122,6 +123,33 @@ class Percent_Damage:
     type = "PERCENT_DAMAGE"
 
     categories = {"DAMAGE", "PERCENT_DAMAGE"}
+
+    @classmethod
+    def from_json(cls, effect):
+        return cls(effect["TARGET"], effect["VALUE"])
+    
+    def __init__(
+            self,
+            target,
+            value
+    ):
+        self.target = target
+        self.value = value
+
+    def __str__(self):
+        return f"{self.type}: {self.value}"
+    
+    def store_at(self):
+        return None
+    
+    def apply(self, match, caster, enemy, context):
+        match.do_damage(caster, enemy, self, context)
+
+@Effect.register("DETONATE_DAMAGE")
+class Detonate_Damage:
+    type = "DETONATE_DAMAGE"
+
+    categories = {"DAMAGE", "DETONATE_DAMAGE"}
 
     @classmethod
     def from_json(cls, effect):
@@ -651,7 +679,7 @@ class Backlash(Effect):
 
     def expired(self):
         return self.duration <= 1
-
+    
 @Effect.register("GAMBIT")
 class Gambit(Effect):
     type = "GAMBIT"
@@ -660,9 +688,9 @@ class Gambit(Effect):
 
     @classmethod
     def from_json(cls, effect):
-        return cls(effect["CAUSE"], effect["PER_EFFECT"])
+        return cls(effect["CAUSE"], effect.get("PER_EFFECT"))
     
-    def __init__(self, cause, per_effect):
+    def __init__(self, cause, per_effect=None):
         self.cause = cause
         self.per_effect = per_effect
 
@@ -674,6 +702,88 @@ class Gambit(Effect):
 
     def apply(self, match, caster, enemy, context):
         match.play_gambit(caster, enemy, self, context)
+
+# pivots include:
+# - GAMBIT: removes a helpful effect from the field
+# - EXTEND: extends the active time of a helpful effect (typically used to increase the ticks of a DOT)
+# - DETONATE: explodes a DOT effect on the target for a percentage of its total remaining damage
+@Effect.register("PIVOT")
+class Pivot(Effect):
+    type = "PIVOT"
+
+    categories = {"GAMBIT", "PIVOT"}
+
+    @classmethod
+    def from_json(cls, effect):
+        return cls(effect["CAUSE"], effect.get("PER_EFFECT"))
+    
+    def __init__(self, cause, per_effect=None):
+        self.cause = cause
+        self.per_effect = per_effect
+
+    def __str__(self):
+        return f"{self.type}"
+    
+    def store_at(self):
+        return None
+
+    def apply(self, match, caster, enemy, context):
+        match.play_pivot(caster, enemy, self, context)
+
+# counters include:
+# - CLEAR: removes a harmful effect from the field
+# - PUSH: moves a harmful effect from the caster to the target (typically used to get rid of a DOT)
+@Effect.register("COUNTER")
+class counter(Effect):
+    type = "COUNTER"
+
+    categories = {"GAMBIT", "COUNTER"}
+
+    @classmethod
+    def from_json(cls, effect):
+        return cls(effect["CAUSE"], effect.get("PER_EFFECT"))
+    
+    def __init__(self, cause, per_effect=None):
+        self.cause = cause
+        self.per_effect = per_effect
+
+    def __str__(self):
+        return f"{self.type}"
+    
+    def store_at(self):
+        return None
+
+    def apply(self, match, caster, enemy, context):
+        match.play_counter(caster, enemy, self, context)
+
+
+# these don't remove anything from the field, but instead modify the effects of the caster or target
+# - ECHO: copies a targets helpful effect
+# - SWAP: swaps an effect of a certain type with the target
+# - STEAL: takes a target's helpful effect and moves it to the caster
+# - DETONATE: explodes a DOT effect on the target for a percentage of its total remaining damage
+@Effect.register("CONDITIONAL")
+class Conditional(Effect):
+    type = "CONDITIONAL"
+
+    categories = {"GAMBIT", "CONDITIONAL"}
+
+    @classmethod
+    def from_json(cls, effect):
+        return cls(effect["CAUSE"], effect.get("PER_EFFECT"))
+    
+    def __init__(self, cause, per_effect = None):
+        self.cause = cause
+        self.per_effect = per_effect
+
+    def __str__(self):
+        return f"{self.type}"
+    
+    def store_at(self):
+        return None
+
+    def apply(self, match, caster, enemy, context):
+        match.play_conditional(caster, enemy, self, context)
 
 @Effect.register("IF_GAMBIT")
 class Gambit(Effect):
@@ -923,24 +1033,3 @@ class Pip():
     
     def store_at(self):
         return "PLAYER"
-
-class Hand:
-    max_cards = 7
-
-    def __init__(self):
-        self.cards = []
-
-    def __str__(self):
-        return "\n".join(self.cards)
-
-    def add(self, card):
-        if card is None:
-            return
-        
-        self.cards.append(card)
-    
-    def delete(self, card):
-        if card is None:
-            return
-        
-        self.cards.remove(card)

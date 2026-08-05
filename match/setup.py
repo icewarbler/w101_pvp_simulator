@@ -2,6 +2,7 @@ import json
 from .player import Player
 from .match import Match
 from .dataloader import load_json
+from .deck import Deck
 
 def create_matches(players_file, matchups_file):
     players = load_json(players_file)
@@ -38,6 +39,16 @@ def create_human_match(players_file):
     return Match(p1, p2, 0)
 
 def create_player(player_data, deck=False):
+    decks = load_json("json_data/decks.json")
+
+    deck_lookup = { deck["SCHOOL"]: deck for deck in decks }
+
+    p_deck = deck_lookup[player_data["SCHOOL"]]
+
+ #   print(p_deck["SPELLS"])
+
+ #   my_deck = Deck(p_deck["SPELLS"])
+
     if deck:
         return Player(
             player_data["NAME"],
@@ -48,7 +59,8 @@ def create_player(player_data, deck=False):
             player_data["OUTGOING_DAMAGE"],
             player_data["INCOMING_RESIST"],
             player_data["PIERCE"],
-            player_data["DECK"]
+            p_deck
+           # player_data["DECK"]
         )
     else:
         return Player(

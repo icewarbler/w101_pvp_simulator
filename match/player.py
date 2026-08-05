@@ -3,6 +3,8 @@ from .effects import DOT
 from .effects import Bomb_DOT
 from .effects import Charm
 from .effects import Ward
+from .deck import Deck
+from .deck import Hand
 import random
 import json
 import math
@@ -318,7 +320,9 @@ class Player:
         used_families = set()
 
 
-        for ward in enemy_wards:
+        # backwards because we want to remove most recent trap/shield
+        for ward in enemy_wards[::-1]:
+            print(f"ward: {ward}")
             if ward.school in (damage_school, "UNIVERSAL"):
                 if ward.family in used_families:
                     continue
@@ -383,52 +387,52 @@ class Player:
     def delete_card(self, card):
         self.hand.delete(card)
 
-class Deck:
-    def __init__(self, deck):
-        self.cards = []
-        max_cards = 7
-        hand = []
+# class Deck:
+#     def __init__(self, deck):
+#         self.cards = []
+#         max_cards = 7
+#         hand = []
 
-        for spell, count in deck.items():
-            self.cards.extend([spell] * count)
+#         for spell, count in deck.items():
+#             self.cards.extend([spell] * count)
         
-        random.shuffle(self.cards)
+#         random.shuffle(self.cards)
 
-    def __str__(self):
-        return "\n".join(self.cards)
+#     def __str__(self):
+#         return "\n".join(self.cards)
     
-    def draw(self):
-        if not self.cards:
-            return None
+#     def draw(self):
+#         if not self.cards:
+#             return None
         
-        return self.cards.pop()
+#         return self.cards.pop()
     
-    def delete(self, card):
-        if card is None:
-            return
+#     def delete(self, card):
+#         if card is None:
+#             return
         
-        self.cards.remove(card)
+#         self.cards.remove(card)
 
-class Hand:
-    max_cards = 7
+# class Hand:
+#     max_cards = 7
 
-    def __init__(self):
-        self.cards = []
+#     def __init__(self):
+#         self.cards = []
 
-    def __str__(self):
-        return "\n".join(self.cards)
+#     def __str__(self):
+#         return "\n".join(self.cards)
 
-    def add(self, card):
-        if card is None:
-            return
+#     def add(self, card):
+#         if card is None:
+#             return
         
-        if len(self.cards) >= self.max_cards:
-            raise ValueError("Hand is full!")
+#         if len(self.cards) >= self.max_cards:
+#             raise ValueError("Hand is full!")
         
-        self.cards.append(card)
+#         self.cards.append(card)
     
-    def delete(self, card):
-        if card is None:
-            return
+#     def delete(self, card):
+#         if card is None:
+#             return
         
-        self.cards.remove(card)
+#         self.cards.remove(card)

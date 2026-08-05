@@ -253,10 +253,7 @@
                         "TARGET": "ENEMY",
                         "TYPE": "DOT"
                     }
-                ],
-                "PER_EFFECT": {
-                    "TYPE": "DOT"
-                }
+                ]
             }
         ]
     },
@@ -691,10 +688,7 @@
                         "TARGET": "ENEMY",
                         "MAX": 1
                     }
-                ],
-                "PER_EFFECT": {
-                    "TYPE": "WEAKNESS"
-                }
+                ]
             }
         ]
     },
@@ -783,12 +777,7 @@
                         "TARGET": "ENEMY",
                         "SCHOOL": "REG"
                     }
-                ],
-                "PER_EFFECT": {
-                    "TYPE": "PIP",
-                    "TARGET": "SELF",
-                    "SCHOOL": "REG"
-                }
+                ]
             }
         ]
     },
@@ -1484,14 +1473,10 @@
                         "ACTION": "DETONATE",
                         "TYPE": "DOT",
                         "TARGET": "ENEMY",
-                        "MAX": 2
+                        "MAX": 2,
+                        "VALUE": 145
                     }
-                ],
-                "PER_EFFECT": {
-                    "TYPE": "DETONATE_DAMAGE",
-                    "TARGET": "ENEMY",
-                    "VALUE": 145
-                }
+                ]
             }
         ]
     },
@@ -1621,13 +1606,10 @@
                         "ACTION": "DETONATE",
                         "TARGET": "ENEMY",
                         "TYPE": "BOMB_DOT",
-                        "MAX": 1
+                        "MAX": 1,
+                        "VALUE": 100
                     }
-                ],
-                "PER_EFFECT": {
-                    "TYPE": "DETONATE",
-                    "VALUE": 100
-                }
+                ]
             }
         ]
     },
@@ -1655,13 +1637,10 @@
                         "ACTION": "EXTEND",
                         "TARGET": "ENEMY",
                         "TYPE": "BOMB_DOT",
-                        "MAX": 1
+                        "MAX": 1,
+                        "VALUE": 2
                     }
-                ],
-                "PER_EFFECT": {
-                    "TYPE": "EXTEND",
-                    "VALUE": 2
-                }
+                ]
             }
         ]
     },
@@ -2486,7 +2465,7 @@
         "MULTI": true,
         "TYPE": ["DAMAGE", "SINGLE_DAMAGE", "GAMBIT"],
         "DESCRIPTION":
-            "REMOVES UP TO 4 SHIELDS FROM SELECTED ENEMIES TO DEAL 115 FIRE DAMAGE OVER 3 ROUNDS TO SELECTED ENEMIES PER TRAP REMOVED, THEN DEALS 415 SPLIT MYTH DAMAGE AMONG SELECTED ENEMIES",
+            "REMOVES UP TO 4 SHIELDS FROM SELECTED ENEMIES TO DEAL 115 FIRE DAMAGE OVER 3 ROUNDS TO SELECTED ENEMIES PER SHIELD REMOVED, THEN DEALS 415 SPLIT MYTH DAMAGE AMONG SELECTED ENEMIES",
         "EFFECTS": [
             {
                 "TYPE": "GAMBIT",

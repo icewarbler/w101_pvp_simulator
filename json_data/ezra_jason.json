@@ -231,7 +231,7 @@
     {
         "ROUND": 21,
         "CASTER": "PLAYER2",
-        "SPELL": "A-BAAHH-CALYPSE_T2",
+        "SPELL": "A-BAAHH-CALYPSE_2",
         "TARGET": "PLAYER1",
         "SELECTED_SCHOOL": "FIRE",
         "GAIN_SHAD": false

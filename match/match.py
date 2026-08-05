@@ -170,7 +170,7 @@ class Match:
                         to_remove = []
                         gambit_type = condition.get("TYPE")
                         
-                        for effect in enemy_player.get_effects():
+                        for effect in enemy_player.effects[::-1]:
                             print(f"effect.type: {effect.type}, gambit_type: {gambit_type}")
                             if effect.type == gambit_type:
                                 to_remove.append(effect)
@@ -200,6 +200,7 @@ class Match:
                 effect_class = Effect.registry[todo["TYPE"]]
                 effect_obj = effect_class.from_json(todo)
                 effect_obj.apply(self, caster_player, enemy_player, context)
+    
 
     def play_gambit(self, caster_player, enemy_player, gambit, context):
         gambit_cause = gambit.cause[0]
@@ -216,7 +217,6 @@ class Match:
         elif effect_target == "ENEMY":
             abs_target = enemy_player
                 
-
         match gambit_cause.get("ACTION"):
             case "STEAL":
                 effect_count = 0
@@ -291,16 +291,13 @@ class Match:
                         continue
 
                     abs_target.add_effect(new_effect)
-                 #   hiii = Shield(per_effect_school, per_effect_value, per_effect_family)
 
                     print(f"Adding effect {new_effect} to {abs_target.name}")
-
-                  #  self.add_effect(abs_target, hiii)
 
             case "SWAP":
                 from_caster = []
                 gambit_type = gambit_cause.get("TYPE")
-                for effect in caster_player.get_effects():
+                for effect in caster_player.effects[:-1]:
                     if effect.type == gambit_type:
                         from_caster.append(effect)
                         
@@ -341,10 +338,8 @@ class Match:
 
                 amount = len(to_explode)
 
-                gambit_effect = gambit.per_effect
-
                 for effect in to_explode:
-                    multiplier = gambit_effect.get("VALUE")
+                    multiplier = gambit_cause.get("VALUE")
                     abs_target.explode_dot(effect, multiplier)
 
             case "GAMBIT":
@@ -358,7 +353,7 @@ class Match:
                 elif cause_target == "ENEMY":
                     abs_target = enemy_player
 
-                for effect in caster_player.get_effects():
+                for effect in caster_player.effects[::-1]:
                     if effect.type == gambit_type:
                         to_remove.append(effect)
                         
@@ -392,7 +387,8 @@ class Match:
             case "CLEAR":
                 to_remove = []
                 gambit_type = gambit_cause.get("TYPE")
-                for effect in abs_target.get_effects():
+                for effect in abs_target.effects[::-1]:
+                    print(f"CLEARING effect: {effect}")
                     if effect.type == gambit_type:
                         to_remove.append(effect)
                         
@@ -409,8 +405,6 @@ class Match:
                 gambit_effect = gambit.per_effect
 
                 per_effect_type = gambit_effect.get("TYPE")
-
-                gambit_effect = gambit.per_effect
 
                 effect_class = Effect.registry[gambit_effect["TYPE"]]
                 effect_obj = effect_class.from_json(gambit_effect)
@@ -776,8 +770,8 @@ class Match:
             turn = 0
 
             self.p1.deck = Deck(self.p1.deck)
-            # print(f"{self.p1.name} DECK:")
-            # print(self.p1.deck)
+          #  print(f"{self.p1.name} DECK:")
+          #  print(self.p1.deck)
           #  print("----")
 
 
