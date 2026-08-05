@@ -1,0 +1,140 @@
+[
+    {
+        "ID": "FIREDECK1",
+        "SCHOOL": "FIRE",
+        "SPELLS": {
+            "A-BAAHH-CALYPSE_2": 4,
+            "BRIMSTONEREVENANT": 4,
+            "FIREBLADE_35": 6,
+            "HELEPHANT_5B": 4,
+            "ATTENUATE": 4,
+            "STARFALL": 4
+        },
+        "TC": {
+            "TOWERSHIELD_50": 3
+        }
+    },
+    {
+        "ID": "STORMDECK1",
+        "SCHOOL": "STORM",
+        "SPELLS": {
+            "A-BAAHH-CALYPSE_2": 4,
+            "BRIMSTONEREVENANT": 4,
+            "FIREBLADE_35": 6,
+            "HELEPHANT_5B": 4,
+            "ATTENUATE": 4,
+            "STARFALL": 4
+        },
+        "TC": {
+            "TOWERSHIELD_50": 3
+        }
+    },
+    {
+        "ID": "MYTHDECK1",
+        "SCHOOL": "MYTH",
+        "SPELLS": {
+            "MINOTAUR_2C": 4,
+            "SCIONOFMYTH_5B": 4,
+            "STONECOLOSSUS_5B": 3,
+            "ATTENUATE": 4,
+            "STARFALL": 4,
+            "DARKFIEND": 3
+        },
+        "TC": {
+            "WEAKNESS_25": 3
+        }
+    },
+    {
+        "ID": "BALANCEDECK1",
+        "SCHOOL": "BALANCE",
+        "SPELLS": {
+            "BALANCEBLADE_25": 4,
+            "CHIMERA_5B": 4,
+            "ELEMENTALSHIELD_50": 4,
+            "GEARHEADDESTROYER_5C": 3,
+            "HYDRA_5C": 3,
+            "LOCUSTSWARM_2B": 4,
+            "LOREMASTER_3B": 3,
+            "ONISSHADOW": 5,
+            "SCARAB_2C": 4,
+            "STEALPIP": 1,
+            "DARKSURGE": 2,
+            "DARKFIEND": 3
+        },
+        "TC": {
+            "EVILSNOWMAN_2B": 3
+        }
+    },
+    {
+        "ID": "LIFEDECK1",
+        "SCHOOL": "LIFE",
+        "SPELLS": {
+            "BALANCEBLADE_25": 4,
+            "CHIMERA_5B": 4,
+            "ELEMENTALSHIELD_50": 4,
+            "GEARHEADDESTROYER_5C": 3,
+            "HYDRA_5C": 3,
+            "LOCUSTSWARM_2B": 4,
+            "LOREMASTER_3B": 3,
+            "ONISSHADOW": 5,
+            "SCARAB_2C": 4,
+            "STEALPIP": 1,
+            "DARKSURGE": 2,
+            "DARKFIEND": 3
+        },
+        "TC": {
+            "EVILSNOWMAN_2B": 3
+        }
+    },
+    {
+        "ID": "ICEDECK1",
+        "SCHOOL": "ICE",
+        "SPELLS": {
+            "BALANCEBLADE_25": 4,
+            "CHIMERA_5B": 4,
+            "ELEMENTALSHIELD_50": 4,
+            "GEARHEADDESTROYER_5C": 3,
+            "HYDRA_5C": 3,
+            "LOCUSTSWARM_2B": 4,
+            "LOREMASTER_3B": 3,
+            "ONISSHADOW": 5,
+            "SCARAB_2C": 4,
+            "STEALPIP": 1,
+            "DARKSURGE": 2,
+            "DARKFIEND": 3
+        },
+        "TC": {
+            "EVILSNOWMAN_2B": 3
+        }
+    },
+    {
+        "ID": "DEATHDECK1",
+        "SCHOOL": "DEATH",
+        "SPELLS": {
+            "CAMPBANDIT_2B": 3,
+            "HELEPHANT_5B": 7,
+            "ATTENUATE": 4,
+            "BRACE": 4,
+            "STABILIZE": 4,
+            "BANSHEE_2C": 4,
+            "DEADZONE": 4,
+            "EMPOWER": 2,
+            "DOOMONI": 2,
+            "GRIMREADER_5B": 4,
+            "MONSTERMASH_2A": 5,
+            "POISON_2B": 5,
+            "VIRULENCE": 1,
+            "MAJORSCOURGE": 4,
+            "DEATHBLADE": 1,
+            "VIRULENTPLAGUE": 1,
+            "SKELETALDRAGON_2B": 1,
+            "SPIRITSHIELD": 1,
+            "SPIRITBLADE_35": 1,
+            "BLADEDILUTION": 1,
+            "DARKSURGE": 1
+        },
+        "TC": {
+            "HELEPHANT_5B": 3
+        }
+    }
+]

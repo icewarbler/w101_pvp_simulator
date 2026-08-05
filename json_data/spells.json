@@ -19,6 +19,35 @@
         ]
     },
     {
+        "ID": "BLADEDILUTION",
+        "SPELL": "BLADE DILUTION",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 1,
+        "ACCURACY": 100,
+        "TYPE": ["GAMBIT", "MANIPULATION"],
+        "DESCRIPTION":
+            "REMOVES UP TO 4 BLADES FROM TARGET TO APPLY A +15% DAMAGE BLADE ON TARGET PER CHARM REMOVED",
+        "EFFECTS": [
+            {
+                "TYPE": "GAMBIT",
+                "CAUSES": [
+                    {
+                        "ACTION": "CLEAR",
+                        "TARGET": "ENEMY",
+                        "TYPE": "BLADE",
+                        "MAX": 4
+                    }
+                ],
+                "PER_EFFECT": {
+                    "TYPE": "BLADE",
+                    "TARGET": "ENEMY",
+                    "SCHOOL": "UNIVERSAL",
+                    "VALUE": 15
+                }
+            }
+        ]
+    },
+    {
         "ID": "CHIMERA_5A",
         "SPELL": "CHIMERA",
         "SCHOOL": "BALANCE",
@@ -288,7 +317,7 @@
         "ACCURACY": 85,
         "TYPE": ["DAMAGE", "GAMBIT", "WARD", "SHIELD"],
         "DESCRIPTION":
-            "SWAPS  UP TO FIVE SHIELDS WITH TARGET THEN DEALS 175 FIRE, ICE, AND STORM DAMAGE",
+            "SWAPS UP TO FIVE SHIELDS WITH TARGET THEN DEALS 175 FIRE, ICE, AND STORM DAMAGE",
         "EFFECTS": [
             {
                 "TYPE": "GAMBIT",
@@ -299,10 +328,7 @@
                         "TARGET": "ENEMY",
                         "MAX": 5
                     }
-                ],
-                "PER_EFFECT": {
-                    "TYPE": "SHIELD"
-                }
+                ]
             },
             {
                 "TYPE": "SINGLE_DAMAGE",
@@ -383,6 +409,40 @@
                 "SCHOOL": "UNIVERSAL",
                 "VALUE": 35,
                 "FAMILY": "LOREMASTER_UNI35"
+            }
+        ]
+    },
+
+    {
+        "ID": "SPIRITBLADE_35",
+        "SPELL": "SPIRIT BLADE",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["CHARM", "BLADE"],
+        "DESCRIPTION":
+            "APPLIES A +35% DEATH, MYTH, AND LIFE DAMAGE BLADE",
+        "EFFECTS": [
+            {
+                "TYPE": "BLADE",
+                "TARGET": "SELF",
+                "SCHOOL": "DEATH",
+                "VALUE": 35,
+                "FAMILY": "SPIRITBLADE_DEATH35"
+            },
+            {
+                "TYPE": "BLADE",
+                "TARGET": "SELF",
+                "SCHOOL": "MYTH",
+                "VALUE": 35,
+                "FAMILY": "SPIRITBLADE_MYTH35"
+            },
+            {
+                "TYPE": "BLADE",
+                "TARGET": "SELF",
+                "SCHOOL": "LIFE",
+                "VALUE": 35,
+                "FAMILY": "SPIRITBLADE_LIFE35"
             }
         ]
     },
@@ -639,6 +699,39 @@
         ]
     },
     {
+        "ID": "SPIRITSHIELD_50",
+        "SPELL": "SPIRIT SHIELD",
+        "SCHOOL": "BALANCE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["WARD", "SHIELD"],
+        "DESCRIPTION":
+            "APPLIES A -50% DEATH, -50% MYTH, AND -50% LIFE SHIELD TO TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "SHIELD",
+                "TARGET": "SELF",
+                "SCHOOL": "DEATH",
+                "VALUE": 50,
+                "FAMILY": "SPIRITSHIELD_DEATHSHIELD50"
+            },
+            {
+                "TYPE": "SHIELD",
+                "TARGET": "SELF",
+                "SCHOOL": "MYTH",
+                "VALUE": 50,
+                "FAMILY": "SPIRITSHIELD_MYTHSHIELD50"
+            },
+            {
+                "TYPE": "SHIELD",
+                "TARGET": "SELF",
+                "SCHOOL": "LIFE",
+                "VALUE": 50,
+                "FAMILY": "SPIRITSHIELD_LIFESHIELD50"
+            }
+        ]
+    },
+    {
         "ID": "SPIRITWEAKNESS_30",
         "SPELL": "SPIRIT WEAKNESS",
         "SCHOOL": "BALANCE",
@@ -677,12 +770,12 @@
         "SCHOOL": "BALANCE",
         "PIPCOST": 0,
         "ACCURACY": 100,
-        "TYPE": ["GAMBIT", "MANIPULATION"],
+        "TYPE": ["CONDITIONAL", "GAMBIT", "MANIPULATION"],
         "DESCRIPTION":
             "STEALS A PIP FROM TARGET AND GIVES IT TO CASTER",
         "EFFECTS": [
             {
-                "TYPE": "GAMBIT",
+                "TYPE": "CONDITIONAL",
                 "CAUSE": [
                     {
                         "ACTION": "STEAL",
@@ -800,7 +893,7 @@
         "SCHOOL": "DEATH",
         "PIPCOST": 3,
         "ACCURACY": 85,
-        "TYPE": ["DAMAGE"],
+        "TYPE": ["GAMBIT", "DAMAGE", "CLEAR"],
         "DESCRIPTION":
             "DEALS 220 DEATH DAMAGE TO TARGET AND REMOVES UP TO 2 BLADES FROM TARGET TO APPLY A -25% DAMAGE CHARM ON TARGET PER CHARM REMOVED",
         "EFFECTS": [
@@ -899,7 +992,7 @@
 
     {
         "ID": "DEATHBLADE_35",
-        "SPELL": "DEATHBLADE",
+        "SPELL": "DEATH BLADE",
         "SCHOOL": "DEATH",
         "PIPCOST": 0,
         "ACCURACY": 100,
@@ -913,6 +1006,46 @@
                 "SCHOOL": "DEATH",
                 "VALUE": 35,
                 "FAMILY": "DEATHBLADE_35"
+            }
+        ]
+    },
+
+    {
+        "ID": "DOOMONI",
+        "SPELL": "DOOM ONI",
+        "SCHOOL": "DEATH",
+        "PIPCOST": 11,
+        "ACCURACY": 85,
+        "TYPE": ["DAMAGE", "IF_GAMBIT"],
+        "DESCRIPTION":
+            "DEALS 900 DEATH DAMAGE OR REMOVES 4 SHIELDS FROM CASTER TO DEAL 1680 DEATH DAMAGE",
+        "EFFECTS": [
+            {
+                "TYPE": "IF_GAMBIT",
+                "CAUSE": [
+                    {
+                        "ACTION": "GAMBIT",
+                        "TARGET": "SELF",
+                        "TYPE": "SHIELD",
+                        "AMOUNT": 4
+                    }
+                ],
+                "THEN": [
+                    {
+                        "TYPE": "SINGLE_DAMAGE",
+                        "TARGET": "ENEMY",
+                        "SCHOOL": "DEATH",
+                        "VALUE": 1680
+                    }
+                ],
+                "ELSE": [
+                    {
+                        "TYPE": "SINGLE_DAMAGE",
+                        "TARGET": "ENEMY",
+                        "SCHOOL": "DEATH",
+                        "VALUE": 900
+                    }
+                ]
             }
         ]
     },
@@ -1040,6 +1173,37 @@
     },
 
     {
+        "ID": "JINNSLARCENY",
+        "SPELL": "JINN'S LARCENY",
+        "SCHOOL": "DEATH",
+        "PIPCOST": 2,
+        "ACCURACY": 100,
+        "TYPE": ["GAMBIT", "CHARM", "BLADE"],
+        "DESCRIPTION":
+            "REMOVES UP TO TWO BLADES FROM TARGET TO APPLY A +30% DEATH DAMAGE BLADE ON CASTER PER BLADE REMOVED",
+        "EFFECTS": [
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": [
+                    {
+                        "ACTION": "CLEAR",
+                        "TARGET": "ENEMY",
+                        "TYPE": "BLADE",
+                        "MAX": 2
+                    }
+                ],
+                "PER_EFFECT": {
+                    "TYPE": "BLADE",
+                    "TARGET": "SELF",
+                    "SCHOOL": "DEATH",
+                    "VALUE": 30,
+                    "FAMILY": "JINNSLARCENY_BLADE30"
+                }
+            }
+        ]
+    },
+
+    {
         "ID": "MACABREJINN",
         "SPELL": "MACABRE JINN",
         "SCHOOL": "DEATH",
@@ -1054,6 +1218,7 @@
                 "CAUSE": [
                     {
                         "ACTION": "GAMBIT",
+                        "TARGET": "SELF",
                         "TYPE": "BLADE",
                         "AMOUNT": 4
                     }
@@ -1098,13 +1263,89 @@
     },
 
     {
+        "ID": "MONSTERMASH_2A",
+        "SPELL": "MONSTER MASH",
+        "SCHOOL": "DEATH",
+        "PIPCOST": 6,
+        "ACCURACY": 85,
+        "TYPE": ["DAMAGE", "GAMBIT"],
+        "DESCRIPTION":
+            "DEALS 485 DEATH DAMAGE THEN GAMBITS UP TO 3 WEAKNESSES FROM TARGET FOR 165 DEATH DAMAGE PER WEAKNESS REMOVED",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "DEATH",
+                "VALUE": 485
+            },
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": [
+                    {
+                        "ACTION": "GAMBIT",
+                        "TYPE": "WEAKNESS",
+                        "TARGET": "ENEMY",
+                        "MAX": 3
+                    }
+                ],
+                "PER_EFFECT": {
+                    "TYPE": "SINGLE_DAMAGE",
+                    "TARGET": "ENEMY",
+                    "SCHOOL": "DEATH",
+                    "VALUE": 165
+                }
+            }
+        ]
+    },
+
+    {
+        "ID": "POISON_2B",
+        "SPELL": "POISON",
+        "SCHOOL": "DEATH",
+        "PIPCOST": 4,
+        "ACCURACY": 85,
+        "TYPE": ["DAMAGE", "GAMBIT", "AURA"],
+        "DESCRIPTION":
+            "DEALS 310 DEATH DAMAGE AND REMOVES A NEGATIVE AURA FROM CASTER TO APPLY A 45% INCOMING DEATH DAMAGE AURA FOR 4 ROUNDS ON TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "SCHOOL": 310,
+                "VALUE": 45
+            },
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": [
+                    {
+                        "ACTION": "CLEAR",
+                        "TYPE": "AURA",
+                        "TARGET": "SELF"
+                    }
+                ],
+                "PER_EFFECT": {
+                    "TYPE": "AURA",
+                    "DURATION": 4,
+                    "TARGET": "ENEMY",
+                    "ADJ": [
+                        {
+                            "TYPE": "TRAP",
+                            "SCHOOL": "DEATH",
+                            "VALUE": 45
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+
+    {
         "ID": "PUTREFECATION",
         "SPELL": "PUTREFACTION",
         "SCHOOL": "DEATH",
         "PIPCOST:": 2,
         "TYPE": ["GAMBIT", "MANIPULATION"],
         "DESCRIPTION":
-            "ENTER DESCRIPTION HERE",
+            "REMOVES UP TO 2 BLADES FROM TARGET TO APPLY A -20% DAMAGE CHARM ON TARGET PER BLADE REMOVED",
         "EFFECTS": [
             {
                 "TYPE": "GAMBIT",
@@ -1115,9 +1356,106 @@
                     }
                 ],
                 "EFFECT": {
-                    "SUBTYPE": "WEAKNESS",
+                    "TYPE": "WEAKNESS",
                     "VALUE": 20
                 }
+            }
+        ]
+    },
+
+    {
+        "ID": "SCIONOFDEATH_2B",
+        "SPELL": "SCION OF DEATH",
+        "SCHOOL": "DEATH",
+        "PIPCOST": 9,
+        "ACCURACY": 85,
+        "TYPE": ["DAMAGE", "HEAL", "GAMBIT"],
+        "DESCRIPTION":
+            "DEALS 665 DEATH DRAIN DAMAGE TO TARGET AND HEALS THE CASTER FOR HALF OF THE DAMAGE DEALT OR REMOVES FOUR WEAKNESSES FROM TARGET TO DEAL 1375 DEATH DRAIN DAMAGE AND HEAL THE CASTER FOR HALF OF THE DAMAGE DEALT",
+        "EFFECTS": [
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": [
+                    {
+                        "ACTION": "CLEAR",
+                        "TARGET": "ENEMY",
+                        "TYPE": "WEAKNESS",
+                        "AMOUNT": 4
+                    }
+                ],
+                "THEN": [
+                    {
+                        "TYPE": "DRAIN_DAMAGE",
+                        "TARGET": "ENEMY",
+                        "SCHOOL": "DEATH",
+                        "VALUE": 1375
+                    }
+                ],
+                "ELSE": [
+                    {
+                        "TYPE": "DRAIN_DAMAGE",
+                        "TARGET": "ENEMY",
+                        "SCHOOL": "DEATH",
+                        "VALUE": 665
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "ID": "SKELETALDRAGON_2B",
+        "SPELL": "SKELETAL DRAGON",
+        "SCHOOL": "DEATH",
+        "PIPCOST": 8,
+        "ACCURACY": 85,
+        "TYPE": ["DAMAGE", "GAMBIT", "CHARM", "BLADE"],
+        "DESCRIPTION":
+            "DEALS 655 DEATH DAMAGE TO TARGET AND REMOVES UP TO SEVEN BLADES FROM TARGET TO APPLY A +30% DEATH DAMAGE BLADE ON CASTER PER BLADE REMOVED",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "DEATH",
+                "VALUE": 655
+            },
+            {
+                "TYPE": "GAMBIT",
+                "CAUSE": [
+                    {
+                        "ACTION": "CLEAR",
+                        "TARGET": "ENEMY",
+                        "TYPE": "BLADE",
+                        "MAX": 7
+                    }
+                ],
+                "PER_EFFECT": {
+                    "TYPE": "BLADE",
+                    "TARGET": "SELF",
+                    "SCHOOL": "DEATH",
+                    "VALUE": 30,
+                    "FAMILY": "SKELETALDRAGON_BLADE30"
+                }
+            }
+        ]
+    },
+
+    {
+        "ID": "VIRULENTPLAGUE",
+        "SPELL": "VIRULENT PLAGUE",
+        "SCHOOL": "DEATH",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["WEAKNESS"],
+        "DESCRIPTION":
+            "APPLIES A -40% DAMAGE CHARM",
+        "EFFECTS": [
+            {
+                "TYPE": "WEAKNESS",
+                "TARGET": "ENEMY",
+                "SCHOOL": "UNIVERSAL",
+                "VALUE": 40,
+                "FAMILY": "WEAKNESS_UNI40"
             }
         ]
     },
@@ -1150,7 +1488,8 @@
                     }
                 ],
                 "PER_EFFECT": {
-                    "SUBTYPE": "SINGLE_DAMAGE",
+                    "TYPE": "DETONATE_DAMAGE",
+                    "TARGET": "ENEMY",
                     "VALUE": 145
                 }
             }
@@ -2256,6 +2595,7 @@
                 "TYPE": "GAMBIT",
                 "CAUSE": [
                     {
+                        "ACTION": "GAMBIT",
                         "TYPE": "TRAP",
                         "TARGET": "ENEMY",
                         "AMOUNT": 4
@@ -2486,6 +2826,43 @@
     },
 
     {
+        "ID": "DARKSHEPARD",
+        "SPELL": "DARK SHEPARD",
+        "SCHOOL": "SHADOW",
+        "PIPCOST": 0,
+        "SHADCOST": 1,
+        "ACCURACY": 100,
+        "TYPE": ["DAMAGE", "CHARM", "MANIPULATION"],
+        "DESCRIPTION":
+            "DEALS 75 SHADOW DAMAGE AND APPLIES THREE -20% DAMAGE WEAKNESSES ON TARGET. REMOVES A HEAL OVER TIME EFFECT FROM TARGET OR STORES +5% MAX HEALTH DAMAGE EACH ROUND FOR THREE ROUNDS. DEALS STORED DAMAGE TO CASTER AFTER THREE ROUNDS",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "SHADOW",
+                "VALUE": 75
+            },
+            {
+                "TYPE": "WEAKNESS",
+                "TARGET": "ENEMY",
+                "SCHOOL": "UNIVERSAL",
+                "VALUE": 20,
+                "AMOUNT": 3,
+                "FAMILY": "DARKSHEPARD_WEAKNESS20"
+            },
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 3,
+                "VALUE_PER_TURN": 5,
+                "CONDITION": {
+                    "EFFECT": "HOT",
+                    "TARGET": "ENEMY"
+                }
+            }
+        ]
+    },
+
+    {
         "ID": "DARKSURGE",
         "SPELL": "DARK SURGE",
         "SCHOOL": "SHADOW",
@@ -2510,6 +2887,51 @@
                 "TYPE": "PERCENT_DAMAGE",
                 "TARGET": "SELF",
                 "VALUE": 5
+            }
+        ]
+    },
+
+    {
+        "ID": "DARKTRICKSTER",
+        "SPELL": "DARK TRICKSTER",
+        "SCHOOL": "SHADOW",
+        "PIPCOST": 0,
+        "SHADCOST": 1,
+        "ACCURACY": 100,
+        "TYPE": ["DAMAGE", "WARD", "CHARM", "MANIPULATION"],
+        "DESCRIPTION":
+            "DEALS 75 SHADOW DAMAGE AND APPLIES TWO +35% DAMAGE WARDS OF CASTER'S WEAVING SCHOOL ON TARGET AND APPLIES TWO +35% ARMOR PIERCING CHARMS OF CASTER'S SCHOOL ON CASTER. REMOVES A SHIELD FROM CASTER OR STORES +5% MAX HEALTH DAMAGE EACH ROUND FOR THREE ROUNDS. DEALS STORED DAMAGE TO CASTER AFTER THREE ROUNDS",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "SHADOW",
+                "VALUE": 75
+            },
+            {
+                "TYPE": "SHIELD",
+                "TARGET": "ENEMY",
+                "SCHOOL": "SECONDARY_SCHOOL",
+                "VALUE": 35,
+                "AMOUNT": 2,
+                "FAMILY": "DARKTRICKSTER_SHIELD35"
+            },
+            {
+                "TYPE": "PIERCE_BLADE",
+                "TARGET": "SELF",
+                "SCHOOL": "ALLY_SCHOOL",
+                "VALUE": 35,
+                "AMOUNT": 2,
+                "FAMILY": "DARKTRICKSTER_PIERCE35"
+            },
+            {
+                "TYPE": "BACKLASH",
+                "DURATION": 3,
+                "VALUE_PER_TURN": 5,
+                "CONDITION": {
+                    "EFFECT": "SHIELD",
+                    "TARGET": "SELF"
+                }
             }
         ]
     },
@@ -2566,6 +2988,36 @@
     },
 
     {
+        "ID": "SLEETSTORM",
+        "SPELL": "SLEET STORM",
+        "SCHOOL": "STAR",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["AURA"],
+        "DESCRIPTION":
+            "APPLIES A +25% OUTGOING ICE DAMAGE, +5% ACCURACY, AND +10% INCOMING FIRE DAMAGE AURA FOR 4 ROUNDS",
+        "EFFECT": [
+            {
+                "TYPE": "AURA",
+                "DURATION": 4,
+                "TARGET": "SELF",
+                "ADJ": [
+                    {
+                        "TYPE": "BLADE",
+                        "SCHOOL": "LIFE",
+                        "VALUE": 25
+                    },
+                    {
+                        "TYPE": "TRAP",
+                        "SCHOOL": "DEATH",
+                        "VALUE": 10
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
         "ID": "FURNACE",
         "SPELL": "FURNACE",
         "SCHOOL": "STAR",
@@ -2596,6 +3048,114 @@
                         "TYPE": "TRAP",
                         "SUBTYPE": "DAMAGE",
                         "SCHOOL": "ICE",
+                        "VALUE": 10
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "ID": "GALVANICFIELD",
+        "SPELL": "GALVANIC FIELD",
+        "SCHOOL": "STAR",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["AURA"],
+        "DESCRIPTION":
+            "APPLIES A +25% OUTGOING STORM DAMAGE, +5% ACCURACY, AND +10% INCOMING ICE DAMAGE AURA FOR 4 ROUNDS",
+        "EFFECT": [
+            {
+                "TYPE": "AURA",
+                "DURATION": 4,
+                "TARGET": "SELF",
+                "ADJ": [
+                    {
+                        "TYPE": "BLADE",
+                        "SUBTYPE": "DAMAGE",
+                        "SCHOOL": "FIRE",
+                        "VALUE": 25
+                    },
+                    {
+                        "TYPE": "BLADE",
+                        "SUBTYPE": "ACCURACY",
+                        "SCHOOL": "UNIVERSAL",
+                        "VALUE": 5
+                    },
+                    {
+                        "TYPE": "TRAP",
+                        "SUBTYPE": "DAMAGE",
+                        "SCHOOL": "ICE",
+                        "VALUE": 10
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "ID": "PUNISHMENT",
+        "SPELL": "PUNISHMENT",
+        "SCHOOL": "STAR",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["AURA"],
+        "DESCRIPTION":
+            "APPLIES A +25% OUTGOING DAMAGE, +5% INCOMING DEATH, LIFE, AND MYTH DAMAGE, AND +5% POWER PIP CHANCE FOR 4 ROUNDS",
+        "EFFECT": [
+            {
+                "TYPE": "AURA",
+                "DURATION": 4,
+                "TARGET": "SELF",
+                "ADJ": [
+                    {
+                        "TYPE": "BLADE",
+                        "SCHOOL": "BALANCE",
+                        "VALUE": 25
+                    },
+                    {
+                        "TYPE": "TRAP",
+                        "SCHOOL": "DEATH",
+                        "VALUE": 5
+                    },
+                    {
+                        "TYPE": "TRAP",
+                        "SCHOOL": "LIFE",
+                        "VALUE": 5
+                    },
+                    {
+                        "TYPE": "TRAP",
+                        "SCHOOL": "MYTH",
+                        "VALUE": 5
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "ID": "SLEETSTORM",
+        "SPELL": "SLEET STORM",
+        "SCHOOL": "STAR",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["AURA"],
+        "DESCRIPTION":
+            "APPLIES A +25% OUTGOING ICE DAMAGE, +5% ACCURACY, AND +10% INCOMING FIRE DAMAGE AURA FOR 4 ROUNDS",
+        "EFFECT": [
+            {
+                "TYPE": "AURA",
+                "DURATION": 4,
+                "TARGET": "SELF",
+                "ADJ": [
+                    {
+                        "TYPE": "BLADE",
+                        "SCHOOL": "ICE",
+                        "VALUE": 25
+                    },
+                    {
+                        "TYPE": "TRAP",
+                        "SCHOOL": "FIRE",
                         "VALUE": 10
                     }
                 ]
@@ -2649,6 +3209,36 @@
                     "SCHOOL": "UNIVERSAL",
                     "VALUE": 15
                 }
+            }
+        ]
+    },
+
+    {
+        "ID": "VIRULENCE",
+        "SPELL": "VIRULENCE",
+        "SCHOOL": "STAR",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["AURA"],
+        "DESCRIPTION":
+            "APPLIES A +25% OUTGOING DEATH DAMAGE, +5% POWER PIP CHANCE, AND +10% INCOMING LIFE DAMAGE AURA FOR 4 ROUNDS",
+        "EFFECT": [
+            {
+                "TYPE": "AURA",
+                "DURATION": 4,
+                "TARGET": "SELF",
+                "ADJ": [
+                    {
+                        "TYPE": "BLADE",
+                        "SCHOOL": "DEATH",
+                        "VALUE": 25
+                    },
+                    {
+                        "TYPE": "TRAP",
+                        "SCHOOL": "LIFE",
+                        "VALUE": 10
+                    }
+                ]
             }
         ]
     },
