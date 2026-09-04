@@ -1,4 +1,4 @@
-# Wizard101 PvP simulator
+# Fanmade Wizard101 PvP simulator
 A Python simulator that models Wizard101 PvP battles, including a spell system, effect processing system, and framework for machine learning.
 
 ## Current Status
