@@ -1482,7 +1482,7 @@
     },
 
     {
-        "ID": "AMMUT_T4B",
+        "ID": "AMMUT_4B",
         "SPELL": "AMMUT",
         "SCHOOL": "FIRE",
         "PIPCOST": 6,
@@ -1523,7 +1523,7 @@
         "SPELL": "BRIMSTONE REVENANT",
         "SCHOOL": "FIRE",
         "PIPCOST": 2,
-        "SCHOOLPIPS": "FIRE",
+        "SCHOOLPIPS": {"FIRE":1},
         "TYPE": ["DAMAGE", "MANIPULATION"],
         "ACCURACY": 75,
         "DESCRIPTION":
@@ -1770,7 +1770,7 @@
                 "VALUE": 180
             },
             {
-                "TYPE": "BOMB_DOT",
+                "TYPE": "DOT",
                 "TARGET": "ENEMY",
                 "SCHOOL": "FIRE",
                 "DURATION": 5,
@@ -1800,7 +1800,7 @@
     },
 
     {
-        "ID": "KINGARTORIUS_FIRE_T2G",
+        "ID": "KINGARTORIUS_FIRE_2G",
         "SPELL": "KING ARTORIUS (FIRE)",
         "SCHOOL": "FIRE",
         "PIPCOST": 8,
@@ -1867,6 +1867,25 @@
                 "TARGET": "ENEMY",
                 "SCHOOL": "FIRE",
                 "VALUE": 540
+            }
+        ]
+    },
+
+    {
+        "ID": "SUPERSCORCH",
+        "SPELL": "SUPER SCHORCH",
+        "SCHOOL": "FIRE",
+        "PIPCOST": 0,
+        "ACCURACY": 100,
+        "TYPE": ["DAMAGE", "SINGLE_DAMAGE"],
+        "DESCRIPTION":
+            "DEALS 180 FIRE DAMAGE TO TARGET",
+        "EFFECTS": [
+            {
+                "TYPE": "SINGLE_DAMAGE",
+                "TARGET": "ENEMY",
+                "SCHOOL": "FIRE",
+                "VALUE": 180
             }
         ]
     },
@@ -2135,7 +2154,7 @@
     },
 
     {
-        "ID": "FROSTFEATHER_T2",
+        "ID": "FROSTFEATHER_2",
         "SPELL": "FROSTFEATHER",
         "SCHOOL": "ICE",
         "PIPCOST": 5,
@@ -3177,7 +3196,7 @@
         "TYPE": ["AURA"],
         "DESCRIPTION":
             "APPLIES A -15% OUTGOING DAMAGE AURA ON TARGET FOR 4 ROUNDS",
-        "EFFECT": [
+        "EFFECTS": [
             {
                 "TYPE": "AURA",
                 "DURATION": 4,

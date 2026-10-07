@@ -62,9 +62,39 @@ class Player:
 
         self.hand = Hand()
 
+        # health is out of 10 -- starts at max HP
+        self.hp_value = 10
+
+        # the value of the effects on a player
+        # self.mod_value = 0
+
+        # the value of pips for a player
+        self.pip_value = 5
+
+        # the value of incoming damage for a player
+        self.incoming_value = 0
+
+        # the value of outgoing damage for a player
+        self.outgoing_value = 0
+
+    def calc_value(self):
+        self.total_value = self.hp_value + self.pip_value + self.incoming_value + self.outgoing_value
+        return self.total_value
     
     def add_effect(self, effect):
         self.effects.append(effect)
+
+        if effect.type == "SHIELD":
+            self.incoming_value += effect.effect_value
+        if effect.type == "TRAP":
+            self.incoming_value -= effect.effect_value
+
+        if effect.type == "BLADE":
+            self.outgoing_value += effect.effect_value
+        if effect.type == "WEAKNESS":
+            self.outgoing_value -= effect.effect_value
+
+        
 
     def get_effects(self):
         return self.effects
@@ -191,7 +221,7 @@ class Player:
 
         # eats from school pips first
         for school, cost in context.schoolpips.items():
-            print(f"Found a school pip: {school}")
+        #    print(f"Found a school pip: {school}")
             to_rem = next((pip for pip in self.pips if pip.school == school), None)
             if to_rem is None:
                 print(f"Insufficient school pips!")
@@ -207,13 +237,13 @@ class Player:
                 school_pip = next((pip for pip in self.pips if pip.school == priority_school), None)
                 if school_pip is not None:
                 #    print(f"Removing even pip: {not_reg_pip}")
-                    print(f"Removing school pip: {school_pip}")
+                #    print(f"Removing school pip: {school_pip}")
                     self.remove_pip(school_pip)
                 else:
                     if use_power:
                         not_reg_pip = next((pip for pip in self.pips if pip.school != "REG"), None)
                         if not_reg_pip is not None:
-                            print(f"removing not-reg pip: {not_reg_pip}")
+                        #    print(f"removing not-reg pip: {not_reg_pip}")
                             self.remove_pip(not_reg_pip)
                             context.pips -= 2
                             continue
@@ -224,7 +254,7 @@ class Player:
                     for i, pip in enumerate(reg_pips):
                         if i >= 2:
                             break 
-                        print(f"removing reg pip: {pip}")
+                        #print(f"removing reg pip: {pip}")
                         self.remove_pip(pip)
 
                 context.pips -= 2
@@ -245,8 +275,8 @@ class Player:
                     #    print(f"After insertin reg: {caster_player.pips}")
                 context.pips -= 1
 
-            print(f"{context.pips} pips left to eat")
-            print(f"Player has: {self.pips}")
+        #    print(f"{context.pips} pips left to eat")
+        #    print(f"Player has: {self.pips}")
 
         self.shadpips -= context.shadpips
 
@@ -293,22 +323,22 @@ class Player:
     # this function modifies the incoming damage
     # it is called in do_tick and do_damage
     def mod_incoming_damage(self, damage_val, damage_school, pierce_val, is_dot=False):
-        print(f"pierce_val: {pierce_val}")
+     #   print(f"pierce_val: {pierce_val}")
         if self.aura is not None:
             adj = self.aura.adj
 
             # ignore if not correct school
             for modifier in adj:
                 if modifier["SCHOOL"] in (damage_school, "UNIVERSAL"):
-                    print(json.dumps(modifier, indent=4))
+                #    print(json.dumps(modifier, indent=4))
                     # ignore if not shield/trap type aura
                     if modifier["TYPE"] == "SHIELD":
                         mod_val = modifier["VALUE"]
-                        print(f"mod_val: {mod_val}; pierce_val: {pierce_val}")
+                    #    print(f"mod_val: {mod_val}; pierce_val: {pierce_val}")
                         mod_val -= pierce_val
                         if mod_val < 0:
                             pierce_val = -(mod_val)
-                            print(f"pierce_val: {pierce_val}; mod_val: {mod_val}")
+                        #    print(f"pierce_val: {pierce_val}; mod_val: {mod_val}")
                             mod_val = 0
                         damage_val -= damage_val * mod_val * 0.01
                     elif modifier["TYPE"] == "TRAP":
@@ -322,7 +352,7 @@ class Player:
 
         # backwards because we want to remove most recent trap/shield
         for ward in enemy_wards[::-1]:
-            print(f"ward: {ward}")
+        #    print(f"ward: {ward}")
             if ward.school in (damage_school, "UNIVERSAL"):
                 if ward.family in used_families:
                     continue
@@ -331,13 +361,13 @@ class Player:
                 used_families.add(ward.family)
                 print(f"{ward.type} used: {ward.school} of val {ward.value}")
                 pierce_val, damage_val = ward.mod_damage(damage_val, pierce_val)
-                print(f"post-ward effect_value: {damage_val}; pierce_val: {pierce_val}")
+            #    print(f"post-ward effect_value: {damage_val}; pierce_val: {pierce_val}")
                 #   context.add_used_ward(abs_target, ward)
                 self.del_effect(ward)
 
         # gets enemy resist
         enemy_res = self.get_incoming_resist(damage_school)
-        print(f"init enemy res: {enemy_res}")
+    #    print(f"init enemy res: {enemy_res}")
         enemy_res -= pierce_val
         print(f"enemy res: {enemy_res}; pierce_val: {pierce_val}")
         enemy_res = 0 if enemy_res < 0 else enemy_res

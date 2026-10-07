@@ -206,6 +206,8 @@ class Blade(Charm):
 
     categories = {"CHARM", "BLADE"}
 
+    polarity = 1
+
     @classmethod
     def from_json(cls, effect):
         return cls(effect["SCHOOL"], effect["VALUE"], effect["FAMILY"])
@@ -213,6 +215,8 @@ class Blade(Charm):
     def __init__(self, school, value, family):
         super().__init__(value, family)
         self.school = school
+
+        self.effect_value = 0.66
 
     def __str__(self):
         return f"{self.type}: {self.school} {self.value}"
@@ -238,6 +242,8 @@ class Weakness(Charm):
 
     categories = {"CHARM", "WEAKNESS"}
 
+    polarity = 0
+
     @classmethod
     def from_json(cls, effect):
         return cls(effect["SCHOOL"], effect["VALUE"], effect["FAMILY"])
@@ -245,6 +251,8 @@ class Weakness(Charm):
     def __init__(self, school, value, family):
         super().__init__(value, family)
         self.school = school
+
+        self.effect_value = 0.66
 
     def __str__(self):
         return f"{self.type}: {self.school} {self.value}"
@@ -276,6 +284,8 @@ class Heal_Weakness(Charm):
     
     def __init__(self, value, family):
         super().__init__(value, family)
+
+        self.effect_value = 0.66
 
     def __str__(self):
         return f"{self.type}: {self.value}"
@@ -325,6 +335,8 @@ class DOT_Trap(Ward):
 
     categories = {"WARD", "TRAP", "DOT_TRAP"}
 
+    polarity = 0
+
     @classmethod
     def from_json(cls, effect):
         return cls(effect["SCHOOL"], effect["VALUE"], effect["FAMILY"])
@@ -336,6 +348,8 @@ class DOT_Trap(Ward):
         family
     ):
         super().__init__(school, value, family)
+
+        self.effect_value = 0.66
 
     def __str__(self):
         return f"{self.type}: {self.school} {self.value}"
@@ -361,6 +375,8 @@ class Trap(Ward):
 
     categories = {"WARD", "TRAP"}
 
+    polarity = 0
+
     @classmethod
     def from_json(cls, effect):
         return cls(effect["SCHOOL"], effect["VALUE"], effect["FAMILY"])
@@ -372,6 +388,8 @@ class Trap(Ward):
         family
     ):
         super().__init__(school, value, family)
+
+        self.effect_value = 0.66
 
     def __str__(self):
         return f"{self.type}: {self.school} {self.value}"
@@ -397,6 +415,8 @@ class Shield(Ward):
 
     categories = {"WARD", "SHIELD"}
 
+    polarity = 1
+
     @classmethod
     def from_json(cls, effect):
         return cls(effect["SCHOOL"], effect["VALUE"], effect["FAMILY"])
@@ -408,6 +428,8 @@ class Shield(Ward):
         family
     ):
         super().__init__(school, value, family)
+
+        self.effect_value = 0.33
 
     def __str__(self):
         return f"{self.type}: {self.school} {self.value}"
@@ -472,6 +494,8 @@ class Aura(Effect):
         self.duration = duration
         self.adj = adj
 
+        self.effect_value = 1
+
     def __str__(self):
         effects = ", ".join(str(e) for e in self.adj)
         return f"{self.type} ({self.duration} turns): {effects}"
@@ -519,6 +543,8 @@ class DOT(Effect):
         self.leftover_value = value
 
         self.pierce_val = 0
+
+        self.effect_value = 2
 
     def __str__(self):
         return f"{self.type}: {self.school} {self.duration} {self.value_per_tick} / {self.value}"
@@ -578,6 +604,8 @@ class Bomb_DOT(Effect):
 
         self.pierce_val = 0
 
+        self.effect_value = 2
+
     def __str__(self):
         return f"{self.type}: {self.school} {self.duration} {self.value}"
     
@@ -623,6 +651,8 @@ class HOT(Effect):
         self.duration = duration
         self.stacks = stacks
         self.value = value
+
+        self.effect_value = 2
 
     def store_at(self):
         return "PLAYER"
@@ -1021,6 +1051,8 @@ class Pip():
     
     def __init__(self, school):
         self.school = school
+
+        self.effect_value = 1
 
     def __str__(self):
         return f"{self.type}: {self.school}"

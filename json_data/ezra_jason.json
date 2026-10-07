@@ -106,7 +106,7 @@
     {
         "ROUND": 5,
         "CASTER": "PLAYER2",
-        "SPELL": "AMMUT_T4B",
+        "SPELL": "AMMUT_4B",
         "TARGET": "PLAYER1",
         "SELECTED_SCHOOL": "ICE",
         "GAIN_SHAD": false
@@ -114,7 +114,7 @@
     {
         "ROUND": 6,
         "CASTER": "PLAYER1",
-        "SPELL": "FROSTFEATHER_T2",
+        "SPELL": "FROSTFEATHER_2",
         "TARGET": "PLAYER2",
         "SELECTED_SCHOOL": "LIFE",
         "GAIN_SHAD": false

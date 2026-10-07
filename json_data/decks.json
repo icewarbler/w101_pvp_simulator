@@ -7,8 +7,17 @@
             "BRIMSTONEREVENANT": 4,
             "FIREBLADE_35": 6,
             "HELEPHANT_5B": 4,
+            "IMMOLATE_2B": 4,
+            "AMMUT_4B": 4,
+            "WYLDFIRE_25": 4,
             "ATTENUATE": 4,
-            "STARFALL": 4
+            "STARFALL": 4,
+            "STEALPIP": 1,
+            "DARKNOVA": 4,
+            "SUPERSCORCH": 4,
+            "KINGARTORIUS_FIRE_2G": 1,
+            "FURNACE": 2,
+            "WEAKNESS_30": 1
         },
         "TC": {
             "TOWERSHIELD_50": 3

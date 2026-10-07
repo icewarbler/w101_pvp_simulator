@@ -18,6 +18,8 @@ from .player import Deck
 from .player import Hand
 from .effects import Pip
 from .spell_instance import SpellInstance
+from .gamestate import GameState
+from .machinecontroller import MachineController
 
 class Match:
     def __init__(self, p1, p2, turn, match_file=None):
@@ -538,6 +540,7 @@ class Match:
                 effect_obj = effect_class.from_json(effect)
             print(f"Adding effect: {effect_obj}")
 
+            # if chromatic, set desired school
             if hasattr(effect_obj, "school"):
                 if effect_obj.school == "ENEMY_SCHOOL":
                     effect_obj.school = enemy_player.school
@@ -570,6 +573,7 @@ class Match:
 
                     if effect_obj.type == "AURA":
                         abs_target.aura = effect_obj
+                        # -1 if negative aura; +1 if positive aura
                         continue
 
                     if effect_obj.type == "BACKLASH":
@@ -792,8 +796,21 @@ class Match:
 
             self.init_match()
 
+            controller = MachineController(self.p1, self.p2, spell_lookup)
+
+            state = GameState(self.p1, self.p2)
+
             # loop to do turn
             while True:
+                if turn % 2 != 0:
+                    while len(self.p2.hand.cards) < Hand.max_cards and len(self.p2.deck.cards):
+                        self.p2.draw_card()
+                    selected_spell = controller.choose_spell(state, self.p2.hand.cards)
+                    print(f"selected seppl: {selected_spell}")
+                    self.cast_spell(self.p2, self.p1, selected_spell)
+                    turn += 1
+                    continue
+
                 if turn % 2 == 0:
                     caster_player = self.p1
                     enemy_player = self.p2
@@ -894,8 +911,8 @@ class Match:
 
         for turn in match_dat:
             round = turn["ROUND"]
-            # if round > 18:
-            #     break
+            if round > 5:
+                break
             caster = turn["CASTER"]
 
             if caster == "PLAYER1":
@@ -906,6 +923,24 @@ class Match:
                 enemy_player = self.p1
 
             print("----")
+
+            total_value = caster_player.calc_value()
+            print(f"Value of {caster_player.name}: {total_value}")
+            print(f"HP value of {caster_player.name}: {caster_player.hp_value}")
+            print(f"Pip value of {caster_player.name}: {caster_player.pip_value}")
+            print(f"Incoming value of {caster_player.name}: {caster_player.incoming_value}")
+            print(f"Outgoing value of {caster_player.name}: {caster_player.outgoing_value}")
+
+            total_value2 = enemy_player.calc_value()
+            print(f"Value of {enemy_player.name}: {total_value2}")
+            print(f"HP value of {enemy_player.name}: {enemy_player.hp_value}")
+            print(f"Pip value of {enemy_player.name}: {enemy_player.pip_value}")
+            print(f"Incoming value of {enemy_player.name}: {enemy_player.incoming_value}")
+            print(f"Outgoing value of {enemy_player.name}: {enemy_player.outgoing_value}")
+
+            state = GameState(self.p1, self.p2)
+
+            state.check_state()
 
             # this is where backlash is taken
             if caster_player.backlash:
