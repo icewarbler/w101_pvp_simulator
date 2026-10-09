@@ -769,7 +769,7 @@
             "STEALS A PIP FROM TARGET AND GIVES IT TO CASTER",
         "EFFECTS": [
             {
-                "TYPE": "CONDITIONAL",
+                "TYPE": "GAMBIT",
                 "CAUSE": [
                     {
                         "ACTION": "STEAL",
@@ -3201,12 +3201,14 @@
                 "TYPE": "AURA",
                 "DURATION": 4,
                 "TARGET": "ENEMY",
-                "ADJ": {
-                    "TYPE": "WEAKNESS",
-                    "SUBTYPE": "DAMAGE",
-                    "SCHOOL": "UNIVERSAL",
-                    "VALUE": 15
-                }
+                "ADJ": [
+                    {
+                        "TYPE": "WEAKNESS",
+                        "SUBTYPE": "DAMAGE",
+                        "SCHOOL": "UNIVERSAL",
+                        "VALUE": 15
+                    }
+                ]
             }
         ]
     },

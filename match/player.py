@@ -1,12 +1,6 @@
-from .effects import Effect
-from .effects import DOT
-from .effects import Bomb_DOT
-from .effects import Charm
-from .effects import Ward
-from .deck import Deck
+from .effects import Effect, DOT, Bomb_DOT, Charm, Ward
 from .deck import Hand
 import random
-import json
 import math
 
 class Player:
@@ -93,20 +87,6 @@ class Player:
             self.outgoing_value += effect.effect_value
         if effect.type == "WEAKNESS":
             self.outgoing_value -= effect.effect_value
-
-        
-
-    def get_effects(self):
-        return self.effects
-    
-    def get_health(self):
-        return self.curr_health
-    
-    def get_outgoing_damage(self, school):
-        return self.outgoing_damage.get(school)
-
-    def get_incoming_resist(self, school):
-        return self.incoming_resist.get(school)
 
     def init_human_player(self):
         random.shuffle(self.deck)
@@ -213,14 +193,15 @@ class Player:
 
         priority_school = context.spell.get("SCHOOL")
         caster_school = self.school
-   #     print(f"spell school: {priority_school}; caster school: {caster_school}")
+     #   print(f"spell school: {priority_school}; caster school: {caster_school}")
         if caster_school == priority_school:
             use_power = True
         else:
             use_power = False
 
         # eats from school pips first
-        for school, cost in context.schoolpips.items():
+        print(f"School pips: {context.schoolpips}")
+        for school, cost in context.schoolpips.items() if context.schoolpips else []:
         #    print(f"Found a school pip: {school}")
             to_rem = next((pip for pip in self.pips if pip.school == school), None)
             if to_rem is None:
@@ -266,6 +247,7 @@ class Player:
                 if reg_pip:
                     self.remove_pip(reg_pip)
                 else:
+                    print(f"{self.pips}")
                     to_rem = self.pips[0]
                 #   print(f"To remove pip: {to_rem}")
                     self.remove_pip(to_rem)
@@ -286,16 +268,17 @@ class Player:
     # it is called in dot_damage and do_damage
     def mod_casting_damage(self, damage_val, damage_school, context):
         # gets caster's outgoing damage
-        print(self.get_outgoing_damage(damage_school))
+        print(self.outgoing_damage.get(damage_school))
+      #  self.outgoing_damage.get(damage_school)
     # print(f"value: {effect_value}")
-        damage_val += (damage_val * self.get_outgoing_damage(damage_school) * 0.01)
+        damage_val += (damage_val * self.outgoing_damage.get(damage_school) * 0.01)
 
         if self.aura is not None:
             adj = self.aura.adj
 
             # ignore if not correct school
             for modifier in adj:
-                if modifier["SCHOOL"] in (damage_school, "UNIVERSAL"):
+                if modifier.get("SCHOOL") in [damage_school, "UNIVERSAL"]:
                     # ignore if not blade/weakness type aura
                     if modifier["TYPE"] == "WEAKNESS":
                         damage_val -= damage_val * modifier["VALUE"] * 0.01
@@ -366,7 +349,7 @@ class Player:
                 self.del_effect(ward)
 
         # gets enemy resist
-        enemy_res = self.get_incoming_resist(damage_school)
+        enemy_res = self.incoming_resist.get(damage_school)
     #    print(f"init enemy res: {enemy_res}")
         enemy_res -= pierce_val
         print(f"enemy res: {enemy_res}; pierce_val: {pierce_val}")
@@ -416,53 +399,3 @@ class Player:
 
     def delete_card(self, card):
         self.hand.delete(card)
-
-# class Deck:
-#     def __init__(self, deck):
-#         self.cards = []
-#         max_cards = 7
-#         hand = []
-
-#         for spell, count in deck.items():
-#             self.cards.extend([spell] * count)
-        
-#         random.shuffle(self.cards)
-
-#     def __str__(self):
-#         return "\n".join(self.cards)
-    
-#     def draw(self):
-#         if not self.cards:
-#             return None
-        
-#         return self.cards.pop()
-    
-#     def delete(self, card):
-#         if card is None:
-#             return
-        
-#         self.cards.remove(card)
-
-# class Hand:
-#     max_cards = 7
-
-#     def __init__(self):
-#         self.cards = []
-
-#     def __str__(self):
-#         return "\n".join(self.cards)
-
-#     def add(self, card):
-#         if card is None:
-#             return
-        
-#         if len(self.cards) >= self.max_cards:
-#             raise ValueError("Hand is full!")
-        
-#         self.cards.append(card)
-    
-#     def delete(self, card):
-#         if card is None:
-#             return
-        
-#         self.cards.remove(card)

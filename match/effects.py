@@ -90,8 +90,9 @@ class Single_Damage:
     def store_at(self):
         return None
     
-    def apply(self, match, caster, enemy, context):
-        match.do_damage(caster, enemy, self, context)
+    def apply(self, action):
+        action.do_damage()
+     #   match.do_damage(action.caster, action.target, self, context)
 
 @Effect.register("RANGE_DAMAGE")
 class Range_Damage:
@@ -114,9 +115,12 @@ class Range_Damage:
 
     def store_at(self):
         return None
-    
-    def apply(self, match, caster, enemy, context):
-        match.do_damage(caster, enemy, self, context)
+
+    def apply(self, action):
+        action.do_damage()
+    # def apply(self, match, caster, enemy, context):
+    #     Action(self, caster, enemy, match).do_damage(self, caster, enemy, context)
+    #    match.do_damage(caster, enemy, self, context)
 
 @Effect.register("PERCENT_DAMAGE")
 class Percent_Damage:
@@ -141,9 +145,12 @@ class Percent_Damage:
     
     def store_at(self):
         return None
-    
-    def apply(self, match, caster, enemy, context):
-        match.do_damage(caster, enemy, self, context)
+
+    def apply(self, action):
+        action.do_damage()
+    # def apply(self, match, caster, enemy, context):
+    #     Action(self, caster, enemy, match).do_damage(self, caster, enemy, context)
+    # #    match.do_damage(caster, enemy, self, context)
 
 @Effect.register("DETONATE_DAMAGE")
 class Detonate_Damage:
@@ -168,9 +175,12 @@ class Detonate_Damage:
     
     def store_at(self):
         return None
-    
-    def apply(self, match, caster, enemy, context):
-        match.do_damage(caster, enemy, self, context)
+
+    def apply(self, action):
+        action.do_damage()
+    # def apply(self, match, caster, enemy, context):
+    #     Action(self, caster, enemy, match).do_damage(self, caster, enemy, context)
+    #    match.do_damage(caster, enemy, self, context)
 
 
 class Heal:
@@ -561,8 +571,41 @@ class DOT(Effect):
     def end_round(self):
         pass
 
+    # have to store caster pierce as well as this damage
+    # bubble and enemy stats are added when the dot is activated
+    # this function is called when dot is cast
+    # other stat function is called at begin of turn
     def get_damage(self, match, caster, context):
-        match.dot_damage(caster, self, context)
+      #  match.dot_damage(caster, self, context)
+        effect_school = self.school
+      
+        effect_value = self.value
+
+        print(f"Base effect val: {effect_value}")
+
+        print(f"with damage: {effect_value}")
+
+        caster_pierce = caster.pierce[effect_school]
+        self.pierce_val = caster_pierce
+
+        print(f"pierce_val: {self.pierce_val} {effect_school}") 
+
+        effect_value = caster.mod_casting_damage(effect_value, effect_school, context)
+
+        # gets the global
+        b = match.global_effect
+
+        if b:
+            if b.school == effect_school:
+                print(f"Found bubble with value {b.value}")
+                effect_value += effect_value * b.value * 0.01
+
+        print(f"DOT value: {effect_value}")
+        self.new_damage(effect_value)
+
+        tick_damage = effect_value / self.duration
+        self.new_tick_damage(tick_damage)
+        print(f"tick dmg: {self.value_per_tick}")
 
     def new_damage(self, value):
         self.value = value
@@ -730,8 +773,11 @@ class Gambit(Effect):
     def store_at(self):
         return None
 
-    def apply(self, match, caster, enemy, context):
-        match.play_gambit(caster, enemy, self, context)
+    # def apply(self, match, caster, enemy, context):
+    #     match.play_gambit(caster, enemy, self, context)
+
+    def apply(self, action):
+        action.play_gambit()
 
 # pivots include:
 # - GAMBIT: removes a helpful effect from the field
@@ -836,8 +882,11 @@ class Gambit(Effect):
     def store_at(self):
         return None
 
-    def apply(self, match, caster, enemy, context):
-        match.play_if_gambit(caster, enemy, self, context)
+    def apply(self, action):
+        action.play_if_gambit()
+    # def apply(self, match, caster, enemy, context):
+    #     Action(self, caster, enemy, match).play_if_gambit(self, caster, enemy, context)
+    #   match.play_if_gambit(caster, enemy, self, context)
 
 @Effect.register("MINION")
 class Minion(Effect):

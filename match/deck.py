@@ -30,7 +30,7 @@ class Deck:
         self.cards.remove(card)
 
 class Hand:
-    max_cards = 7
+    max_cards = 3
 
     def __init__(self):
         self.cards = []

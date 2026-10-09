@@ -1,16 +1,19 @@
-from .gamestate import GameState
+from .spell_instance import SpellInstance
 
 # machine is always player 2
 class MachineController:
-    def __init__(self, player1, player2, spell_lookup):
-        self.me = player1
-        self.enemy = player2
+    def __init__(self, player1, player2, spell_lookup, match):
+        self.me = player2
+        self.enemy = player1
+        self.match = match
 
         self.spell_lookup = spell_lookup
         
     def choose_spell(self, gamestate, cards):
         self.state = gamestate
         self.hand = cards
+
+        self.state.check_state()
 
         max_pipcost = -1
 
@@ -22,79 +25,24 @@ class MachineController:
 
             spell = self.spell_lookup.get(card)
 
+            pipcost = spell.get("PIPCOST")
+                                    
+            school_pipcost = spell.get("SCHOOLPIPS")
+            shad_pipcost = spell.get("SHADCOST")
+            spell_instance = SpellInstance(self.match, spell, self.me, self.enemy, pipcost, school_pipcost, shad_pipcost)
+
+            spell_value = spell_instance.spell_value()
+
             if self.me.can_cast(spell):
                 print(f"{i + 1}. {card}")
-                # calculate the value of each spell
-                # this is determined by the effects on the field, the school
-                # of the players, and the value of each spell effect, per pip
 
-                # damage is divided by the number of pips
-                pipcost = spell.get("PIPCOST")
-        
-                school_pipcost = spell.get("SCHOOLPIPS")
-                print(f"pipcs: {pipcost}, spc: {school_pipcost}")
+                spell_value = spell_instance.spell_value()
 
-                for key, item in school_pipcost.items() if school_pipcost else []:
-                    print(f"{key}: {item}")
-                    pipcost += int(item*2)
-                    print(f"pipc new: {pipcost}")
-
-                if pipcost > max_pipcost:
-                    max_pipcost = pipcost
-                    selected_spell = spell
-
-                types = spell.get("TYPE")
-                print(f"type: {types}")
-
-                if "DAMAGE" in types:
-                    effects = spell.get("EFFECTS")
-                    
-                    total_damage = 0
-
-                    for effect in effects:
-                        if effect.get("TYPE") == "SINGLE_DAMAGE":
-                            damage_value = effect.get("VALUE")
-                            total_damage += damage_value
-
-                    print(f"damage: {total_damage}")
-
-                    # calculate the value of the spell based on the damage and pip cost
-                    value = total_damage / pipcost
-                    print(f"value: {value}")
-
-
-                # spell.calc_value()
+                selected_spell = spell
             else:
                 print(f"{i + 1}. {red}{card}{reset}")
 
-                pipcost = spell.get("PIPCOST")
-                school_pipcost = spell.get("SCHOOLPIPS")
-                print(f"pipcs: {pipcost}, spc: {school_pipcost}")
-
-
-                for key, item in school_pipcost.items() if school_pipcost else []:
-                    print(f"{key}: {item}") 
-                    pipcost += int(item*2)
-                    print(f"pipc new: {pipcost}")
-
-                types = spell.get("TYPE")
-                print(f"type: {types}")
-
-                if "DAMAGE" in types:
-                    effects = spell.get("EFFECTS")
-
-                    total_damage = 0
-
-                    for effect in effects:
-                        if effect.get("TYPE") == "SINGLE_DAMAGE":
-                            damage_value = effect.get("VALUE")
-                            total_damage += damage_value
-
-                    print(f"damage: {total_damage}")
-
-                    # calculate the value of the spell based on the damage and pip cost
-                    value = total_damage / pipcost
-                    print(f"value: {value}")
+                spell_value = spell_instance.spell_value()
 
         print(f"selected spell: {selected_spell}")
         print(f"selected spell: {selected_spell.get('ID') if selected_spell else None}")

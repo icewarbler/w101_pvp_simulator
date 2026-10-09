@@ -1,8 +1,6 @@
-import json
 from .player import Player
 from .match import Match
 from .dataloader import load_json
-from .deck import Deck
 
 def create_matches(players_file, matchups_file):
     players = load_json(players_file)
